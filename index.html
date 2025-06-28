@@ -200,22 +200,26 @@
                     alert('Attempting to submit data via Formspree...');
                     fetch('https://formspree.io/f/xnnvlwap', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&')
                     })
                     .then(response => {
                         console.log('Fetch response status:', response.status);
                         console.log('Fetch response text:', response.text());
                         if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-                        return response.json();
+                        return response.text(); // Use text() to avoid JSON parsing issues
                     })
-                    .then(data => {
-                        console.log('Fetch success with data:', data);
-                        alert('Data submitted successfully! Check your email for results.');
-                        totalScoreElement.textContent = total;
-                        riskRankElement.textContent = riskRank;
-                        riskNoteElement.textContent = riskNote;
-                        riskAssessment.classList.remove('hidden');
+                    .then(text => {
+                        console.log('Fetch success with text:', text);
+                        if (text.includes('success') || response.status === 200) {
+                            alert('Data submitted successfully! Check your email for results.');
+                            totalScoreElement.textContent = total;
+                            riskRankElement.textContent = riskRank;
+                            riskNoteElement.textContent = riskNote;
+                            riskAssessment.classList.remove('hidden');
+                        } else {
+                            throw new Error('Unexpected response: ' + text);
+                        }
                     })
                     .catch(error => {
                         console.error('Fetch error:', error);
