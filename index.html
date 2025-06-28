@@ -3,19 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operational Risk Management Form</title>
+    <title>Operational Risk Management Form - VQ-4 Shadows</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles for enhanced aesthetics and mobile */
+        /* Custom styles with VQ-4 Shadows and E-6B Mercury inspiration */
         .header-bg {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            background: linear-gradient(135deg, #1e3a8a, #4b5563);
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%231e3a8a" fill-opacity="0.1" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,90.7C960,96,1056,96,1152,85.3C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E');
+            position: relative;
+            overflow: hidden;
+        }
+        .header-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"%3E%3Cpath d="M10 50 Q 50 10 90 50 T 50 90 T 10 50 Z" fill="none" stroke="%23ffffff" stroke-width="2" opacity="0.2"/%3E%3C/svg%3E') repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .header-text {
+            position: relative;
+            z-index: 1;
         }
         .input-field:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            border-color: #93c5fd;
+            box-shadow: 0 0 8px rgba(147, 197, 253, 0.6);
         }
         .checkbox-label:hover {
-            color: #1e40af;
+            color: #93c5fd;
         }
         .submit-btn:hover {
             background-color: #1e40af;
@@ -34,30 +52,38 @@
             .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
             .submit-btn { width: 100%; }
             .status-message { font-size: 0.75rem; }
+            h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg mt-6">
-        <header class="header-bg text-white p-4 rounded-t-xl mb-6">
-            <h1 class="text-3xl font-bold text-center">Operational Risk Management Form</h1>
+<body class="bg-gray-900 text-white font-sans">
+    <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-2xl mt-6">
+        <header class="header-bg p-6 rounded-t-xl mb-6 text-center">
+            <h1 class="header-text text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
         </header>
 
+        <div class="bg-gray-700 p-6 rounded-lg mb-6 shadow-inner">
+            <p class="text-lg font-medium text-gray-200 leading-relaxed">
+                This questionnaire uses the Time Critical ABCD Model to focus the crew, increase situational awareness, and improve performance in the pre-flight and flight environments. Use this questionnaire to Assess the crew, Balance resources, Communicate and then mitigate any assessed risk or decisions, Do the mission with the mitigations in place, and De-brief the mission once completed.<br><br>
+                <strong class="text-yellow-300">NOTE:</strong> The use of this questionnaire does not alleviate the requirement to perform deliberate ORM as called out in other instructions and SOPs.
+            </p>
+        </div>
+
         <!-- Flight Information -->
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Flight Information</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Flight Information</h2>
         <div class="space-y-6 mb-6">
             <div>
-                <label class="block text-lg font-medium text-gray-700" for="acmc">AC/MC <span class="text-red-600">*</span></label>
-                <input type="text" id="acmc" class="w-full p-3 border rounded-lg input-field" required>
-                <span id="acmcError" class="text-red-600 hidden">AC/MC is required.</span>
+                <label class="block text-lg font-medium text-gray-200" for="acmc">AC/MC <span class="text-red-400">*</span></label>
+                <input type="text" id="acmc" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+                <span id="acmcError" class="text-red-400 hidden">AC/MC is required.</span>
             </div>
             <div>
-                <label class="block text-lg font-medium text-gray-700" for="additionalCrew">Any Additional Crew Members/Passengers</label>
-                <input type="text" id="additionalCrew" class="w-full p-3 border rounded-lg input-field">
+                <label class="block text-lg font-medium text-gray-200" for="additionalCrew">Any Additional Crew Members/Passengers</label>
+                <input type="text" id="additionalCrew" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
             </div>
             <div>
-                <label class="block text-lg font-medium text-gray-700" for="crew">Crew <span class="text-red-600">*</span></label>
-                <select id="crew" class="w-full p-3 border rounded-lg input-field" required>
+                <label class="block text-lg font-medium text-gray-200" for="crew">Crew <span class="text-red-400">*</span></label>
+                <select id="crew" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
                     <option value="">Choose</option>
                     <option value="LC1">LC1</option>
                     <option value="LC2">LC2</option>
@@ -69,17 +95,17 @@
                     <option value="LC8">LC8</option>
                     <option value="Local">Local</option>
                 </select>
-                <span id="crewError" class="text-red-600 hidden">Crew is required.</span>
+                <span id="crewError" class="text-red-400 hidden">Crew is required.</span>
             </div>
             <div>
-                <label class="block text-lg font-medium text-gray-700" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-600">*</span></label>
-                <input type="text" id="takeoffTime" class="w-full p-3 border rounded-lg input-field" required>
-                <span id="takeoffError" class="text-red-600 hidden">Takeoff Time is required.</span>
+                <label class="block text-lg font-medium text-gray-200" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
+                <input type="text" id="takeoffTime" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+                <span id="takeoffError" class="text-red-400 hidden">Takeoff Time is required.</span>
             </div>
         </div>
 
         <!-- Human Factors -->
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Human Factors</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Human Factors</h2>
         <div class="space-y-2 mb-4">
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q1"> 1. Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days</label><br>
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="3" id="q2"> 2. Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs WHILE being allotted required crew rest time)</label><br>
@@ -89,13 +115,13 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-700" for="humanMitigations">Mitigations for Selected Human Factors Risks</label>
-            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="humanMitigationsError" class="text-red-600 hidden">Mitigations required if any Human Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="humanMitigations">Mitigations for Selected Human Factors Risks</label>
+            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            <span id="humanMitigationsError" class="text-red-400 hidden">Mitigations required if any Human Factors are selected.</span>
         </div>
 
         <!-- Scheduling & Tempo Factors -->
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Scheduling & Tempo Factors</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Scheduling & Tempo Factors</h2>
         <div class="space-y-2 mb-4">
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q7"> 7. Crew rest <12 hours</label><br>
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q8"> 8. Long sortie (>12 hour planned crew day)</label><br>
@@ -106,13 +132,13 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-700" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks</label>
-            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="schedulingMitigationsError" class="text-red-600 hidden">Mitigations required if any Scheduling Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks</label>
+            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            <span id="schedulingMitigationsError" class="text-red-400 hidden">Mitigations required if any Scheduling Factors are selected.</span>
         </div>
 
         <!-- Mission Factors -->
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mission Factors</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Mission Factors</h2>
         <div class="space-y-2 mb-4">
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="1" id="q14"> 14. Op Area evolution</label><br>
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q15"> 15. Air Refueling</label><br>
@@ -125,13 +151,13 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-700" for="missionMitigations">Mitigations for Selected Mission Factors Risks</label>
-            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="missionMitigationsError" class="text-red-600 hidden">Mitigations required if any Mission Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="missionMitigations">Mitigations for Selected Mission Factors Risks</label>
+            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            <span id="missionMitigationsError" class="text-red-400 hidden">Mitigations required if any Mission Factors are selected.</span>
         </div>
 
         <!-- Environmental Factors -->
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Environmental Factors</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Environmental Factors</h2>
         <div class="space-y-2 mb-4">
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q23"> 23. Flying at night</label><br>
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q24"> 24. Departure weather <1500 ft ceiling and/or <3 sm visibility</label><br>
@@ -140,9 +166,9 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-700" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks</label>
-            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="environmentalMitigationsError" class="text-red-600 hidden">Mitigations required if any Environmental Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks</label>
+            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            <span id="environmentalMitigationsError" class="text-red-400 hidden">Mitigations required if any Environmental Factors are selected.</span>
         </div>
 
         <button id="submitData" class="submit-btn mt-6 bg-blue-600 text-white p-3 rounded-lg transition duration-300 ease-in-out transform">Submit</button>
