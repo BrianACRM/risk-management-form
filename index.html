@@ -205,13 +205,12 @@
                     })
                     .then(response => {
                         console.log('Fetch response status:', response.status);
-                        console.log('Fetch response text:', response.text());
-                        if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-                        return response.text(); // Use text() to avoid JSON parsing issues
+                        return response.text(); // Read as text first
                     })
                     .then(text => {
-                        console.log('Fetch success with text:', text);
-                        if (text.includes('success') || response.status === 200) {
+                        console.log('Fetch response text:', text);
+                        if (response.status === 200 && text.includes('success')) {
+                            console.log('Fetch success with text:', text);
                             alert('Data submitted successfully! Check your email for results.');
                             totalScoreElement.textContent = total;
                             riskRankElement.textContent = riskRank;
