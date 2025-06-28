@@ -28,6 +28,14 @@
             position: relative;
             z-index: 1;
         }
+        .logo {
+            max-width: 150px;
+            height: auto;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            opacity: 0.8;
+        }
         .input-field:focus {
             border-color: #93c5fd;
             box-shadow: 0 0 8px rgba(147, 197, 253, 0.6);
@@ -53,12 +61,14 @@
             .submit-btn { width: 100%; }
             .status-message { font-size: 0.75rem; }
             h2 { font-size: 1.5rem; }
+            .logo { max-width: 100px; top: 5px; left: 5px; }
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
     <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-2xl mt-6">
-        <header class="header-bg p-6 rounded-t-xl mb-6 text-center">
+        <header class="header-bg p-6 rounded-t-xl mb-6 text-center relative">
+            <img src="https://via.placeholder.com/150?text=VQ-4+Shadows+Logo" alt="VQ-4 Shadows Logo" class="logo">
             <h1 class="header-text text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
         </header>
 
@@ -269,10 +279,10 @@
                     let riskNote = '';
                     if (total >= 21) {
                         riskRank = 'High';
-                        riskNote = 'Note: Mission is high risk; perform deliberate ORM and obtain CO approval prior to flight.';
+                        riskNote = 'Note: Call OPS Ofor approval or change mission to bring risk down.';
                     } else if (total >= 11) {
                         riskRank = 'Moderate';
-                        riskNote = 'Mission is medium risk; obtain OPSO approval prior to flight';
+                        riskNote = 'Note: Call the CDO to brief mitigation.';
                     } else {
                         riskRank = 'Low';
                         riskNote = '';
