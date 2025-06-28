@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operational Risk Management Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Operational Risk Management Form</h1>
+
+        <!-- Flight Information -->
+        <h2 class="text-xl font-semibold">Flight Information</h2>
+        <div class="space-y-4 mt-4">
+            <div>
+                <label class="block">AC/MC</label>
+                <input type="text" id="acmc" class="w-full p-2 border rounded">
+                <span id="acmcError" class="text-red-600 hidden"></span>
+            </div>
+            <div>
+                <label class="block">Any additional crew members/passengers</label>
+                <input type="text" id="additionalCrew" class="w-full p-2 border rounded">
+            </div>
+            <div>
+                <label class="block">Crew</label>
+                <select id="crew" class="w-full p-2 border rounded">
+                    <option value="">Choose</option>
+                    <option value="LC1">LC1</option>
+                    <option value="LC2">LC2</option>
+                    <option value="LC3">LC3</option>
+                    <option value="LC4">LC4</option>
+                    <option value="LC5">LC5</option>
+                    <option value="LC6">LC6</option>
+                    <option value="LC7">LC7</option>
+                    <option value="LC8">LC8</option>
+                    <option value="Local">Local</option>
+                </select>
+                <span id="crewError" class="text-red-600 hidden"></span>
+            </div>
+            <div>
+                <label class="block">Scheduled Takeoff Time - Zulu</label>
+                <input type="text" id="takeoffTime" class="w-full p-2 border rounded">
+                <span id="takeoffError" class="text-red-600 hidden"></span>
+            </div>
+        </div>
+
+        <!-- Human Factors -->
+        <h2 class="text-xl font-semibold mt-6">Human Factors</h2>
+        <div class="space-y-2">
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q1"> 1. Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="3" id="q2"> 2. Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs WHILE being allotted required crew rest time)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q3"> 3. Circadian rhythm disruption (day ↔ night shift in past 48 hrs)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="1" id="q4"> 4. Recent personal stressors</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="1" id="q5"> 5. First mission after ≥30-day non-flying period</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
+        </div>
+        <div class="mt-2">
+            <label class="block">Mitigations for selected Human Factors risks</label>
+            <textarea id="humanMitigations" class="w-full p-2 border rounded" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        </div>
+
+        <!-- Scheduling & Tempo Factors -->
+        <h2 class="text-xl font-semibold mt-6">Scheduling & Tempo Factors</h2>
+        <div class="space-y-2">
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q7"> 7. Crew rest <12 hours</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q8"> 8. Long sortie (>12 hour planned crew day)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q9"> 9. Planned crew day includes duty between the hours of 2200-0600</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="3" id="q10"> 10. Projected duty day ≥15 hrs (approaching 18-hour max)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q11"> 11. Crew scheduled to cross ≥2 time zones in 48-hr period, increasing risk of circadian disruption and fatigue</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q12"> 12. Significant mission change after crew report time requiring re-brief or operational adjustment</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
+        </div>
+        <div class="mt-2">
+            <label class="block">Mitigations for selected Scheduling & Tempo Factors risks</label>
+            <textarea id="schedulingMitigations" class="w-full p-2 border rounded" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        </div>
+
+        <!-- Mission Factors -->
+        <h2 class="text-xl font-semibold mt-6">Mission Factors</h2>
+        <div class="space-y-2">
+            <label><input type="checkbox" class="mr-2" data-severity="1" id="q14"> 14. Op Area evolution</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q15"> 15. Air Refueling</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="3" id="q16"> 16. Pilot Training Event (engine pulls)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q17"> 17. Closed Tower / Uncontrolled Field Ops</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q18"> 18. R4305 Op Area</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q19"> 19. Unfamiliar Airfield Ops</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="1" id="q20"> 20. Delayed Takeoff (mx, weather, etc...)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q21"> 21. Known degraded system(s) requiring crew workaround (e.g., comm, nav, radar, ICS)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
+        </div>
+        <div class="mt-2">
+            <label class="block">Mitigations for selected Mission Factors risks</label>
+            <textarea id="missionMitigations" class="w-full p-2 border rounded" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        </div>
+
+        <!-- Environmental Factors -->
+        <h2 class="text-xl font-semibold mt-6">Environmental Factors</h2>
+        <div class="space-y-2">
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q23"> 23. Flying at night</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q24"> 24. Departure weather <1500 ft ceiling and/or <3 sm visibility</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="3" id="q25"> 25. Enroute weather concerns (thunderstorms, icing, turbulence)</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q26"> 26. Destination weather <1500 ft ceiling and/or <3 sm visibility</label><br>
+            <label><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
+        </div>
+        <div class="mt-2">
+            <label class="block">Mitigations for selected Environmental Factors risks</label>
+            <textarea id="environmentalMitigations" class="w-full p-2 border rounded" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        </div>
+
+        <button id="submitData" class="mt-4 bg-blue-500 text-white p-2 rounded">Submit</button>
+        <div id="riskAssessment" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+            <h2 class="text-lg font-semibold">Risk Assessment</h2>
+            <p><strong>Total Risk Score:</strong> <span id="totalScore">0</span></p>
+            <p><strong>Risk Rank:</strong> <span id="riskRank">None</span></p>
+            <p id="riskNote" class="mt-2 text-red-600"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded');
+            console.log('Document body:', document.body.innerHTML);
+
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            console.log('Checkboxes found:', checkboxes.length);
+
+            const totalScoreElement = document.getElementById('totalScore');
+            console.log('totalScoreElement:', totalScoreElement);
+
+            const riskRankElement = document.getElementById('riskRank');
+            console.log('riskRankElement:', riskRankElement);
+
+            const riskNoteElement = document.getElementById('riskNote');
+            console.log('riskNoteElement:', riskNoteElement);
+
+            const submitButton = document.getElementById('submitData');
+            console.log('submitButton:', submitButton);
+            if (!submitButton) {
+                console.error('Submit button not found!');
+                const allButtons = document.querySelectorAll('button');
+                console.log('All buttons found:', allButtons);
+            } else {
+                console.log('Adding click event listener to submitButton');
+                submitButton.addEventListener('click', () => {
+                    console.log('Submit button clicked');
+                    if (!validateForm()) {
+                        alert('Please fill in all required fields (though not enforced).');
+                        console.log('Submission aborted due to validation preference');
+                        return;
+                    }
+
+                    // Calculate score before sending
+                    let total = 0;
+                    checkboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            total += parseInt(checkbox.getAttribute('data-severity') || 0);
+                        }
+                    });
+                    let riskRank = '';
+                    let riskNote = '';
+                    if (total >= 21) {
+                        riskRank = 'High';
+                        riskNote = 'Note: Call OPS Ofor approval or change mission to bring risk down.';
+                    } else if (total >= 11) {
+                        riskRank = 'Moderate';
+                        riskNote = 'Note: Call the CDO to brief mitigation.';
+                    } else {
+                        riskRank = 'Low';
+                        riskNote = '';
+                    }
+
+                    const formData = {
+                        acmc: document.getElementById('acmc').value || '',
+                        additionalCrew: document.getElementById('additionalCrew').value || '',
+                        crew: document.getElementById('crew').value || '',
+                        takeoffTime: document.getElementById('takeoffTime').value || '',
+                        humanFactors: Array.from(checkboxes)
+                            .filter(cb => cb.id.startsWith('q') && cb.id <= 'q6' && cb.checked)
+                            .map(cb => cb.nextSibling.textContent.trim()) || [],
+                        humanMitigations: document.getElementById('humanMitigations').value || '',
+                        schedulingFactors: Array.from(checkboxes)
+                            .filter(cb => cb.id.startsWith('q') && cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
+                            .map(cb => cb.nextSibling.textContent.trim()) || [],
+                        schedulingMitigations: document.getElementById('schedulingMitigations').value || '',
+                        missionFactors: Array.from(checkboxes)
+                            .filter(cb => cb.id.startsWith('q') && cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
+                            .map(cb => cb.nextSibling.textContent.trim()) || [],
+                        missionMitigations: document.getElementById('missionMitigations').value || '',
+                        environmentalFactors: Array.from(checkboxes)
+                            .filter(cb => cb.id.startsWith('q') && cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
+                            .map(cb => cb.nextSibling.textContent.trim()) || [],
+                        environmentalMitigations: document.getElementById('environmentalMitigations').value || '',
+                        totalScore: total,
+                        riskRank: riskRank,
+                        riskNote: riskNote
+                    };
+
+                    console.log('Form data sent:', formData);
+                    alert('Attempting to submit data...');
+                    fetch('https://script.google.com/macros/s/AKfycbxw--Hvw7uIHN2ZL1LYf6sWwFsQJT3LcvLu3724eZFF3JTCwJA0emem-CTtwcP0utfQkA/exec', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    })
+                    .then(response => {
+                        console.log('Fetch response status:', response.status);
+                        console.log('Fetch response text:', response.text());
+                        if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Fetch success:', data);
+                        alert('Data submitted successfully!');
+                        totalScoreElement.textContent = total;
+                        riskRankElement.textContent = riskRank;
+                        riskNoteElement.textContent = riskNote;
+                        riskAssessment.classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        alert('Error submitting data: ' + error.message);
+                    });
+                });
+            }
+
+            const riskAssessment = document.getElementById('riskAssessment');
+            console.log('riskAssessment:', riskAssessment);
+
+            const requiredFields = ['acmc', 'crew', 'takeoffTime'];
+
+            function validateForm() {
+                let isValid = true;
+                // No longer enforcing required fields, just logging for debug
+                requiredFields.forEach(field => {
+                    const element = document.getElementById(field);
+                    const errorElement = document.getElementById(`${field}Error`);
+                    console.log(`Validating ${field}: value='${element.value}', errorElement=`, errorElement);
+                    // Removed validation check, fields are optional
+                });
+                console.log('Validation result: true (fields optional)');
+                return true; // Always return true since fields are not required
+            }
+
+            // Initial state: Risk assessment hidden
+            riskAssessment.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
