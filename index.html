@@ -202,20 +202,21 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&'),
-                        redirect: 'manual' // Prevent following the thank-you redirect
+                        redirect: 'manual'
                     })
                     .then(response => {
                         console.log('Fetch response status:', response.status);
                         if (response.type === 'opaqueredirect' || response.status === 200) {
-                            console.log('Fetch response text (manual redirect): Submission likely succeeded');
-                            return { ok: true, text: 'Success' }; // Simulate success for redirect
+                            console.log('Fetch response: Submission succeeded (redirect or 200)');
+                            return { ok: true, text: 'Success' }; // Treat redirect as success
                         }
+                        if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
                         return response.text();
                     })
-                    .then(text => {
-                        console.log('Fetch response text:', text);
-                        if (text.includes('success') || response.status === 200) {
-                            console.log('Fetch success with text:', text);
+                    .then(result => {
+                        console.log('Fetch result:', result);
+                        let text = typeof result === 'object' && result.text ? result.text : (typeof result === 'string' ? result : '');
+                        if (result.ok || (text && text.toLowerCase().includes('success'))) {
                             alert('Data submitted successfully! Check your email for results.');
                             totalScoreElement.textContent = total;
                             riskRankElement.textContent = riskRank;
