@@ -197,7 +197,7 @@
                     };
 
                     console.log('Form data sent:', formData);
-                    alert('Attempting to submit data...');
+                    alert('Attempting to submit data via email...');
                     fetch('https://script.google.com/macros/s/AKfycbyasmzsYQSix-GfMDRRufv6WDiJGbI2Jrw3Dz_XmN3G-O7a7f-fw0Dp9gg7h_BDHYucBQ/exec', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -211,7 +211,7 @@
                     })
                     .then(data => {
                         console.log('Fetch success with data:', data);
-                        alert('Data submitted successfully!');
+                        alert('Data submitted successfully! Check your email for results.');
                         totalScoreElement.textContent = total;
                         riskRankElement.textContent = riskRank;
                         riskNoteElement.textContent = riskNote;
