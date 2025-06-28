@@ -115,9 +115,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="humanMitigations">Mitigations for Selected Human Factors Risks</label>
-            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="humanMitigationsError" class="text-red-400 hidden">Mitigations required if any Human Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="humanMitigations">Mitigations for Selected Human Factors Risks (Optional)</label>
+            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
         </div>
 
         <!-- Scheduling & Tempo Factors -->
@@ -132,9 +131,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks</label>
-            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="schedulingMitigationsError" class="text-red-400 hidden">Mitigations required if any Scheduling Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks (Optional)</label>
+            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
         </div>
 
         <!-- Mission Factors -->
@@ -151,9 +149,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="missionMitigations">Mitigations for Selected Mission Factors Risks</label>
-            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="missionMitigationsError" class="text-red-400 hidden">Mitigations required if any Mission Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="missionMitigations">Mitigations for Selected Mission Factors Risks (Optional)</label>
+            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
         </div>
 
         <!-- Environmental Factors -->
@@ -166,9 +163,18 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks</label>
-            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            <span id="environmentalMitigationsError" class="text-red-400 hidden">Mitigations required if any Environmental Factors are selected.</span>
+            <label class="block text-lg font-medium text-gray-200" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks (Optional)</label>
+            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
+        </div>
+
+        <!-- AC/MC Review Question -->
+        <div class="mb-6">
+            <label class="block text-lg font-medium text-gray-200">Has the AC/MC reviewed all risk factors and mitigations? <span class="text-red-400">*</span></label>
+            <div class="flex items-center space-x-4">
+                <label class="checkbox-label"><input type="radio" name="acmcReview" id="acmcReviewYes" value="yes" class="mr-2"> Yes</label>
+                <label class="checkbox-label"><input type="radio" name="acmcReview" id="acmcReviewNo" value="no" class="mr-2"> No</label>
+            </div>
+            <span id="acmcReviewError" class="text-red-400 hidden">AC/MC review (Yes) is required to submit.</span>
         </div>
 
         <button id="submitData" class="submit-btn mt-6 bg-blue-600 text-white p-3 rounded-lg transition duration-300 ease-in-out transform">Submit</button>
@@ -234,61 +240,21 @@
                         document.getElementById('takeoffError').classList.add('hidden');
                     }
 
+                    // Validate AC/MC review
+                    const acmcReviewYes = document.getElementById('acmcReviewYes').checked;
+                    if (!acmcReviewYes) {
+                        document.getElementById('acmcReviewError').classList.remove('hidden');
+                        isValid = false;
+                    } else {
+                        document.getElementById('acmcReviewError').classList.add('hidden');
+                    }
+
                     if (!isValid) {
                         document.getElementById('statusMessage').classList.remove('success', 'hidden');
                         document.getElementById('statusMessage').classList.add('error');
-                        document.getElementById('statusMessage').textContent = 'Please fill in all required fields (AC/MC, Crew, Takeoff Time).';
+                        document.getElementById('statusMessage').textContent = 'Please fill in all required fields and confirm AC/MC review.';
                         document.getElementById('statusMessage').style.display = 'block';
                         console.log('Submission aborted due to validation');
-                        return;
-                    }
-
-                    // Validate mitigations based on selected checkboxes
-                    const humanFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked);
-                    console.log('Human Factors Selected:', humanFactorsSelected);
-                    const schedulingFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked);
-                    console.log('Scheduling Factors Selected:', schedulingFactorsSelected); // Debug log
-                    const missionFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked);
-                    console.log('Mission Factors Selected:', missionFactorsSelected);
-                    const environmentalFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked);
-                    console.log('Environmental Factors Selected:', environmentalFactorsSelected);
-
-                    const humanMitigations = document.getElementById('humanMitigations').value.trim();
-                    const schedulingMitigations = document.getElementById('schedulingMitigations').value.trim();
-                    const missionMitigations = document.getElementById('missionMitigations').value.trim();
-                    const environmentalMitigations = document.getElementById('environmentalMitigations').value.trim();
-
-                    if (humanFactorsSelected && !humanMitigations) {
-                        document.getElementById('humanMitigationsError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('humanMitigationsError').classList.add('hidden');
-                    }
-                    if (schedulingFactorsSelected && !schedulingMitigations) {
-                        document.getElementById('schedulingMitigationsError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('schedulingMitigationsError').classList.add('hidden');
-                    }
-                    if (missionFactorsSelected && !missionMitigations) {
-                        document.getElementById('missionMitigationsError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('missionMitigationsError').classList.add('hidden');
-                    }
-                    if (environmentalFactorsSelected && !environmentalMitigations) {
-                        document.getElementById('environmentalMitigationsError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('environmentalMitigationsError').classList.add('hidden');
-                    }
-
-                    if (!isValid) {
-                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                        document.getElementById('statusMessage').classList.add('error');
-                        document.getElementById('statusMessage').textContent = 'Mitigations are required for any selected risk factors.';
-                        document.getElementById('statusMessage').style.display = 'block';
-                        console.log('Submission aborted due to missing mitigations');
                         return;
                     }
 
@@ -320,22 +286,23 @@
                         humanFactors: Array.from(checkboxes)
                             .filter(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked)
                             .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        humanMitigations: humanMitigations || 'N/A',
+                        humanMitigations: document.getElementById('humanMitigations').value.trim() || 'N/A',
                         schedulingFactors: Array.from(checkboxes)
                             .filter(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
                             .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        schedulingMitigations: schedulingMitigations || 'N/A',
+                        schedulingMitigations: document.getElementById('schedulingMitigations').value.trim() || 'N/A',
                         missionFactors: Array.from(checkboxes)
                             .filter(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
                             .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        missionMitigations: missionMitigations || 'N/A',
+                        missionMitigations: document.getElementById('missionMitigations').value.trim() || 'N/A',
                         environmentalFactors: Array.from(checkboxes)
                             .filter(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
                             .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        environmentalMitigations: environmentalMitigations || 'N/A',
+                        environmentalMitigations: document.getElementById('environmentalMitigations').value.trim() || 'N/A',
                         totalScore: total,
                         riskRank: riskRank,
-                        riskNote: riskNote
+                        riskNote: riskNote,
+                        acmcReview: acmcReviewYes ? 'Yes' : 'No'
                     };
 
                     console.log('Form data sent:', formData);
