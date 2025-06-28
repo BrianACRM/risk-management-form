@@ -201,15 +201,20 @@
                     fetch('https://formspree.io/f/xnnvlwap', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&')
+                        body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&'),
+                        redirect: 'manual' // Prevent following the thank-you redirect
                     })
                     .then(response => {
                         console.log('Fetch response status:', response.status);
-                        return response.text(); // Read as text first
+                        if (response.type === 'opaqueredirect' || response.status === 200) {
+                            console.log('Fetch response text (manual redirect): Submission likely succeeded');
+                            return { ok: true, text: 'Success' }; // Simulate success for redirect
+                        }
+                        return response.text();
                     })
                     .then(text => {
                         console.log('Fetch response text:', text);
-                        if (response.status === 200 && text.includes('success')) {
+                        if (text.includes('success') || response.status === 200) {
                             console.log('Fetch success with text:', text);
                             alert('Data submitted successfully! Check your email for results.');
                             totalScoreElement.textContent = total;
