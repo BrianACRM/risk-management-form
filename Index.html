@@ -198,7 +198,7 @@
 
                     console.log('Form data sent:', formData);
                     alert('Attempting to submit data...');
-                    fetch('https://script.google.com/macros/s/AKfycbxw--Hvw7uIHN2ZL1LYf6sWwFsQJT3LcvLu3724eZFF3JTCwJA0emem-CTtwcP0utfQkA/exec', {
+                    fetch('https://script.google.com/macros/s/AKfycbyhWvTov2bvG5HLiVHjabciXFwoHFrClz8bzsv9WD5FnBTqKSa8g3KHWrEPeiT0d_6odw/exec', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(formData)
@@ -210,7 +210,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log('Fetch success:', data);
+                        console.log('Fetch success with data:', data);
                         alert('Data submitted successfully!');
                         totalScoreElement.textContent = total;
                         riskRankElement.textContent = riskRank;
