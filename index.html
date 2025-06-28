@@ -177,28 +177,28 @@
                         takeoffTime: document.getElementById('takeoffTime').value || '',
                         humanFactors: Array.from(checkboxes)
                             .filter(cb => cb.id.startsWith('q') && cb.id <= 'q6' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()) || [],
-                        humanMitigations: document.getElementById('humanMitigations').value || '',
+                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                        humanMitigations: document.getElementById('humanMitigations').value || 'N/A',
                         schedulingFactors: Array.from(checkboxes)
                             .filter(cb => cb.id.startsWith('q') && cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()) || [],
-                        schedulingMitigations: document.getElementById('schedulingMitigations').value || '',
+                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                        schedulingMitigations: document.getElementById('schedulingMitigations').value || 'N/A',
                         missionFactors: Array.from(checkboxes)
                             .filter(cb => cb.id.startsWith('q') && cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()) || [],
-                        missionMitigations: document.getElementById('missionMitigations').value || '',
+                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                        missionMitigations: document.getElementById('missionMitigations').value || 'N/A',
                         environmentalFactors: Array.from(checkboxes)
                             .filter(cb => cb.id.startsWith('q') && cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()) || [],
-                        environmentalMitigations: document.getElementById('environmentalMitigations').value || '',
+                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                        environmentalMitigations: document.getElementById('environmentalMitigations').value || 'N/A',
                         totalScore: total,
                         riskRank: riskRank,
                         riskNote: riskNote
                     };
 
                     console.log('Form data sent:', formData);
-                    alert('Attempting to submit data via email...');
-                    fetch('https://script.google.com/macros/s/AKfycbyasmzsYQSix-GfMDRRufv6WDiJGbI2Jrw3Dz_XmN3G-O7a7f-fw0Dp9gg7h_BDHYucBQ/exec', {
+                    alert('Attempting to submit data via Formspree...');
+                    fetch('https://formspree.io/f/xnnvlwap', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(formData)
@@ -231,18 +231,15 @@
 
             function validateForm() {
                 let isValid = true;
-                // No longer enforcing required fields, just logging for debug
                 requiredFields.forEach(field => {
                     const element = document.getElementById(field);
                     const errorElement = document.getElementById(`${field}Error`);
                     console.log(`Validating ${field}: value='${element.value}', errorElement=`, errorElement);
-                    // Removed validation check, fields are optional
                 });
                 console.log('Validation result: true (fields optional)');
-                return true; // Always return true since fields are not required
+                return true;
             }
 
-            // Initial state: Risk assessment hidden
             riskAssessment.classList.add('hidden');
         });
     </script>
