@@ -6,7 +6,7 @@
     <title>Operational Risk Management Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles for enhanced aesthetics */
+        /* Custom styles for enhanced aesthetics and mobile */
         .header-bg {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
         }
@@ -20,6 +20,20 @@
         .submit-btn:hover {
             background-color: #1e40af;
             transform: translateY(-2px);
+        }
+        .status-message {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .success { background-color: #d1fae5; color: #065f46; }
+        .error { background-color: #fee2e2; color: #991b1b; }
+        @media (max-width: 640px) {
+            .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
+            .submit-btn { width: 100%; }
+            .status-message { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -132,6 +146,7 @@
         </div>
 
         <button id="submitData" class="submit-btn mt-6 bg-blue-600 text-white p-3 rounded-lg transition duration-300 ease-in-out transform">Submit</button>
+        <div id="statusMessage" class="status-message"></div>
         <div id="riskAssessment" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
             <h2 class="text-lg font-semibold text-gray-800">Risk Assessment</h2>
             <p><strong>Total Risk Score:</strong> <span id="totalScore" class="text-blue-600 font-medium">0</span></p>
@@ -194,7 +209,10 @@
                     }
 
                     if (!isValid) {
-                        alert('Please fill in all required fields (AC/MC, Crew, Takeoff Time).');
+                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                        document.getElementById('statusMessage').classList.add('error');
+                        document.getElementById('statusMessage').textContent = 'Please fill in all required fields (AC/MC, Crew, Takeoff Time).';
+                        document.getElementById('statusMessage').style.display = 'block';
                         console.log('Submission aborted due to validation');
                         return;
                     }
@@ -236,7 +254,10 @@
                     }
 
                     if (!isValid) {
-                        alert('Mitigations are required for any selected risk factors.');
+                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                        document.getElementById('statusMessage').classList.add('error');
+                        document.getElementById('statusMessage').textContent = 'Mitigations are required for any selected risk factors.';
+                        document.getElementById('statusMessage').style.display = 'block';
                         console.log('Submission aborted due to missing mitigations');
                         return;
                     }
@@ -288,7 +309,11 @@
                     };
 
                     console.log('Form data sent:', formData);
-                    alert('Attempting to submit data via Formspree...');
+                    document.getElementById('statusMessage').classList.remove('error', 'hidden');
+                    document.getElementById('statusMessage').classList.add('success');
+                    document.getElementById('statusMessage').textContent = 'Submitting data via Formspree...';
+                    document.getElementById('statusMessage').style.display = 'block';
+
                     fetch('https://formspree.io/f/xnnvlwap', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -308,7 +333,7 @@
                         console.log('Fetch result:', result);
                         let text = typeof result === 'object' && result.text ? result.text : (typeof result === 'string' ? result : '');
                         if (result.ok || (text && text.toLowerCase().includes('success'))) {
-                            alert('Data submitted successfully! Check your email for results.');
+                            document.getElementById('statusMessage').textContent = 'Data submitted successfully! Check your email.';
                             totalScoreElement.textContent = total;
                             riskRankElement.textContent = riskRank;
                             riskNoteElement.textContent = riskNote;
@@ -319,7 +344,9 @@
                     })
                     .catch(error => {
                         console.error('Fetch error:', error);
-                        alert('Error submitting data: ' + error.message);
+                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                        document.getElementById('statusMessage').classList.add('error');
+                        document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
                     });
                 });
             }
@@ -335,10 +362,9 @@
                     const element = document.getElementById(field);
                     const errorElement = document.getElementById(`${field}Error`);
                     console.log(`Validating ${field}: value='${element.value}', errorElement=`, errorElement);
-                    // Removed validation check, fields are optional
                 });
                 console.log('Validation result: true (fields optional)');
-                return true; // Always return true since fields are not required
+                return true;
             }
 
             riskAssessment.classList.add('hidden');
