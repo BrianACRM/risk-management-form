@@ -9,9 +9,14 @@
         /* Custom styles with VQ-4 Shadows and E-6B Mercury inspiration */
         .header-bg {
             background: linear-gradient(135deg, #1e3a8a, #4b5563);
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%231e3a8a" fill-opacity="0.1" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,90.7C960,96,1056,96,1152,85.3C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E');
             position: relative;
             overflow: hidden;
+            animation: waveAnimation 10s infinite ease-in-out;
+        }
+        @keyframes waveAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+            100% { background-position: 0% 0%; }
         }
         .header-bg::before {
             content: '';
@@ -20,9 +25,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"%3E%3Cpath d="M10 50 Q 50 10 90 50 T 50 90 T 10 50 Z" fill="none" stroke="%23ffffff" stroke-width="2" opacity="0.2"/%3E%3C/svg%3E') repeat;
-            opacity: 0.1;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%231e3a8a" fill-opacity="0.1" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,90.7C960,96,1056,96,1152,85.3C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E');
+            background-size: cover;
+            animation: waveMove 8s infinite linear;
             z-index: 0;
+        }
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         .header-text {
             position: relative;
@@ -35,17 +45,25 @@
             top: 10px;
             left: 10px;
             opacity: 0.8;
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 0.8; }
         }
         .input-field:focus {
             border-color: #93c5fd;
             box-shadow: 0 0 8px rgba(147, 197, 253, 0.6);
+            transition: all 0.3s ease;
         }
         .checkbox-label:hover {
             color: #93c5fd;
+            transition: color 0.3s ease;
         }
         .submit-btn:hover {
             background-color: #1e40af;
             transform: translateY(-2px);
+            transition: all 0.3s ease;
         }
         .status-message {
             display: none;
@@ -53,15 +71,32 @@
             padding: 0.75rem;
             border-radius: 0.5rem;
             font-size: 0.875rem;
+            transition: opacity 0.3s ease;
         }
         .success { background-color: #d1fae5; color: #065f46; }
         .error { background-color: #fee2e2; color: #991b1b; }
+        .risk-gauge {
+            width: 200px;
+            height: 20px;
+            background: #4b5563;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            transition: all 0.5s ease;
+        }
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #facc15, #ef4444);
+            width: 0;
+            transition: width 0.5s ease;
+        }
         @media (max-width: 640px) {
             .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
             .submit-btn { width: 100%; }
             .status-message { font-size: 0.75rem; }
             h2 { font-size: 1.5rem; }
             .logo { max-width: 100px; top: 5px; left: 5px; }
+            .risk-gauge { width: 150px; }
         }
     </style>
 </head>
@@ -125,8 +160,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="humanMitigations">Mitigations for Selected Human Factors Risks (Optional)</label>
-            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
+            <label class="block text-lg font-medium text-gray-200" for="humanMitigations">Mitigations for Selected Human Factors Risks</label>
+            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- Scheduling & Tempo Factors -->
@@ -141,8 +176,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks (Optional)</label>
-            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
+            <label class="block text-lg font-medium text-gray-200" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks</label>
+            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- Mission Factors -->
@@ -159,8 +194,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="missionMitigations">Mitigations for Selected Mission Factors Risks (Optional)</label>
-            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
+            <label class="block text-lg font-medium text-gray-200" for="missionMitigations">Mitigations for Selected Mission Factors Risks</label>
+            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- Environmental Factors -->
@@ -173,8 +208,8 @@
             <label class="checkbox-label"><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
         </div>
         <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks (Optional)</label>
-            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations (optional)..."></textarea>
+            <label class="block text-lg font-medium text-gray-200" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks</label>
+            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- AC/MC Review Question -->
@@ -191,7 +226,10 @@
         <div id="statusMessage" class="status-message"></div>
         <div id="riskAssessment" class="mt-6 p-4 bg-gray-700 rounded-lg hidden">
             <h2 class="text-lg font-semibold text-gray-100">Risk Assessment</h2>
-            <p><strong>Total Risk Score:</strong> <span id="totalScore" class="text-gray-100 font-medium">0</span></p>
+            <div class="risk-gauge">
+                <div id="gaugeFill" class="gauge-fill"></div>
+            </div>
+            <p class="mt-2"><strong>Total Risk Score:</strong> <span id="totalScore" class="text-gray-100 font-medium">0</span></p>
             <p><strong>Risk Rank:</strong> <span id="riskRank" class="text-gray-100 font-medium">None</span></p>
             <p id="riskNote" class="mt-2 text-red-400"></p>
         </div>
@@ -206,12 +244,11 @@
             console.log('Checkboxes found:', checkboxes.length);
 
             const totalScoreElement = document.getElementById('totalScore');
-            console.log('totalScoreElement:', totalScoreElement);
-
             const riskRankElement = document.getElementById('riskRank');
-            console.log('riskRankElement:', riskRankElement);
-
             const riskNoteElement = document.getElementById('riskNote');
+            const gaugeFill = document.getElementById('gaugeFill');
+            console.log('totalScoreElement:', totalScoreElement);
+            console.log('riskRankElement:', riskRankElement);
             console.log('riskNoteElement:', riskNoteElement);
 
             const submitButton = document.getElementById('submitData');
@@ -287,6 +324,10 @@
                         riskRank = 'Low';
                         riskNote = '';
                     }
+
+                    const maxScore = 60; // Assuming max severity is 3 across 20 factors
+                    const scorePercentage = (total / maxScore) * 100;
+                    gaugeFill.style.width = `${scorePercentage}%`;
 
                     const formData = {
                         acmc: acmc,
