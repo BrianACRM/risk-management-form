@@ -245,9 +245,13 @@
 
                     // Validate mitigations based on selected checkboxes
                     const humanFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked);
+                    console.log('Human Factors Selected:', humanFactorsSelected);
                     const schedulingFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked);
+                    console.log('Scheduling Factors Selected:', schedulingFactorsSelected); // Debug log
                     const missionFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked);
+                    console.log('Mission Factors Selected:', missionFactorsSelected);
                     const environmentalFactorsSelected = Array.from(checkboxes).some(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked);
+                    console.log('Environmental Factors Selected:', environmentalFactorsSelected);
 
                     const humanMitigations = document.getElementById('humanMitigations').value.trim();
                     const schedulingMitigations = document.getElementById('schedulingMitigations').value.trim();
