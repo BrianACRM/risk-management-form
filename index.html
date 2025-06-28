@@ -198,7 +198,7 @@
 
                     console.log('Form data sent:', formData);
                     alert('Attempting to submit data via email...');
-                    fetch('https://script.google.com/macros/s/AKfycbyasmzsYQSix-GfMDRRufv6WDiJGbI2Jrw3Dz_XmN3G-O7a7f-fw0Dp9gg7h_BDHYucBQ/exec, {
+                    fetch('https://script.google.com/macros/s/AKfycbyasmzsYQSix-GfMDRRufv6WDiJGbI2Jrw3Dz_XmN3G-O7a7f-fw0Dp9gg7h_BDHYucBQ/exec', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(formData)
