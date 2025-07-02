@@ -211,303 +211,305 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM fully loaded');
-            console.log('Document body:', document.body.innerHTML);
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded');
+        console.log('Document body:', document.body.innerHTML);
 
-            const { jsPDF } = window.jspdf;
+        const { jsPDF } = window.jspdf;
 
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            console.log('Checkboxes found:', checkboxes.length);
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        console.log('Checkboxes found:', checkboxes.length);
 
-            const totalScoreElement = document.getElementById('totalScore');
-            const riskRankElement = document.getElementById('riskRank');
-            const riskNoteElement = document.getElementById('riskNote');
-            const gaugeFill = document.getElementById('gaugeFill');
-            console.log('totalScoreElement:', totalScoreElement);
-            console.log('riskRankElement:', riskRankElement);
-            console.log('riskNoteElement:', riskNoteElement);
+        const totalScoreElement = document.getElementById('totalScore');
+        const riskRankElement = document.getElementById('riskRank');
+        const riskNoteElement = document.getElementById('riskNote');
+        const gaugeFill = document.getElementById('gaugeFill');
+        console.log('totalScoreElement:', totalScoreElement);
+        console.log('riskRankElement:', riskRankElement);
+        console.log('riskNoteElement:', riskNoteElement);
 
-            const submitButton = document.getElementById('submitData');
-            console.log('submitButton:', submitButton);
-            if (!submitButton) {
-                console.error('Submit button not found!');
-                const allButtons = document.querySelectorAll('button');
-                console.log('All buttons found:', allButtons);
-            } else {
-                console.log('Adding click event listener to submitButton');
-                submitButton.addEventListener('click', () => {
-                    console.log('Submit button clicked');
+        const submitButton = document.getElementById('submitData');
+        console.log('submitButton:', submitButton);
+        if (!submitButton) {
+            console.error('Submit button not found!');
+            const allButtons = document.querySelectorAll('button');
+            console.log('All buttons found:', allButtons);
+        } else {
+            console.log('Adding click event listener to submitButton');
+            submitButton.addEventListener('click', () => {
+                console.log('Submit button clicked');
 
-                    // Validate required fields
-                    const acmc = document.getElementById('acmc').value.trim();
-                    const crew = document.getElementById('crew').value;
-                    const takeoffTime = document.getElementById('takeoffTime').value.trim();
-                    let isValid = true;
-
-                    if (!acmc) {
-                        document.getElementById('acmcError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('acmcError').classList.add('hidden');
-                    }
-                    if (!crew) {
-                        document.getElementById('crewError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('crewError').classList.add('hidden');
-                    }
-                    if (!takeoffTime) {
-                        document.getElementById('takeoffError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('takeoffError').classList.add('hidden');
-                    }
-
-                    // Validate AC/MC review
-                    const acmcReviewYes = document.getElementById('acmcReviewYes').checked;
-                    if (!acmcReviewYes) {
-                        document.getElementById('acmcReviewError').classList.remove('hidden');
-                        isValid = false;
-                    } else {
-                        document.getElementById('acmcReviewError').classList.add('hidden');
-                    }
-
-                    if (!isValid) {
-                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                        document.getElementById('statusMessage').classList.add('error');
-                        document.getElementById('statusMessage').textContent = 'Please fill in all required fields and confirm AC/MC review.';
-                        document.getElementById('statusMessage').style.display = 'block';
-                        console.log('Submission aborted due to validation');
-                        return;
-                    }
-
-                    // Calculate score and submit
-                    let total = 0;
-                    checkboxes.forEach(checkbox => {
-                        if (checkbox.checked) {
-                            total += parseInt(checkbox.getAttribute('data-severity') || 0);
-                        }
-                    });
-                    let riskRank = '';
-                    let riskNote = '';
-                    if (total >= 21) {
-                        riskRank = 'High';
-                        riskNote = 'Call OPS Ofor approval or change mission to bring risk down.';
-                    } else if (total >= 11) {
-                        riskRank = 'Moderate';
-                        riskNote = 'Call the CDO to brief mitigation.';
-                    } else {
-                        riskRank = 'Low';
-                        riskNote = 'No action required.';
-                    }
-
-                    const maxScore = 81; // 27 factors * max severity 3
-                    const scorePercentage = (total / maxScore) * 100;
-                    gaugeFill.style.width = `${scorePercentage}%`;
-
-                    const formData = {
-                        acmc: acmc,
-                        additionalCrew: document.getElementById('additionalCrew').value || '',
-                        crew: crew,
-                        takeoffTime: takeoffTime,
-                        humanFactors: Array.from(checkboxes)
-                            .filter(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        humanMitigations: document.getElementById('humanMitigations').value.trim() || 'N/A',
-                        schedulingFactors: Array.from(checkboxes)
-                            .filter(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        schedulingMitigations: document.getElementById('schedulingMitigations').value.trim() || 'N/A',
-                        missionFactors: Array.from(checkboxes)
-                            .filter(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        missionMitigations: document.getElementById('missionMitigations').value.trim() || 'N/A',
-                        environmentalFactors: Array.from(checkboxes)
-                            .filter(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
-                            .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                        environmentalMitigations: document.getElementById('environmentalMitigations').value.trim() || 'N/A',
-                        totalScore: total,
-                        riskRank: riskRank,
-                        riskNote: riskNote,
-                        acmcReview: acmcReviewYes ? 'Yes' : 'No',
-                        submissionDate: new Date().toISOString()
-                    };
-
-                    console.log('Form data sent:', formData);
-                    document.getElementById('statusMessage').classList.remove('error', 'hidden');
-                    document.getElementById('statusMessage').classList.add('success');
-                    document.getElementById('statusMessage').textContent = 'Submitting data via Formspree...';
-                    document.getElementById('statusMessage').style.display = 'block';
-
-                    fetch('https://formspree.io/f/xnnvlwap', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&'),
-                        redirect: 'manual'
-                    })
-                    .then(response => {
-                        console.log('Fetch response status:', response.status);
-                        if (response.type === 'opaqueredirect' || response.status === 200) {
-                            console.log('Fetch response: Submission succeeded (redirect or 200)');
-                            return { ok: true, text: 'Success' };
-                        }
-                        if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-                        return response.text();
-                    })
-                    .then(result => {
-                        console.log('Fetch result:', result);
-                        let text = typeof result === 'object' && result.text ? result.text : (typeof result === 'string' ? result : '');
-                        if (result.ok || (text && text.toLowerCase().includes('success'))) {
-                            document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
-                            totalScoreElement.textContent = total;
-                            riskRankElement.textContent = riskRank;
-                            riskNoteElement.textContent = riskNote;
-                            riskAssessment.classList.remove('hidden');
-
-                            // Generate PDF with full scoring matrix
-                            const doc = new jsPDF();
-                            doc.setFontSize(12);
-                            doc.text('Operational Risk Management Form - VQ-4 Shadows', 10, 10);
-                            doc.text(`Submission Date: ${new Date().toLocaleString()}`, 10, 20);
-                            doc.text(`AC/MC: ${acmc}`, 10, 30);
-                            doc.text(`Crew: ${crew}`, 10, 40);
-                            doc.text(`Takeoff Time: ${takeoffTime}`, 10, 50);
-
-                            // Human Factors
-                            doc.text('Human Factors (Severity: 1=Low, 2=Moderate, 3=High)', 10, 60);
-                            const allFactors = [
-                                { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
-                                { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
-                                { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
-                                { id: 'q4', text: 'Recent personal stressors', severity: 1 },
-                                { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
-                                { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
-                            ];
-                            let yOffset = 70;
-                            allFactors.forEach(factor => {
-                                const checked = document.getElementById(factor.id).checked;
-                                doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
-                                yOffset += 10;
-                            });
-                            doc.text(`Mitigations: ${humanMitigations}`, 10, yOffset);
-                            yOffset += 10;
-
-                            // Scheduling Factors
-                            doc.text('Scheduling & Tempo Factors', 10, yOffset);
-                            const schedFactors = [
-                                { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
-                                { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
-                                { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
-                                { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
-                                { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
-                                { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
-                                { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
-                            ];
-                            yOffset += 10;
-                            schedFactors.forEach(factor => {
-                                const checked = document.getElementById(factor.id).checked;
-                                doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
-                                yOffset += 10;
-                            });
-                            doc.text(`Mitigations: ${schedulingMitigations}`, 10, yOffset);
-                            yOffset += 10;
-
-                            // Mission Factors
-                            doc.text('Mission Factors', 10, yOffset);
-                            const missionFactors = [
-                                { id: 'q14', text: 'Op Area evolution', severity: 1 },
-                                { id: 'q15', text: 'Air Refueling', severity: 2 },
-                                { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
-                                { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
-                                { id: 'q18', text: 'R4305 Op Area', severity: 2 },
-                                { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
-                                { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
-                                { id: 'q21', text: 'Known degraded system(s) requiring workaround', severity: 2 },
-                                { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
-                            ];
-                            yOffset += 10;
-                            missionFactors.forEach(factor => {
-                                const checked = document.getElementById(factor.id).checked;
-                                doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
-                                yOffset += 10;
-                            });
-                            doc.text(`Mitigations: ${missionMitigations}`, 10, yOffset);
-                            yOffset += 10;
-
-                            // Environmental Factors
-                            doc.text('Environmental Factors', 10, yOffset);
-                            const envFactors = [
-                                { id: 'q23', text: 'Flying at night', severity: 2 },
-                                { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                                { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
-                                { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                                { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
-                            ];
-                            yOffset += 10;
-                            envFactors.forEach(factor => {
-                                const checked = document.getElementById(factor.id).checked;
-                                doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
-                                yOffset += 10;
-                            });
-                            doc.text(`Mitigations: ${environmentalMitigations}`, 10, yOffset);
-                            yOffset += 10;
-
-                            // Scoring Matrix and Constraints
-                            doc.text('Scoring Matrix and Constraints', 10, yOffset);
-                            yOffset += 10;
-                            doc.text('Severity Levels: 1 = Low Risk, 2 = Moderate Risk, 3 = High Risk', 10, yOffset);
-                            yOffset += 10;
-                            doc.text('Total Score Thresholds:', 10, yOffset);
-                            yOffset += 10;
-                            doc.text('- <11: Low Risk (No action required)', 10, yOffset);
-                            yOffset += 10;
-                            doc.text('- 11-20: Moderate Risk (Call the CDO to brief mitigation)', 10, yOffset);
-                            yOffset += 10;
-                            doc.text('- >21: High Risk (Call OPS Ofor approval or change mission)', 10, yOffset);
-                            yOffset += 10;
-                            doc.text(`Current Total Score: ${total} (${riskRank})`, 10, yOffset);
-                            yOffset += 10;
-                            doc.text(`Note: Adjust scores for unchecked factors and recalculate. Add severity values as needed during briefing.`, 10, yOffset);
-                            yOffset += 10;
-                            doc.text(`AC/MC Review: ${acmcReview}`, 10, yOffset);
-
-                            // Download PDF
-                            doc.save('ORM_Form_Submission.pdf');
-                        } else {
-                            throw new Error('Unexpected response: ' + text);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                        document.getElementById('statusMessage').classList.add('error');
-                        document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
-                    })
-                    .finally(() => {
-                        submitButton.classList.remove('loading'); // Stop loading animation
-                    });
-                });
-            }
-
-            const riskAssessment = document.getElementById('riskAssessment');
-            console.log('riskAssessment:', riskAssessment);
-
-            const requiredFields = ['acmc', 'crew', 'takeoffTime'];
-
-            function validateForm() {
+                // Validate required fields
+                const acmc = document.getElementById('acmc').value.trim();
+                const crew = document.getElementById('crew').value;
+                const takeoffTime = document.getElementById('takeoffTime').value.trim();
                 let isValid = true;
-                requiredFields.forEach(field => {
-                    const element = document.getElementById(field);
-                    const errorElement = document.getElementById(`${field}Error`);
-                    console.log(`Validating ${field}: value='${element.value}', errorElement=`, errorElement);
-                });
-                console.log('Validation result: true (fields optional)');
-                return true;
-            }
 
-            riskAssessment.classList.add('hidden');
-        });
-    </script>
+                if (!acmc) {
+                    document.getElementById('acmcError').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('acmcError').classList.add('hidden');
+                }
+                if (!crew) {
+                    document.getElementById('crewError').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('crewError').classList.add('hidden');
+                }
+                if (!takeoffTime) {
+                    document.getElementById('takeoffError').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('takeoffError').classList.add('hidden');
+                }
+
+                // Validate AC/MC review
+                const acmcReviewYes = document.getElementById('acmcReviewYes').checked;
+                const acmcReviewNo = document.getElementById('acmcReviewNo').checked;
+                const acmcReview = acmcReviewYes ? 'Yes' : (acmcReviewNo ? 'No' : '');
+                if (!acmcReviewYes) {
+                    document.getElementById('acmcReviewError').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('acmcReviewError').classList.add('hidden');
+                }
+
+                if (!isValid) {
+                    document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                    document.getElementById('statusMessage').classList.add('error');
+                    document.getElementById('statusMessage').textContent = 'Please fill in all required fields and confirm AC/MC review.';
+                    document.getElementById('statusMessage').style.display = 'block';
+                    console.log('Submission aborted due to validation');
+                    return;
+                }
+
+                // Calculate score and submit
+                let total = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        total += parseInt(checkbox.getAttribute('data-severity') || 0);
+                    }
+                });
+                let riskRank = '';
+                let riskNote = '';
+                if (total >= 21) {
+                    riskRank = 'High';
+                    riskNote = 'Call OPS Ofor approval or change mission to bring risk down.';
+                } else if (total >= 11) {
+                    riskRank = 'Moderate';
+                    riskNote = 'Call the CDO to brief mitigation.';
+                } else {
+                    riskRank = 'Low';
+                    riskNote = 'No action required.';
+                }
+
+                const maxScore = 81; // 27 factors * max severity 3
+                const scorePercentage = (total / maxScore) * 100;
+                gaugeFill.style.width = `${scorePercentage}%`;
+
+                const formData = {
+                    acmc: acmc,
+                    additionalCrew: document.getElementById('additionalCrew').value || '',
+                    crew: crew,
+                    takeoffTime: takeoffTime,
+                    humanFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    humanMitigations: document.getElementById('humanMitigations').value.trim() || 'N/A',
+                    schedulingFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    schedulingMitigations: document.getElementById('schedulingMitigations').value.trim() || 'N/A',
+                    missionFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    missionMitigations: document.getElementById('missionMitigations').value.trim() || 'N/A',
+                    environmentalFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    environmentalMitigations: document.getElementById('environmentalMitigations').value.trim() || 'N/A',
+                    totalScore: total,
+                    riskRank: riskRank,
+                    riskNote: riskNote,
+                    acmcReview: acmcReview,
+                    submissionDate: new Date().toISOString()
+                };
+
+                console.log('Form data sent:', formData);
+                document.getElementById('statusMessage').classList.remove('error', 'hidden');
+                document.getElementById('statusMessage').classList.add('success');
+                document.getElementById('statusMessage').textContent = 'Submitting data via Formspree...';
+                document.getElementById('statusMessage').style.display = 'block';
+
+                fetch('https://formspree.io/f/xnnvlwap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&'),
+                    redirect: 'manual'
+                })
+                .then(response => {
+                    console.log('Fetch response status:', response.status);
+                    if (response.type === 'opaqueredirect' || response.status === 200) {
+                        console.log('Fetch response: Submission succeeded (redirect or 200)');
+                        return { ok: true, text: 'Success' };
+                    }
+                    if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+                    return response.text();
+                })
+                .then(result => {
+                    console.log('Fetch result:', result);
+                    let text = typeof result === 'object' && result.text ? result.text : (typeof result === 'string' ? result : '');
+                    if (result.ok || (text && text.toLowerCase().includes('success'))) {
+                        document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
+                        totalScoreElement.textContent = total;
+                        riskRankElement.textContent = riskRank;
+                        riskNoteElement.textContent = riskNote;
+                        riskAssessment.classList.remove('hidden');
+
+                        // Generate PDF with full scoring matrix
+                        const doc = new jsPDF();
+                        doc.setFontSize(12);
+                        doc.text('Operational Risk Management Form - VQ-4 Shadows', 10, 10);
+                        doc.text(`Submission Date: ${new Date().toLocaleString()}`, 10, 20);
+                        doc.text(`AC/MC: ${acmc}`, 10, 30);
+                        doc.text(`Crew: ${crew}`, 10, 40);
+                        doc.text(`Takeoff Time: ${takeoffTime}`, 10, 50);
+
+                        // Human Factors
+                        doc.text('Human Factors (Severity: 1=Low, 2=Moderate, 3=High)', 10, 60);
+                        const allFactors = [
+                            { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
+                            { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
+                            { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
+                            { id: 'q4', text: 'Recent personal stressors', severity: 1 },
+                            { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
+                            { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
+                        ];
+                        let yOffset = 70;
+                        allFactors.forEach(factor => {
+                            const checked = document.getElementById(factor.id).checked;
+                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
+                            yOffset += 10;
+                        });
+                        doc.text(`Mitigations: ${humanMitigations}`, 10, yOffset);
+                        yOffset += 10;
+
+                        // Scheduling Factors
+                        doc.text('Scheduling & Tempo Factors', 10, yOffset);
+                        const schedFactors = [
+                            { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
+                            { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
+                            { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
+                            { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
+                            { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
+                            { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
+                            { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
+                        ];
+                        yOffset += 10;
+                        schedFactors.forEach(factor => {
+                            const checked = document.getElementById(factor.id).checked;
+                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
+                            yOffset += 10;
+                        });
+                        doc.text(`Mitigations: ${schedulingMitigations}`, 10, yOffset);
+                        yOffset += 10;
+
+                        // Mission Factors
+                        doc.text('Mission Factors', 10, yOffset);
+                        const missionFactors = [
+                            { id: 'q14', text: 'Op Area evolution', severity: 1 },
+                            { id: 'q15', text: 'Air Refueling', severity: 2 },
+                            { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
+                            { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
+                            { id: 'q18', text: 'R4305 Op Area', severity: 2 },
+                            { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
+                            { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
+                            { id: 'q21', text: 'Known degraded system(s) requiring workaround', severity: 2 },
+                            { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
+                        ];
+                        yOffset += 10;
+                        missionFactors.forEach(factor => {
+                            const checked = document.getElementById(factor.id).checked;
+                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
+                            yOffset += 10;
+                        });
+                        doc.text(`Mitigations: ${missionMitigations}`, 10, yOffset);
+                        yOffset += 10;
+
+                        // Environmental Factors
+                        doc.text('Environmental Factors', 10, yOffset);
+                        const envFactors = [
+                            { id: 'q23', text: 'Flying at night', severity: 2 },
+                            { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+                            { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
+                            { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+                            { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
+                        ];
+                        yOffset += 10;
+                        envFactors.forEach(factor => {
+                            const checked = document.getElementById(factor.id).checked;
+                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, 10, yOffset);
+                            yOffset += 10;
+                        });
+                        doc.text(`Mitigations: ${environmentalMitigations}`, 10, yOffset);
+                        yOffset += 10;
+
+                        // Scoring Matrix and Constraints
+                        doc.text('Scoring Matrix and Constraints', 10, yOffset);
+                        yOffset += 10;
+                        doc.text('Severity Levels: 1 = Low Risk, 2 = Moderate Risk, 3 = High Risk', 10, yOffset);
+                        yOffset += 10;
+                        doc.text('Total Score Thresholds:', 10, yOffset);
+                        yOffset += 10;
+                        doc.text('- <11: Low Risk (No action required)', 10, yOffset);
+                        yOffset += 10;
+                        doc.text('- 11-20: Moderate Risk (Call the CDO to brief mitigation)', 10, yOffset);
+                        yOffset += 10;
+                        doc.text('- >21: High Risk (Call OPS Ofor approval or change mission)', 10, yOffset);
+                        yOffset += 10;
+                        doc.text(`Current Total Score: ${total} (${riskRank})`, 10, yOffset);
+                        yOffset += 10;
+                        doc.text('Instructions: Add severity scores (1-3) for unchecked factors during briefing. Recalculate total and follow threshold actions.', 10, yOffset);
+                        yOffset += 10;
+                        doc.text(`AC/MC Review: ${acmcReview}`, 10, yOffset);
+
+                        // Download PDF
+                        doc.save('ORM_Form_Submission.pdf');
+                    } else {
+                        throw new Error('Unexpected response: ' + text);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                    document.getElementById('statusMessage').classList.add('error');
+                    document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
+                })
+                .finally(() => {
+                    submitButton.classList.remove('loading'); // Stop loading animation
+                });
+            });
+        }
+
+        const riskAssessment = document.getElementById('riskAssessment');
+        console.log('riskAssessment:', riskAssessment);
+
+        const requiredFields = ['acmc', 'crew', 'takeoffTime'];
+
+        function validateForm() {
+            let isValid = true;
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                const errorElement = document.getElementById(`${field}Error`);
+                console.log(`Validating ${field}: value='${element.value}', errorElement=`, errorElement);
+            });
+            console.log('Validation result: true (fields optional)');
+            return true;
+        }
+
+        riskAssessment.classList.add('hidden');
+    });
+</script>
 </body>
 </html>
