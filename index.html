@@ -373,134 +373,112 @@
                             unit: 'in',
                             format: 'a4'
                         });
-                        doc.setFontSize(10); // Smaller text to fit one page
-                        const pageWidth = 8.27; // A4 width in inches
-                        const leftColumnWidth = 5.5; // Left column for form data
-                        const rightColumnWidth = 2.77; // Right column for matrix
-                        const margin = 0.5;
+                        doc.setFontSize(9); // Smaller text for one page
+                        const pageWidth = 8.27; // A4 width
+                        const leftColumnWidth = 5.5;
+                        const rightColumnWidth = 2.77;
+                        const margin = 0.3;
 
                         // Header
-                        doc.setFillColor(30, 58, 138); // Dark blue from header
-                        doc.rect(0, 0, pageWidth, 1, 'F'); // Header background
-                        doc.setTextColor(255, 255, 255); // White text
-                        doc.text('Operational Risk Management Form - VQ-4 Shadows', margin, 0.6, { align: 'center' });
-                        doc.setTextColor(0, 0, 0); // Black text for body
+                        doc.setFillColor(30, 58, 138); // Dark blue header
+                        doc.rect(0, 0, pageWidth, 0.8, 'F');
+                        doc.setTextColor(255, 255, 255);
+                        doc.text('Operational Risk Management Form - VQ-4 Shadows', pageWidth / 2, 0.4, { align: 'center' });
+                        doc.setTextColor(255, 255, 255); // White text to match site
+                        doc.setFillColor(75, 85, 99); // Dark gray background
 
                         // Form Data (Left Column)
-                        let yOffset = 1.2;
-                        doc.text(`Submission Date: ${new Date().toLocaleString()}`, margin, yOffset);
-                        yOffset += 0.3;
-                        doc.text(`AC/MC: ${acmc}`, margin, yOffset);
-                        yOffset += 0.3;
-                        doc.text(`Crew: ${crew}`, margin, yOffset);
-                        yOffset += 0.3;
-                        doc.text(`Takeoff Time: ${takeoffTime}`, margin, yOffset);
+                        let yOffset = 1.0;
+                        doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F'); // Section header
+                        doc.text('Flight Information', margin + 0.1, yOffset - 0.05);
+                        yOffset += 0.1;
+                        doc.text(`AC/MC: ${acmc}`, margin + 0.1, yOffset);
+                        yOffset += 0.2;
+                        doc.text(`Crew: ${crew}`, margin + 0.1, yOffset);
+                        yOffset += 0.2;
+                        doc.text(`Takeoff Time: ${takeoffTime}`, margin + 0.1, yOffset);
+                        yOffset += 0.2;
+                        doc.text(`Submission Date: ${new Date().toLocaleString()}`, margin + 0.1, yOffset);
                         yOffset += 0.3;
 
-                        // Human Factors
-                        doc.text('Human Factors', margin, yOffset);
-                        yOffset += 0.3;
-                        const allFactors = [
-                            { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
-                            { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
-                            { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
-                            { id: 'q4', text: 'Recent personal stressors', severity: 1 },
-                            { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
-                            { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
+                        // Risk Factors
+                        const sections = [
+                            { title: 'Human Factors', factors: [
+                                { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
+                                { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
+                                { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
+                                { id: 'q4', text: 'Recent personal stressors', severity: 1 },
+                                { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
+                                { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
+                            ], mit: 'humanMitigations' },
+                            { title: 'Scheduling & Tempo Factors', factors: [
+                                { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
+                                { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
+                                { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
+                                { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
+                                { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
+                                { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
+                                { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
+                            ], mit: 'schedulingMitigations' },
+                            { title: 'Mission Factors', factors: [
+                                { id: 'q14', text: 'Op Area evolution', severity: 1 },
+                                { id: 'q15', text: 'Air Refueling', severity: 2 },
+                                { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
+                                { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
+                                { id: 'q18', text: 'R4305 Op Area', severity: 2 },
+                                { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
+                                { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
+                                { id: 'q21', text: 'Known degraded system(s) requiring workaround', severity: 2 },
+                                { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
+                            ], mit: 'missionMitigations' },
+                            { title: 'Environmental Factors', factors: [
+                                { id: 'q23', text: 'Flying at night', severity: 2 },
+                                { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+                                { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
+                                { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+                                { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
+                            ], mit: 'environmentalMitigations' }
                         ];
-                        allFactors.forEach(factor => {
-                            const checked = document.getElementById(factor.id).checked;
-                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin, yOffset);
-                            yOffset += 0.2;
-                        });
-                        doc.text(`Mitigations: ${humanMitigations}`, margin, yOffset);
-                        yOffset += 0.2;
 
-                        // Scheduling Factors
-                        doc.text('Scheduling & Tempo Factors', margin, yOffset);
-                        yOffset += 0.2;
-                        const schedFactors = [
-                            { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
-                            { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
-                            { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
-                            { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
-                            { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
-                            { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
-                            { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
-                        ];
-                        schedFactors.forEach(factor => {
-                            const checked = document.getElementById(factor.id).checked;
-                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin, yOffset);
+                        sections.forEach(section => {
+                            doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
+                            doc.text(section.title, margin + 0.1, yOffset - 0.05);
+                            yOffset += 0.1;
+                            section.factors.forEach(factor => {
+                                const checked = document.getElementById(factor.id).checked;
+                                doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin + 0.1, yOffset);
+                                yOffset += 0.15;
+                            });
+                            doc.text(`Mitigations: ${document.getElementById(section.mit).value.trim() || 'N/A'}`, margin + 0.1, yOffset);
                             yOffset += 0.2;
                         });
-                        doc.text(`Mitigations: ${schedulingMitigations}`, margin, yOffset);
-                        yOffset += 0.2;
-
-                        // Mission Factors
-                        doc.text('Mission Factors', margin, yOffset);
-                        yOffset += 0.2;
-                        const missionFactors = [
-                            { id: 'q14', text: 'Op Area evolution', severity: 1 },
-                            { id: 'q15', text: 'Air Refueling', severity: 2 },
-                            { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
-                            { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
-                            { id: 'q18', text: 'R4305 Op Area', severity: 2 },
-                            { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
-                            { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
-                            { id: 'q21', text: 'Known degraded system(s) requiring workaround', severity: 2 },
-                            { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
-                        ];
-                        missionFactors.forEach(factor => {
-                            const checked = document.getElementById(factor.id).checked;
-                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin, yOffset);
-                            yOffset += 0.2;
-                        });
-                        doc.text(`Mitigations: ${missionMitigations}`, margin, yOffset);
-                        yOffset += 0.2;
-
-                        // Environmental Factors
-                        doc.text('Environmental Factors', margin, yOffset);
-                        yOffset += 0.2;
-                        const envFactors = [
-                            { id: 'q23', text: 'Flying at night', severity: 2 },
-                            { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                            { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
-                            { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                            { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
-                        ];
-                        envFactors.forEach(factor => {
-                            const checked = document.getElementById(factor.id).checked;
-                            doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin, yOffset);
-                            yOffset += 0.2;
-                        });
-                        doc.text(`Mitigations: ${environmentalMitigations}`, margin, yOffset);
-                        yOffset += 0.2;
-                        doc.text(`AC/MC Review: ${acmcReview}`, margin, yOffset);
+                        doc.text(`AC/MC Review: ${acmcReview}`, margin + 0.1, yOffset);
 
                         // Scoring Matrix (Right Column)
                         const matrixX = margin + leftColumnWidth + 0.1;
-                        let matrixY = 1.2;
-                        doc.text('Scoring Matrix', matrixX, matrixY);
-                        matrixY += 0.3;
-                        doc.text('Severity Levels:', matrixX, matrixY);
-                        matrixY += 0.3;
-                        doc.text('1 = Low Risk', matrixX, matrixY);
+                        let matrixY = 1.0;
+                        doc.rect(matrixX, matrixY - 0.2, rightColumnWidth, 0.2, 'F');
+                        doc.text('Scoring Matrix', matrixX + 0.1, matrixY - 0.05);
+                        matrixY += 0.1;
+                        doc.text('Severity Levels:', matrixX + 0.1, matrixY);
                         matrixY += 0.2;
-                        doc.text('2 = Moderate Risk', matrixX, matrixY);
+                        doc.text('1 = Low Risk', matrixX + 0.1, matrixY);
+                        matrixY += 0.15;
+                        doc.text('2 = Moderate Risk', matrixX + 0.1, matrixY);
+                        matrixY += 0.15;
+                        doc.text('3 = High Risk', matrixX + 0.1, matrixY);
                         matrixY += 0.2;
-                        doc.text('3 = High Risk', matrixX, matrixY);
-                        matrixY += 0.3;
-                        doc.text('Total Score Requirements:', matrixX, matrixY);
-                        matrixY += 0.3;
-                        doc.text('<11: Low Risk (No action required)', matrixX, matrixY);
+                        doc.text('Total Score Requirements:', matrixX + 0.1, matrixY);
                         matrixY += 0.2;
-                        doc.text('11-20: Moderate Risk (Call the CDO to brief mitigation)', matrixX, matrixY);
+                        doc.text('<11: Low Risk (No action required)', matrixX + 0.1, matrixY);
+                        matrixY += 0.15;
+                        doc.text('11-20: Moderate Risk (Call CDO to brief mitigation)', matrixX + 0.1, matrixY);
+                        matrixY += 0.15;
+                        doc.text('>21: High Risk (Call OPS for approval or change mission)', matrixX + 0.1, matrixY);
                         matrixY += 0.2;
-                        doc.text('>21: High Risk (Call OPS Ofor approval or change mission)', matrixX, matrixY);
-                        matrixY += 0.3;
-                        doc.text(`Current Total: ${total} (${riskRank})`, matrixX, matrixY);
-                        matrixY += 0.3;
-                        doc.text('Adjust unchecked factors (1-3) and recalculate.', matrixX, matrixY);
+                        doc.text(`Current Total: ${total} (${riskRank})`, matrixX + 0.1, matrixY);
+                        matrixY += 0.2;
+                        doc.text('Adjust unchecked factors (1-3) and recalculate.', matrixX + 0.1, matrixY);
 
                         // Download PDF
                         doc.save('ORM_Form_Submission.pdf');
