@@ -57,18 +57,27 @@
             mx-auto;
             bg-gray-800;
             p-8;
-            rounded-xl;
+            rounded-md; /* Reduced rounding for squared look */
             shadow-2xl;
             mt-6;
             flex-grow: 1;
             text-align: left;
+            border: 2px solid #4b5563; /* Add border for definition */
+        }
+        .section-box {
+            background-color: #4b5563;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #93c5fd; /* Light border for section separation */
+            border-radius: 0; /* Squared off */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
         .input-field, textarea {
             width: 100%;
             max-width: 24rem;
             padding: 0.75rem;
             border: 1px solid #4b5563;
-            border-radius: 0.5rem;
+            border-radius: 0.25rem; /* Slight rounding for inputs */
             background-color: #4b5563;
             color: #ffffff;
             box-sizing: border-box;
@@ -80,7 +89,7 @@
                 max-width: 384px !important;
                 padding: 12px !important;
                 border: 1px solid #4b5563 !important;
-                border-radius: 8px !important;
+                border-radius: 4px !important;
                 background-color: #4b5563 !important;
                 color: #ffffff !important;
                 margin: 0 auto !important;
@@ -90,10 +99,19 @@
                 max-width: 56rem !important;
                 width: 100% !important;
                 margin: 0 auto !important;
-                background-color: #4b5563 !important; /* Fallback bg */
-                padding: 32px !important; /* p-8 */
-                border-radius: 1rem !important; /* rounded-xl */
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; /* shadow-2xl */
+                background-color: #4b5563 !important;
+                padding: 32px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+                border: 2px solid #4b5563 !important;
+            }
+            .section-box {
+                background-color: #4b5563 !important;
+                padding: 16px !important;
+                margin-bottom: 16px !important;
+                border: 1px solid #93c5fd !important;
+                border-radius: 0 !important;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
             }
         }
         .input-field:focus {
@@ -157,7 +175,8 @@
                 padding: 5px;
                 min-height: 100px;
             }
-            .content { p-4; } /* Reduce padding on mobile */
+            .content { p-4; }
+            .section-box { padding: 0.5rem; }
             .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; width: 100%; max-width: 100%; }
             .submit-btn, .pdf-btn { width: 100%; margin-bottom: 0.5rem; }
             .status-message { font-size: 0.75rem; }
@@ -171,7 +190,7 @@
         <h1 class="text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
     </header>
     <div class="content">
-        <div class="bg-gray-700 p-6 rounded-lg mb-6 mt-6 shadow-inner">
+        <div class="section-box bg-gray-700 p-6 rounded-lg mb-6 mt-6 shadow-inner">
             <p class="text-lg font-medium text-gray-200 leading-relaxed">
                 This questionnaire uses the Time Critical ABCD Model to focus the crew, increase situational awareness, and improve performance in the pre-flight and flight environments. Use this questionnaire to Assess the crew, Balance resources, Communicate and then mitigate any assessed risk or decisions, Do the mission with the mitigations in place, and De-brief the mission once completed.<br><br>
                 <strong class="text-yellow-300">NOTE:</strong> The use of this questionnaire does not alleviate the requirement to perform deliberate ORM as called out in other instructions and SOPs.
@@ -179,101 +198,111 @@
         </div>
 
         <!-- Flight Information -->
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Flight Information</h2>
-        <div class="space-y-6 mb-6">
-            <div class="flex items-center space-x-4 mb-4">
-                <label class="block text-lg font-medium text-gray-200 w-1/3" for="acmc">AC/MC <span class="text-red-400">*</span></label>
-                <input type="text" id="acmc" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
-                <span id="acmcError" class="text-red-400 hidden">AC/MC is required.</span>
-            </div>
-            <div class="flex items-center space-x-4 mb-4">
-                <label class="block text-lg font-medium text-gray-200 w-1/3" for="additionalCrew">Any Additional Crew Members/Passengers</label>
-                <input type="text" id="additionalCrew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
-            </div>
-            <div class="flex items-center space-x-4 mb-4">
-                <label class="block text-lg font-medium text-gray-200 w-1/3" for="crew">Crew <span class="text-red-400">*</span></label>
-                <select id="crew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
-                    <option value="">Choose</option>
-                    <option value="LC1">LC1</option>
-                    <option value="LC2">LC2</option>
-                    <option value="LC3">LC3</option>
-                    <option value="LC4">LC4</option>
-                    <option value="LC5">LC5</option>
-                    <option value="LC6">LC6</option>
-                    <option value="LC7">LC7</option>
-                    <option value="LC8">LC8</option>
-                    <option value="Local">Local</option>
-                </select>
-                <span id="crewError" class="text-red-400 hidden">Crew is required.</span>
-            </div>
-            <div class="flex items-center space-x-4 mb-4">
-                <label class="block text-lg font-medium text-gray-200 w-1/3" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
-                <input type="text" id="takeoffTime" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
-                <span id="takeoffError" class="text-red-400 hidden">Takeoff Time is required.</span>
+        <div class="section-box">
+            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Flight Information</h2>
+            <div class="space-y-6 mb-6">
+                <div class="flex items-center space-x-4 mb-4">
+                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="acmc">AC/MC <span class="text-red-400">*</span></label>
+                    <input type="text" id="acmc" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+                    <span id="acmcError" class="text-red-400 hidden">AC/MC is required.</span>
+                </div>
+                <div class="flex items-center space-x-4 mb-4">
+                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="additionalCrew">Any Additional Crew Members/Passengers</label>
+                    <input type="text" id="additionalCrew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
+                </div>
+                <div class="flex items-center space-x-4 mb-4">
+                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="crew">Crew <span class="text-red-400">*</span></label>
+                    <select id="crew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+                        <option value="">Choose</option>
+                        <option value="LC1">LC1</option>
+                        <option value="LC2">LC2</option>
+                        <option value="LC3">LC3</option>
+                        <option value="LC4">LC4</option>
+                        <option value="LC5">LC5</option>
+                        <option value="LC6">LC6</option>
+                        <option value="LC7">LC7</option>
+                        <option value="LC8">LC8</option>
+                        <option value="Local">Local</option>
+                    </select>
+                    <span id="crewError" class="text-red-400 hidden">Crew is required.</span>
+                </div>
+                <div class="flex items-center space-x-4 mb-4">
+                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
+                    <input type="text" id="takeoffTime" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+                    <span id="takeoffError" class="text-red-400 hidden">Takeoff Time is required.</span>
+                </div>
             </div>
         </div>
 
         <!-- Human Factors -->
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Human Factors</h2>
-        <div class="space-y-2 mb-4">
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q1"> 1. Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="3" id="q2"> 2. Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs WHILE being allotted required crew rest time)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q3"> 3. Circadian rhythm disruption (day ↔ night shift in past 48 hrs)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="1" id="q4"> 4. Recent personal stressors</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="1" id="q5"> 5. First mission after ≥30-day non-flying period</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
-        </div>
-        <div class="mb-6">
-            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="section-box">
+            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Human Factors</h2>
+            <div class="space-y-2 mb-4">
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q1"> 1. Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="3" id="q2"> 2. Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs WHILE being allotted required crew rest time)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q3"> 3. Circadian rhythm disruption (day ↔ night shift in past 48 hrs)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="1" id="q4"> 4. Recent personal stressors</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="1" id="q5"> 5. First mission after ≥30-day non-flying period</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
+            </div>
+            <div class="mb-6">
+                <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            </div>
         </div>
 
         <!-- Scheduling & Tempo Factors -->
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Scheduling & Tempo Factors</h2>
-        <div class="space-y-2 mb-4">
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q7"> 7. Crew rest <12 hours</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q8"> 8. Long sortie (>12 hour planned crew day)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q9"> 9. Planned crew day includes duty between the hours of 2200-0600</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="3" id="q10"> 10. Projected duty day ≥15 hrs (approaching 18-hour max)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q11"> 11. Crew scheduled to cross ≥2 time zones in 48-hr period, increasing risk of circadian disruption and fatigue</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q12"> 12. Significant mission change after crew report time requiring re-brief or operational adjustment</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
-        </div>
-        <div class="mb-6">
-            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="section-box">
+            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Scheduling & Tempo Factors</h2>
+            <div class="space-y-2 mb-4">
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q7"> 7. Crew rest <12 hours</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q8"> 8. Long sortie (>12 hour planned crew day)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q9"> 9. Planned crew day includes duty between the hours of 2200-0600</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="3" id="q10"> 10. Projected duty day ≥15 hrs (approaching 18-hour max)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q11"> 11. Crew scheduled to cross ≥2 time zones in 48-hr period, increasing risk of circadian disruption and fatigue</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q12"> 12. Significant mission change after crew report time requiring re-brief or operational adjustment</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
+            </div>
+            <div class="mb-6">
+                <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            </div>
         </div>
 
         <!-- Mission Factors -->
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Mission Factors</h2>
-        <div class="space-y-2 mb-4">
-            <label><input type="checkbox" class="mr-2" data-severity="1" id="q14"> 14. Op Area evolution</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q15"> 15. Air Refueling</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="3" id="q16"> 16. Pilot Training Event (engine pulls)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q17"> 17. Closed Tower / Uncontrolled Field Ops</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q18"> 18. R4305 Op Area</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q19"> 19. Unfamiliar Airfield Ops</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="1" id="q20"> 20. Delayed Takeoff (mx, weather, etc...)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q21"> 21. Known degraded system(s) requiring crew workaround (e.g., comm, nav, radar, ICS)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
-        </div>
-        <div class="mb-6">
-            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="section-box">
+            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Mission Factors</h2>
+            <div class="space-y-2 mb-4">
+                <label><input type="checkbox" class="mr-2" data-severity="1" id="q14"> 14. Op Area evolution</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q15"> 15. Air Refueling</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="3" id="q16"> 16. Pilot Training Event (engine pulls)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q17"> 17. Closed Tower / Uncontrolled Field Ops</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q18"> 18. R4305 Op Area</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q19"> 19. Unfamiliar Airfield Ops</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="1" id="q20"> 20. Delayed Takeoff (mx, weather, etc...)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q21"> 21. Known degraded system(s) requiring crew workaround (e.g., comm, nav, radar, ICS)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
+            </div>
+            <div class="mb-6">
+                <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            </div>
         </div>
 
         <!-- Environmental Factors -->
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">Environmental Factors</h2>
-        <div class="space-y-2 mb-4">
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q23"> 23. Flying at night</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q24"> 24. Departure weather <1500 ft ceiling and/or <3 sm visibility</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="3" id="q25"> 25. Enroute weather concerns (thunderstorms, icing, turbulence)</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q26"> 26. Destination weather <1500 ft ceiling and/or <3 sm visibility</label><br>
-            <label><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
-        </div>
-        <div class="mb-6">
-            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="section-box">
+            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Environmental Factors</h2>
+            <div class="space-y-2 mb-4">
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q23"> 23. Flying at night</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q24"> 24. Departure weather <1500 ft ceiling and/or <3 sm visibility</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="3" id="q25"> 25. Enroute weather concerns (thunderstorms, icing, turbulence)</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q26"> 26. Destination weather <1500 ft ceiling and/or <3 sm visibility</label><br>
+                <label><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
+            </div>
+            <div class="mb-6">
+                <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+            </div>
         </div>
 
         <!-- AC/MC Review Question -->
-        <div class="mb-6">
+        <div class="section-box mb-6">
             <label class="block text-lg font-medium text-gray-200">Has the AC/MC reviewed all risk factors and mitigations? <span class="text-red-400">*</span></label>
             <div class="flex items-center space-x-4">
                 <label><input type="radio" name="acmcReview" id="acmcReviewYes" value="yes" class="mr-2"> Yes</label>
