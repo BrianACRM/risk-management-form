@@ -57,11 +57,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Ensure no overflow */
         }
         .box img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto; /* Allow height to adjust to width */
+            object-fit: contain; /* Prevent cropping, fit within bounds */
             border-radius: 10px;
         }
         .box:hover {
