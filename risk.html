@@ -429,7 +429,7 @@
         });
 
         generatePdfButton.addEventListener('click', () => {
-            console.log('Generate PDF button clicked');
+            console.log('Generate PDF button clicked - Start');
             const acmc = document.getElementById('acmc').value.trim();
             const crew = document.getElementById('crew').value;
             const takeoffTime = document.getElementById('takeoffTime').value.trim();
@@ -440,6 +440,7 @@
                 document.getElementById('statusMessage').classList.remove('success', 'hidden');
                 document.getElementById('statusMessage').classList.add('error');
                 document.getElementById('statusMessage').textContent = 'Please fill in all required fields and confirm AC/MC review to generate PDF.';
+                console.log('Validation failed');
                 return;
             }
 
@@ -449,6 +450,7 @@
                 document.getElementById('statusMessage').classList.remove('success', 'hidden');
                 document.getElementById('statusMessage').classList.add('error');
                 document.getElementById('statusMessage').textContent = 'Invalid Takeoff Time format. Use HH:MM (e.g., 12:00).';
+                console.log('Invalid takeoff time');
                 return;
             }
 
@@ -477,9 +479,13 @@
             console.log('Risk Rank:', riskRank, 'Total:', total);
 
             // Generate PDF
+            console.log('Initializing PDF generation');
             const { jsPDF } = window.jspdf;
             if (!jsPDF) {
                 console.error('jsPDF not loaded');
+                document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                document.getElementById('statusMessage').classList.add('error');
+                document.getElementById('statusMessage').textContent = 'Error: jsPDF library not loaded.';
                 return;
             }
             const doc = new jsPDF({
@@ -510,7 +516,7 @@
             yOffset += 0.2;
             doc.text(`Crew: ${crew}`, 0.6, yOffset);
             yOffset += 0.2;
-            doc.text(`Takeoff Time: ${takeoffTime}Z`, 0.6, yOffset); // Added 'Z' for Zulu
+            doc.text(`Takeoff Time: ${takeoffTime}Z`, 0.6, yOffset);
             yOffset += 0.2;
             doc.text(`Submission Date: ${new Date().toLocaleString()}`, 0.6, yOffset);
             yOffset += 0.3;
@@ -635,6 +641,9 @@
 
             console.log('PDF generation completed, saving...');
             doc.save('ORM_Form_Submission.pdf');
+            document.getElementById('statusMessage').classList.remove('error', 'hidden');
+            document.getElementById('statusMessage').classList.add('success');
+            document.getElementById('statusMessage').textContent = 'PDF generated successfully!';
         });
     </script>
 </body>
