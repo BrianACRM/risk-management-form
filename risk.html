@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
+    <!-- Primary Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fallback script if CDN is blocked -->
+    <script>
+        if (!window.tailwindcss) {
+            document.write('<script src="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.js"><\/script>');
+            console.warn('Falling back to unpkg Tailwind CSS due to CDN block.');
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
@@ -51,7 +59,7 @@
         }
         .input-field, textarea {
             width: 100%; /* Full width within parent */
-            max-width: 24rem; /* lg size, suitable for names or short text */
+            max-width: 24rem; /* Cap width for short inputs like names */
             padding: 0.75rem; /* p-3 */
             border: 1px solid #4b5563;
             border-radius: 0.5rem;
