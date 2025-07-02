@@ -81,6 +81,14 @@
         }
         .success { background-color: #d1fae5; color: #065f46; }
         .error { background-color: #fee2e2; color: #991b1b; }
+        .error-container {
+            display: none;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border-radius: 0.375rem;
+        }
         .risk-gauge {
             width: 200px;
             height: 20px;
@@ -146,7 +154,6 @@
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="acmc">AC/MC <span class="text-red-400">*</span></label>
                     <input type="text" id="acmc" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
-                    <span id="acmcError" class="text-red-400 hidden">AC/MC is required.</span>
                 </div>
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="additionalCrew">Any Additional Crew Members/Passengers</label>
@@ -166,12 +173,10 @@
                         <option value="LC8">LC8</option>
                         <option value="Local">Local</option>
                     </select>
-                    <span id="crewError" class="text-red-400 hidden">Crew is required.</span>
                 </div>
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
                     <input type="text" id="takeoffTime" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required placeholder="e.g., 1434">
-                    <span id="takeoffError" class="text-red-400 hidden">Takeoff Time is required.</span>
                 </div>
             </div>
         </div>
@@ -245,9 +250,9 @@
                 <label><input type="radio" name="acmcReview" id="acmcReviewYes" value="yes" class="mr-2"> Yes</label>
                 <label><input type="radio" name="acmcReview" id="acmcReviewNo" value="no" class="mr-2"> No</label>
             </div>
-            <span id="acmcReviewError" class="text-red-400 hidden">AC/MC review must be 'Yes' to submit.</span>
         </div>
 
+        <div id="errorContainer" class="error-container"></div>
         <div class="flex space-x-4 mb-6 mt-4">
             <button id="submitData" class="submit-btn bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Submit</button>
         </div>
@@ -321,6 +326,7 @@
             const submitButton = document.getElementById('submitData');
             const acmcReviewYes = document.getElementById('acmcReviewYes');
             const acmcReviewNo = document.getElementById('acmcReviewNo');
+            const errorContainer = document.getElementById('errorContainer');
 
             if (!submitButton) {
                 console.error('Submit button not found. Checking by class...');
@@ -341,38 +347,21 @@
                 const acmc = document.getElementById('acmc').value.trim();
                 const crew = document.getElementById('crew').value;
                 const takeoffTime = document.getElementById('takeoffTime').value.trim();
-                let isValid = true;
+                const errors = [];
 
-                if (!acmc) {
-                    document.getElementById('acmcError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('acmcError').classList.add('hidden');
-                }
-                if (!crew) {
-                    document.getElementById('crewError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('crewError').classList.add('hidden');
-                }
-                if (!takeoffTime) {
-                    document.getElementById('takeoffError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('takeoffError').classList.add('hidden');
-                }
+                if (!acmc) errors.push('AC/MC is required.');
+                if (!crew) errors.push('Crew is required.');
+                if (!takeoffTime) errors.push('Takeoff Time is required.');
                 if (!acmcReviewYes.checked) {
-                    document.getElementById('acmcReviewError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('acmcReviewError').classList.add('hidden');
+                    errors.push('Please brief the AC/MC and select \'Yes\' to submit.');
                 }
 
-                if (!isValid) {
-                    document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                    document.getElementById('statusMessage').classList.add('error');
-                    document.getElementById('statusMessage').textContent = 'Please correct the errors above.';
+                if (errors.length > 0) {
+                    errorContainer.style.display = 'block';
+                    errorContainer.innerHTML = errors.join('<br>');
                     return;
+                } else {
+                    errorContainer.style.display = 'none';
                 }
 
                 let total = 0;
@@ -454,7 +443,7 @@
                             riskRankElement.textContent = riskRank;
                             riskNoteElement.textContent = riskNote;
                             riskAssessment.classList.remove('hidden');
-                        }, 100); // Delay to ensure DOM update
+                        }, 100);
                     } else {
                         throw new Error('Unexpected response: ' + result);
                     }
@@ -465,7 +454,7 @@
                         document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
                         document.getElementById('statusMessage').classList.remove('success', 'hidden');
                         document.getElementById('statusMessage').classList.add('error');
-                    }, 100); // Delay to ensure DOM update
+                    }, 100);
                 });
             });
         });
