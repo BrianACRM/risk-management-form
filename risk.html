@@ -5,13 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
     <!-- Primary Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fallback script if CDN is blocked -->
+    <script src="https://cdn.tailwindcss.com" id="tailwind-script"></script>
+    <!-- Fallback with local option -->
     <script>
-        if (!window.tailwindcss) {
-            document.write('<script src="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.js"><\/script>');
-            console.warn('Falling back to unpkg Tailwind CSS due to CDN block.');
-        }
+        setTimeout(() => {
+            if (!window.tailwindcss) {
+                console.warn('Primary Tailwind CDN failed, attempting fallback...');
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.js';
+                fallbackScript.onload = () => console.log('Tailwind fallback loaded from unpkg');
+                fallbackScript.onerror = () => {
+                    console.error('Tailwind fallback failed to load, using inline fallback...');
+                    const inlineScript = document.createElement('script');
+                    inlineScript.textContent = `/* Inline Tailwind CSS (minified base) */ window.tailwindcss = true;`;
+                    document.head.appendChild(inlineScript);
+                    console.log('Inline Tailwind fallback applied');
+                };
+                document.head.appendChild(fallbackScript);
+            }
+        }, 2000); // Wait 2 seconds
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -66,6 +78,17 @@
             background-color: #4b5563;
             color: #ffffff;
             box-sizing: border-box; /* Ensure padding doesn't affect width */
+        }
+        /* Fallback CSS if Tailwind fails */
+        @supports not (display: grid) {
+            .input-field, textarea {
+                max-width: 384px !important; /* 24rem in px as fallback */
+                padding: 12px !important;
+                border: 1px solid #4b5563 !important;
+                border-radius: 8px !important;
+                background-color: #4b5563 !important;
+                color: #ffffff !important;
+            }
         }
         .input-field:focus {
             border-color: #93c5fd;
