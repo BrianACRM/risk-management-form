@@ -36,16 +36,16 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center content vertically */
-            justify-content: center; /* Center content horizontally */
+            align-items: center;
+            justify-content: center;
             min-height: 100vh;
         }
         .header-bg {
             background: linear-gradient(135deg, #1e3a8a, #4b5563);
-            padding: 20px;
+            padding: 10px;
             text-align: center;
             position: relative;
-            min-height: 150px;
+            min-height: 120px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -53,7 +53,8 @@
         }
         .logo {
             width: 100%;
-            max-width: 800px;
+            max-width: 300px; /* Reduced max-width for mobile */
+            max-height: 100px; /* Cap height on mobile */
             height: auto;
             object-fit: contain;
             border: 2px solid #93c5fd;
@@ -61,39 +62,38 @@
             border-radius: 5px;
         }
         .content {
-            max-width: 56rem; /* Equivalent to 4xl in Tailwind */
-            width: 100%; /* Ensure it takes full available width */
-            mx-auto; /* Center horizontally */
+            max-width: 56rem;
+            width: 100%;
+            mx-auto;
             bg-gray-800;
             p-8;
             rounded-xl;
             shadow-2xl;
             mt-6;
             flex-grow: 1;
-            text-align: left; /* Reset text alignment for form fields */
+            text-align: left;
         }
         .input-field, textarea {
-            width: 100%; /* Full width within parent */
-            max-width: 24rem; /* Cap width for short inputs like names */
-            padding: 0.75rem; /* p-3 */
+            width: 100%;
+            max-width: 24rem;
+            padding: 0.75rem;
             border: 1px solid #4b5563;
             border-radius: 0.5rem;
             background-color: #4b5563;
             color: #ffffff;
-            box-sizing: border-box; /* Ensure padding doesn't affect width */
-            display: block; /* Ensure proper block behavior */
-            margin: 0 auto; /* Center within parent if needed */
+            box-sizing: border-box;
+            display: block;
         }
         /* Fallback CSS if Tailwind fails */
         @supports not (display: grid) {
             .input-field, textarea {
-                max-width: 384px !important; /* 24rem in px as fallback */
+                max-width: 384px !important;
                 padding: 12px !important;
                 border: 1px solid #4b5563 !important;
                 border-radius: 8px !important;
                 background-color: #4b5563 !important;
                 color: #ffffff !important;
-                margin: 0 auto !important; /* Center fallback */
+                margin: 0 auto !important;
                 display: block !important;
             }
             .content {
@@ -159,14 +159,19 @@
             background-color: #93c5fd;
         }
         @media (max-width: 640px) {
+            .header-bg {
+                padding: 5px;
+                min-height: 100px;
+            }
+            .logo {
+                max-width: 250px;
+                max-height: 80px;
+            }
             .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; width: 100%; max-width: 100%; }
             .submit-btn, .pdf-btn { width: 100%; margin-bottom: 0.5rem; }
             .status-message { font-size: 0.75rem; }
             h2 { font-size: 1.5rem; }
             .risk-gauge { width: 150px; }
-            .header-bg { height: 150px; }
-            .logo { padding-top: 30px; }
-            .footer { padding: 5px 0; }
         }
     </style>
 </head>
@@ -175,7 +180,7 @@
         <img src="https://scontent-dfw5-1.xx.fbcdn.net/v/t39.30808-6/474584099_1021247700030529_7719994838169841359_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=EvyCodklsqIQ7kNvwG6Y3Pn&_nc_oc=AdmYohcjVAb99yYaLANFyoihsl50dwUppugeFpgRKJkB3ywLnCHJKROEfbxv39_a__Q&_nc_zt=23&_nc_ht=scontent-dfw5-1.xx&_nc_gid=bS3ZvUasMD0jaTJhAMH1MA&oh=00_AfPahKRnNzkVHkQlAonamRBYvLnm2el3r4oyJqkuxbO3xQ&oe=686B45FA" alt="VQ-4 Banner" class="logo">
     </header>
     <div class="content">
-        <div class="bg-gray-700 p-6 rounded-lg mb-6 shadow-inner">
+        <div class="bg-gray-700 p-6 rounded-lg mb-6 mt-6 shadow-inner">
             <p class="text-lg font-medium text-gray-200 leading-relaxed">
                 This questionnaire uses the Time Critical ABCD Model to focus the crew, increase situational awareness, and improve performance in the pre-flight and flight environments. Use this questionnaire to Assess the crew, Balance resources, Communicate and then mitigate any assessed risk or decisions, Do the mission with the mitigations in place, and De-brief the mission once completed.<br><br>
                 <strong class="text-yellow-300">NOTE:</strong> The use of this questionnaire does not alleviate the requirement to perform deliberate ORM as called out in other instructions and SOPs.
@@ -185,18 +190,18 @@
         <!-- Flight Information -->
         <h2 class="text-2xl font-semibold text-gray-100 mb-4">Flight Information</h2>
         <div class="space-y-6 mb-6">
-            <div>
-                <label class="block text-lg font-medium text-gray-200" for="acmc">AC/MC <span class="text-red-400">*</span></label>
-                <input type="text" id="acmc" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+            <div class="flex items-center space-x-4 mb-4">
+                <label class="block text-lg font-medium text-gray-200 w-1/3" for="acmc">AC/MC <span class="text-red-400">*</span></label>
+                <input type="text" id="acmc" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
                 <span id="acmcError" class="text-red-400 hidden">AC/MC is required.</span>
             </div>
-            <div>
-                <label class="block text-lg font-medium text-gray-200" for="additionalCrew">Any Additional Crew Members/Passengers</label>
-                <input type="text" id="additionalCrew" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
+            <div class="flex items-center space-x-4 mb-4">
+                <label class="block text-lg font-medium text-gray-200 w-1/3" for="additionalCrew">Any Additional Crew Members/Passengers</label>
+                <input type="text" id="additionalCrew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
             </div>
-            <div>
-                <label class="block text-lg font-medium text-gray-200" for="crew">Crew <span class="text-red-400">*</span></label>
-                <select id="crew" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+            <div class="flex items-center space-x-4 mb-4">
+                <label class="block text-lg font-medium text-gray-200 w-1/3" for="crew">Crew <span class="text-red-400">*</span></label>
+                <select id="crew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
                     <option value="">Choose</option>
                     <option value="LC1">LC1</option>
                     <option value="LC2">LC2</option>
@@ -210,9 +215,9 @@
                 </select>
                 <span id="crewError" class="text-red-400 hidden">Crew is required.</span>
             </div>
-            <div>
-                <label class="block text-lg font-medium text-gray-200" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
-                <input type="text" id="takeoffTime" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
+            <div class="flex items-center space-x-4 mb-4">
+                <label class="block text-lg font-medium text-gray-200 w-1/3" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
+                <input type="text" id="takeoffTime" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
                 <span id="takeoffError" class="text-red-400 hidden">Takeoff Time is required.</span>
             </div>
         </div>
@@ -227,9 +232,9 @@
             <label><input type="checkbox" class="mr-2" data-severity="1" id="q5"> 5. First mission after ≥30-day non-flying period</label><br>
             <label><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
         </div>
-        <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="humanMitigations">Mitigations for Selected Human Factors Risks</label>
-            <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="flex items-center space-x-4 mb-4">
+            <label class="block text-lg font-medium text-gray-200 w-1/3" for="humanMitigations">Mitigations for Selected Human Factors Risks</label>
+            <textarea id="humanMitigations" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- Scheduling & Tempo Factors -->
@@ -243,9 +248,9 @@
             <label><input type="checkbox" class="mr-2" data-severity="2" id="q12"> 12. Significant mission change after crew report time requiring re-brief or operational adjustment</label><br>
             <label><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
         </div>
-        <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks</label>
-            <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="flex items-center space-x-4 mb-4">
+            <label class="block text-lg font-medium text-gray-200 w-1/3" for="schedulingMitigations">Mitigations for Selected Scheduling & Tempo Factors Risks</label>
+            <textarea id="schedulingMitigations" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- Mission Factors -->
@@ -261,9 +266,9 @@
             <label><input type="checkbox" class="mr-2" data-severity="2" id="q21"> 21. Known degraded system(s) requiring crew workaround (e.g., comm, nav, radar, ICS)</label><br>
             <label><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
         </div>
-        <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="missionMitigations">Mitigations for Selected Mission Factors Risks</label>
-            <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="flex items-center space-x-4 mb-4">
+            <label class="block text-lg font-medium text-gray-200 w-1/3" for="missionMitigations">Mitigations for Selected Mission Factors Risks</label>
+            <textarea id="missionMitigations" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- Environmental Factors -->
@@ -275,9 +280,9 @@
             <label><input type="checkbox" class="mr-2" data-severity="2" id="q26"> 26. Destination weather <1500 ft ceiling and/or <3 sm visibility</label><br>
             <label><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
         </div>
-        <div class="mb-6">
-            <label class="block text-lg font-medium text-gray-200" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks</label>
-            <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+        <div class="flex items-center space-x-4 mb-4">
+            <label class="block text-lg font-medium text-gray-200 w-1/3" for="environmentalMitigations">Mitigations for Selected Environmental Factors Risks</label>
+            <textarea id="environmentalMitigations" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
         </div>
 
         <!-- AC/MC Review Question -->
