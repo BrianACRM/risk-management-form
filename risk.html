@@ -456,6 +456,13 @@
                     format: 'a4'
                 });
                 console.log('jsPDF instance created');
+
+                // Test minimal content
+                doc.setFontSize(12);
+                doc.text('Test PDF Content', 1, 1); // Simple test text
+                console.log('Test text added at 1, 1');
+
+                // Full content if test works
                 doc.setFontSize(9);
                 const pageWidth = 8.27;
                 const leftColumnWidth = 5.5;
@@ -468,8 +475,6 @@
                 doc.setTextColor(255, 255, 255);
                 doc.text('Operational Risk Management Form - VQ-4 Shadows', pageWidth / 2, 0.4, { align: 'center' });
                 console.log('Header drawn');
-                doc.setTextColor(255, 255, 255);
-                doc.setFillColor(75, 85, 99);
 
                 // Form Data (Left Column)
                 let yOffset = 1.0;
@@ -477,7 +482,7 @@
                 doc.text('Flight Information', margin + 0.1, yOffset - 0.05);
                 yOffset += 0.1;
                 doc.text(`AC/MC: ${acmc}`, margin + 0.1, yOffset);
-                console.log(`Text added: AC/MC: ${acmc}`);
+                console.log(`Text added: AC/MC: ${acmc} at y=${yOffset}`);
                 yOffset += 0.2;
                 doc.text(`Crew: ${crew}`, margin + 0.1, yOffset);
                 yOffset += 0.2;
@@ -530,8 +535,9 @@
                     yOffset += 0.1;
                     section.factors.forEach(factor => {
                         const checked = document.getElementById(factor.id).checked;
-                        doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin + 0.1, yOffset);
-                        console.log(`Added text: ${factor.text} at y=${yOffset}`);
+                        const text = `${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`;
+                        doc.text(text, margin + 0.1, yOffset);
+                        console.log(`Added text: ${text} at y=${yOffset}`);
                         yOffset += 0.15;
                     });
                     doc.text(`Mitigations: ${document.getElementById(section.mit).value.trim() || 'N/A'}`, margin + 0.1, yOffset);
