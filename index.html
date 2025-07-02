@@ -56,7 +56,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(45, 55, 72, 0.3), rgba(30, 58, 138, 0.1)); /* Lighter base gradient */
+            background: linear-gradient(135deg, rgba(45, 55, 72, 0.3), rgba(30, 58, 138, 0.1));
             overflow: hidden;
             position: relative;
             border: 2px solid transparent;
@@ -79,7 +79,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.4); /* Increased opacity for better contrast */
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 10px;
             z-index: 1;
         }
@@ -101,6 +101,48 @@
             border-radius: 10px;
             z-index: 2;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #2d3748;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            color: #ffffff;
+            border: 2px solid #93c5fd;
+        }
+        .modal-content p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        .modal-buttons {
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-buttons button:hover {
+            background-color: #93c5fd;
+        }
         @media (max-width: 960px) {
             .boxes {
                 flex-direction: column;
@@ -116,6 +158,9 @@
             .logo {
                 max-width: 100%;
             }
+            .modal-content {
+                width: 80%;
+            }
         }
     </style>
 </head>
@@ -127,12 +172,42 @@
         <a href="https://safeshadows.org/risk" class="box">
             <img src="/images/ORM.png" alt="ORM Submissions">
         </a>
-        <a href="https://saferep.safety.af.mil/" class="box">
+        <a href="#" class="box" id="saferep-link">
             <img src="/images/saferep.png" alt="ASAP Submissions">
         </a>
         <a href="#" class="box">
             <img src="/images/anymouse.png" alt="Anymouse Submissions">
         </a>
     </div>
+    <div class="modal" id="saferep-modal">
+        <div class="modal-content">
+            <p><strong>Include BUNO when reporting aircraft issues</strong></p>
+            <p><strong>If issues are with a location or their services use THEIR BASE as the command that should address the issue</strong></p>
+            <p><strong>One ASAP per issue unless grouping makes sense</strong></p>
+            <div class="modal-buttons">
+                <button onclick="window.location.href='https://saferep.safety.af.mil/'">OK</button>
+                <button onclick="document.getElementById('saferep-modal').style.display='none'">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const saferepLink = document.getElementById('saferep-link');
+            const modal = document.getElementById('saferep-modal');
+
+            saferepLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = 'flex';
+            });
+
+            // Close modal if clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
