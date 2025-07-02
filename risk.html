@@ -36,7 +36,8 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
             min-height: 100vh;
         }
         .header-bg {
@@ -60,14 +61,16 @@
             border-radius: 5px;
         }
         .content {
-            max-width: 4xl;
-            mx-auto;
+            max-width: 56rem; /* Equivalent to 4xl in Tailwind */
+            width: 100%; /* Ensure it takes full available width */
+            mx-auto; /* Center horizontally */
             bg-gray-800;
             p-8;
             rounded-xl;
             shadow-2xl;
             mt-6;
             flex-grow: 1;
+            text-align: left; /* Reset text alignment for form fields */
         }
         .input-field, textarea {
             width: 100%; /* Full width within parent */
@@ -78,6 +81,8 @@
             background-color: #4b5563;
             color: #ffffff;
             box-sizing: border-box; /* Ensure padding doesn't affect width */
+            display: block; /* Ensure proper block behavior */
+            margin: 0 auto; /* Center within parent if needed */
         }
         /* Fallback CSS if Tailwind fails */
         @supports not (display: grid) {
@@ -88,6 +93,13 @@
                 border-radius: 8px !important;
                 background-color: #4b5563 !important;
                 color: #ffffff !important;
+                margin: 0 auto !important; /* Center fallback */
+                display: block !important;
+            }
+            .content {
+                max-width: 56rem !important;
+                width: 100% !important;
+                margin: 0 auto !important;
             }
         }
         .input-field:focus {
