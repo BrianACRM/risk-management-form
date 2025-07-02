@@ -13,6 +13,9 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .header-bg {
             background: linear-gradient(135deg, #1e3a8a, #4b5563);
@@ -20,21 +23,27 @@
             text-align: center;
             position: relative;
             min-height: 150px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .logo {
             width: 100%;
             max-width: 800px;
             height: auto;
             object-fit: contain;
-            border: 2px solid #93c5fd; /* Centered border with blue accent */
+            border: 2px solid #93c5fd;
             padding: 5px;
             border-radius: 5px;
         }
         .boxes {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             padding: 40px;
             flex-wrap: wrap;
+            max-width: 1000px;
+            width: 100%;
         }
         .box {
             background-color: #2d3748;
