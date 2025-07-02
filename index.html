@@ -16,6 +16,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
         .header-bg {
             background: linear-gradient(135deg, #1e3a8a, #4b5563);
@@ -44,6 +45,7 @@
             flex-wrap: wrap;
             max-width: 1000px;
             width: 100%;
+            flex-grow: 1;
         }
         .box {
             width: 300px;
@@ -143,6 +145,32 @@
         .modal-buttons button:hover {
             background-color: #93c5fd;
         }
+        .footer {
+            background-color: #2d3748;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+        }
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .footer .contact-button {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            padding: 5px 15px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .footer .contact-button:hover {
+            background-color: #93c5fd;
+        }
         @media (max-width: 960px) {
             .boxes {
                 flex-direction: column;
@@ -160,6 +188,9 @@
             }
             .modal-content {
                 width: 80%;
+            }
+            .footer {
+                padding: 5px 0;
             }
         }
     </style>
@@ -181,14 +212,19 @@
     </div>
     <div class="modal" id="saferep-modal">
         <div class="modal-content">
-            <p><strong>Include BUNO when reporting aircraft issues.</strong></p>
-            <p><strong>If issues are with a location or their services use THEIR BASE as the command that should address the issue.</strong></p>
-            <p><strong>One ASAP per issue unless grouping makes sense.</strong></p>
+            <p><strong>Include BUNO when reporting aircraft issues</strong></p>
+            <p><strong>If issues are with a location or their services use THEIR BASE as the command that should address the issue</strong></p>
+            <p><strong>One ASAP per issue unless grouping makes sense</strong></p>
             <div class="modal-buttons">
                 <button onclick="window.location.href='https://saferep.safety.af.mil/'">OK</button>
                 <button onclick="document.getElementById('saferep-modal').style.display='none'">Cancel</button>
             </div>
         </div>
+    </div>
+
+    <div class="footer">
+        <p>Any issues or recommendations can be directed to LT Brian "DoDo" Byrd</p>
+        <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact</a>
     </div>
 
     <script>

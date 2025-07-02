@@ -5,35 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        body {
+            background-color: #4b5563;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
         .header-bg {
             background: linear-gradient(135deg, #1e3a8a, #4b5563);
+            padding: 20px;
+            text-align: center;
             position: relative;
-            overflow: hidden;
-            height: 200px;
-            background-attachment: fixed;
-        }
-        .header-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+            min-height: 150px;
             width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%231e3a8a" fill-opacity="0.1" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,90.7C960,96,1056,96,1152,85.3C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E');
-            background-size: cover;
-            animation: waveMove 8s infinite linear;
-            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        @keyframes waveMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .logo {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            object-fit: contain;
+            border: 2px solid #93c5fd;
+            padding: 5px;
+            border-radius: 5px;
         }
-        .header-text {
-            position: relative;
-            z-index: 1;
-            padding-top: 50px;
+        .content {
+            max-width: 4xl;
+            mx-auto;
+            bg-gray-800;
+            p-8;
+            rounded-xl;
+            shadow-2xl;
+            mt-6;
+            flex-grow: 1;
         }
         .input-field:focus {
             border-color: #93c5fd;
@@ -72,16 +85,41 @@
             h2 { font-size: 1.5rem; }
             .risk-gauge { width: 150px; }
             .header-bg { height: 150px; }
-            .header-text { padding-top: 30px; }
+            .logo { padding-top: 30px; }
+        }
+        .footer {
+            background-color: #2d3748;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+        }
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .footer .contact-button {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            padding: 5px 15px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .footer .contact-button:hover {
+            background-color: #93c5fd;
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white font-sans" style="scroll-behavior: smooth;">
-    <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-2xl mt-6">
-        <header class="header-bg p-6 rounded-t-xl mb-6 text-center relative">
-            <h1 class="header-text text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
-        </header>
-
+    <header class="header-bg">
+        <img src="https://scontent-dfw5-1.xx.fbcdn.net/v/t39.30808-6/474584099_1021247700030529_7719994838169841359_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=EvyCodklsqIQ7kNvwG6Y3Pn&_nc_oc=AdmYohcjVAb99yYaLANFyoihsl50dwUppugeFpgRKJkB3ywLnCHJKROEfbxv39_a__Q&_nc_zt=23&_nc_ht=scontent-dfw5-1.xx&_nc_gid=bS3ZvUasMD0jaTJhAMH1MA&oh=00_AfPahKRnNzkVHkQlAonamRBYvLnm2el3r4oyJqkuxbO3xQ&oe=686B45FA" alt="VQ-4 Banner" class="logo">
+    </header>
+    <div class="content">
         <div class="bg-gray-700 p-6 rounded-lg mb-6 shadow-inner">
             <p class="text-lg font-medium text-gray-200 leading-relaxed">
                 This questionnaire uses the Time Critical ABCD Model to focus the crew, increase situational awareness, and improve performance in the pre-flight and flight environments. Use this questionnaire to Assess the crew, Balance resources, Communicate and then mitigate any assessed risk or decisions, Do the mission with the mitigations in place, and De-brief the mission once completed.<br><br>
@@ -209,313 +247,9 @@
             <p id="riskNote" class="mt-2 text-red-400"></p>
         </div>
     </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM fully loaded');
-        console.log('Document body:', document.body.innerHTML);
-
-        const { jsPDF } = window.jspdf;
-
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        console.log('Checkboxes found:', checkboxes.length);
-
-        const totalScoreElement = document.getElementById('totalScore');
-        const riskRankElement = document.getElementById('riskRank');
-        const riskNoteElement = document.getElementById('riskNote');
-        const gaugeFill = document.getElementById('gaugeFill');
-        console.log('totalScoreElement:', totalScoreElement);
-        console.log('riskRankElement:', riskRankElement);
-        console.log('riskNoteElement:', riskNoteElement);
-
-        const submitButton = document.getElementById('submitData');
-        console.log('submitButton:', submitButton);
-        if (!submitButton) {
-            console.error('Submit button not found!');
-            const allButtons = document.querySelectorAll('button');
-            console.log('All buttons found:', allButtons);
-        } else {
-            console.log('Adding click event listener to submitButton');
-            submitButton.addEventListener('click', () => {
-                console.log('Submit button clicked');
-
-                // Validate required fields
-                const acmc = document.getElementById('acmc').value.trim();
-                const crew = document.getElementById('crew').value;
-                const takeoffTime = document.getElementById('takeoffTime').value.trim();
-                let isValid = true;
-
-                if (!acmc) {
-                    document.getElementById('acmcError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('acmcError').classList.add('hidden');
-                }
-                if (!crew) {
-                    document.getElementById('crewError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('crewError').classList.add('hidden');
-                }
-                if (!takeoffTime) {
-                    document.getElementById('takeoffError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('takeoffError').classList.add('hidden');
-                }
-
-                // Validate AC/MC review
-                const acmcReviewYes = document.getElementById('acmcReviewYes').checked;
-                const acmcReviewNo = document.getElementById('acmcReviewNo').checked;
-                const acmcReview = acmcReviewYes ? 'Yes' : (acmcReviewNo ? 'No' : '');
-                if (!acmcReviewYes) {
-                    document.getElementById('acmcReviewError').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('acmcReviewError').classList.add('hidden');
-                }
-
-                if (!isValid) {
-                    document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                    document.getElementById('statusMessage').classList.add('error');
-                    document.getElementById('statusMessage').textContent = 'Please fill in all required fields and confirm AC/MC review.';
-                    document.getElementById('statusMessage').style.display = 'block';
-                    console.log('Submission aborted due to validation');
-                    return;
-                }
-
-                // Calculate score and submit
-                let total = 0;
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        total += parseInt(checkbox.getAttribute('data-severity') || 0);
-                    }
-                });
-                let riskRank = '';
-                let riskNote = '';
-                if (total >= 21) {
-                    riskRank = 'High';
-                    riskNote = 'Call OPS Ofor approval or change mission to bring risk down.';
-                } else if (total >= 11) {
-                    riskRank = 'Moderate';
-                    riskNote = 'Call the CDO to brief mitigation.';
-                } else {
-                    riskRank = 'Low';
-                    riskNote = 'No action required.';
-                }
-
-                const maxScore = 81; // 27 factors * max severity 3
-                const scorePercentage = (total / maxScore) * 100;
-                gaugeFill.style.width = `${scorePercentage}%`;
-
-                const formData = {
-                    acmc: acmc,
-                    additionalCrew: document.getElementById('additionalCrew').value || '',
-                    crew: crew,
-                    takeoffTime: takeoffTime,
-                    humanFactors: Array.from(checkboxes)
-                        .filter(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked)
-                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                    humanMitigations: document.getElementById('humanMitigations').value.trim() || 'N/A',
-                    schedulingFactors: Array.from(checkboxes)
-                        .filter(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
-                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                    schedulingMitigations: document.getElementById('schedulingMitigations').value.trim() || 'N/A',
-                    missionFactors: Array.from(checkboxes)
-                        .filter(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
-                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                    missionMitigations: document.getElementById('missionMitigations').value.trim() || 'N/A',
-                    environmentalFactors: Array.from(checkboxes)
-                        .filter(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
-                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
-                    environmentalMitigations: document.getElementById('environmentalMitigations').value.trim() || 'N/A',
-                    totalScore: total,
-                    riskRank: riskRank,
-                    riskNote: riskNote,
-                    acmcReview: acmcReview,
-                    submissionDate: new Date().toISOString()
-                };
-
-                console.log('Form data sent:', formData);
-                document.getElementById('statusMessage').classList.remove('error', 'hidden');
-                document.getElementById('statusMessage').classList.add('success');
-                document.getElementById('statusMessage').textContent = 'Submitting data via Formspree...';
-                document.getElementById('statusMessage').style.display = 'block';
-
-                fetch('https://formspree.io/f/xnnvlwap', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&'),
-                    redirect: 'manual'
-                })
-                .then(response => {
-                    console.log('Fetch response status:', response.status);
-                    if (response.type === 'opaqueredirect' || response.status === 200) {
-                        console.log('Fetch response: Submission succeeded (redirect or 200)');
-                        return { ok: true, text: 'Success' };
-                    }
-                    if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-                    return response.text();
-                })
-                .then(result => {
-                    console.log('Fetch result:', result);
-                    let text = typeof result === 'object' && result.text ? result.text : (typeof result === 'string' ? result : '');
-                    if (result.ok || (text && text.toLowerCase().includes('success'))) {
-                        document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
-                        totalScoreElement.textContent = total;
-                        riskRankElement.textContent = riskRank;
-                        riskNoteElement.textContent = riskNote;
-                        riskAssessment.classList.remove('hidden');
-
-                        // Generate PDF with website-like format
-                        const doc = new jsPDF({
-                            orientation: 'portrait',
-                            unit: 'in',
-                            format: 'a4'
-                        });
-                        doc.setFontSize(9); // Smaller text for one page
-                        const pageWidth = 8.27; // A4 width
-                        const leftColumnWidth = 5.5;
-                        const rightColumnWidth = 2.77;
-                        const margin = 0.3;
-
-                        // Header
-                        doc.setFillColor(30, 58, 138); // Dark blue header
-                        doc.rect(0, 0, pageWidth, 0.8, 'F');
-                        doc.setTextColor(255, 255, 255);
-                        doc.text('Operational Risk Management Form - VQ-4 Shadows', pageWidth / 2, 0.4, { align: 'center' });
-                        doc.setTextColor(255, 255, 255); // White text to match site
-                        doc.setFillColor(75, 85, 99); // Dark gray background
-
-                        // Form Data (Left Column)
-                        let yOffset = 1.0;
-                        doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F'); // Section header
-                        doc.text('Flight Information', margin + 0.1, yOffset - 0.05);
-                        yOffset += 0.1;
-                        doc.text(`AC/MC: ${acmc}`, margin + 0.1, yOffset);
-                        yOffset += 0.2;
-                        doc.text(`Crew: ${crew}`, margin + 0.1, yOffset);
-                        yOffset += 0.2;
-                        doc.text(`Takeoff Time: ${takeoffTime}`, margin + 0.1, yOffset);
-                        yOffset += 0.2;
-                        doc.text(`Submission Date: ${new Date().toLocaleString()}`, margin + 0.1, yOffset);
-                        yOffset += 0.3;
-
-                        // Risk Factors
-                        const sections = [
-                            { title: 'Human Factors', factors: [
-                                { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
-                                { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
-                                { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
-                                { id: 'q4', text: 'Recent personal stressors', severity: 1 },
-                                { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
-                                { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
-                            ], mit: 'humanMitigations' },
-                            { title: 'Scheduling & Tempo Factors', factors: [
-                                { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
-                                { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
-                                { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
-                                { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
-                                { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
-                                { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
-                                { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
-                            ], mit: 'schedulingMitigations' },
-                            { title: 'Mission Factors', factors: [
-                                { id: 'q14', text: 'Op Area evolution', severity: 1 },
-                                { id: 'q15', text: 'Air Refueling', severity: 2 },
-                                { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
-                                { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
-                                { id: 'q18', text: 'R4305 Op Area', severity: 2 },
-                                { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
-                                { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
-                                { id: 'q21', text: 'Known degraded system(s) requiring workaround', severity: 2 },
-                                { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
-                            ], mit: 'missionMitigations' },
-                            { title: 'Environmental Factors', factors: [
-                                { id: 'q23', text: 'Flying at night', severity: 2 },
-                                { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                                { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
-                                { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                                { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
-                            ], mit: 'environmentalMitigations' }
-                        ];
-
-                        sections.forEach(section => {
-                            doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
-                            doc.text(section.title, margin + 0.1, yOffset - 0.05);
-                            yOffset += 0.1;
-                            section.factors.forEach(factor => {
-                                const checked = document.getElementById(factor.id).checked;
-                                doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin + 0.1, yOffset);
-                                yOffset += 0.15;
-                            });
-                            doc.text(`Mitigations: ${document.getElementById(section.mit).value.trim() || 'N/A'}`, margin + 0.1, yOffset);
-                            yOffset += 0.2;
-                        });
-                        doc.text(`AC/MC Review: ${acmcReview}`, margin + 0.1, yOffset);
-
-                        // Scoring Matrix (Right Column)
-                        const matrixX = margin + leftColumnWidth + 0.1;
-                        let matrixY = 1.0;
-                        doc.rect(matrixX, matrixY - 0.2, rightColumnWidth, 0.2, 'F');
-                        doc.text('Scoring Matrix', matrixX + 0.1, matrixY - 0.05);
-                        matrixY += 0.1;
-                        doc.text('Severity Levels:', matrixX + 0.1, matrixY);
-                        matrixY += 0.2;
-                        doc.text('1 = Low Risk', matrixX + 0.1, matrixY);
-                        matrixY += 0.15;
-                        doc.text('2 = Moderate Risk', matrixX + 0.1, matrixY);
-                        matrixY += 0.15;
-                        doc.text('3 = High Risk', matrixX + 0.1, matrixY);
-                        matrixY += 0.2;
-                        doc.text('Total Score Requirements:', matrixX + 0.1, matrixY);
-                        matrixY += 0.2;
-                        doc.text('<11: Low Risk (No action required)', matrixX + 0.1, matrixY);
-                        matrixY += 0.15;
-                        doc.text('11-20: Moderate Risk (Call CDO to brief mitigation)', matrixX + 0.1, matrixY);
-                        matrixY += 0.15;
-                        doc.text('>21: High Risk (Call OPS for approval or change mission)', matrixX + 0.1, matrixY);
-                        matrixY += 0.2;
-                        doc.text(`Current Total: ${total} (${riskRank})`, matrixX + 0.1, matrixY);
-                        matrixY += 0.2;
-                        doc.text('Adjust unchecked factors (1-3) and recalculate.', matrixX + 0.1, matrixY);
-
-                        // Download PDF
-                        doc.save('ORM_Form_Submission.pdf');
-                    } else {
-                        throw new Error('Unexpected response: ' + text);
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                    document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                    document.getElementById('statusMessage').classList.add('error');
-                    document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
-                })
-                .finally(() => {
-                    submitButton.classList.remove('loading'); // Stop loading animation
-                });
-            });
-        }
-
-        const riskAssessment = document.getElementById('riskAssessment');
-        console.log('riskAssessment:', riskAssessment);
-
-        const requiredFields = ['acmc', 'crew', 'takeoffTime'];
-
-        function validateForm() {
-            let isValid = true;
-            requiredFields.forEach(field => {
-                const element = document.getElementById(field);
-                const errorElement = document.getElementById(`${field}Error`);
-                console.log(`Validating ${field}: value='${element.value}', errorElement=`, errorElement);
-            });
-            console.log('Validation result: true (fields optional)');
-            return true;
-        }
-
-        riskAssessment.classList.add('hidden');
-    });
-</script>
+    <div class="footer">
+        <p>Any issues or recommendations can be directed to LT Brian "DoDo Byrd</p>
+        <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact</a>
+    </div>
 </body>
 </html>
