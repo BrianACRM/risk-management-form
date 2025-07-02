@@ -6,303 +6,46 @@
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        setTimeout(() => {
-            if (!window.tailwindcss) {
-                console.warn('Primary Tailwind CDN failed, attempting fallback...');
-                const fallbackScript = document.createElement('script');
-                fallbackScript.src = 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.js';
-                fallbackScript.onload = () => console.log('Tailwind fallback loaded from unpkg');
-                fallbackScript.onerror = () => {
-                    console.error('Tailwind fallback failed to load, using inline fallback...');
-                    const inlineScript = document.createElement('script');
-                    inlineScript.textContent = `window.tailwindcss = true;`;
-                    document.head.appendChild(inlineScript);
-                    console.log('Inline Tailwind fallback applied');
-                };
-                document.head.appendChild(fallbackScript);
-            }
-        }, 2000);
-    </script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #2d3748, #4b5563);
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            transition: all 0.3s ease;
-        }
-        .header-bg {
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-            padding: 1.5rem;
-            text-align: center;
-            width: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .content {
-            max-width: 48rem;
-            width: 90%;
-            margin: 2rem auto;
-            background: rgba(75, 85, 99, 0.9);
-            padding: 2rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
-        }
-        .section {
-            background: #374151;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #3b82f6;
-            border-radius: 0.5rem;
-            animation: slideUp 0.5s ease-out;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .input-field, textarea {
-            width: 100%;
-            max-width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #4b5563;
-            border-radius: 0.375rem;
-            background-color: #4b5563;
-            color: #ffffff;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .input-field:focus, textarea:focus {
-            border-color: #60a5fa;
-            box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
-            outline: none;
-        }
-        .status-message {
-            display: none;
-            margin-top: 1rem;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            transition: opacity 0.3s ease;
-        }
-        .success { background-color: #d1fae5; color: #065f46; }
-        .error { background-color: #fee2e2; color: #991b1b; }
-        .risk-gauge {
-            width: 200px;
-            height: 20px;
-            background: #4b5563;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-            transition: all 0.5s ease;
-        }
-        .gauge-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #22c55e, #facc15, #ef4444);
-            width: 0;
-            transition: width 0.5s ease;
-        }
-        .footer {
-            background-color: #1e293b;
-            width: 100%;
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: auto;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .footer .contact-button {
-            background-color: #3b82f6;
-            color: #ffffff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }
-        .footer .contact-button:hover {
-            background-color: #60a5fa;
-        }
-        .printable {
-            display: none;
-            background: #ffffff;
-            color: #000000;
-            padding: 2rem;
-            font-family: 'Arial', sans-serif;
-        }
-        @media print {
-            body * {
-                display: none;
-            }
-            .printable {
-                display: block;
-            }
-        }
-        @media (max-width: 640px) {
-            .header-bg { padding: 1rem; min-height: 80px; }
-            .content { margin: 1rem auto; padding: 1rem; width: 95%; }
-            .section { padding: 1rem; margin-bottom: 1rem; }
-            .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
-            h2 { font-size: 1.25rem; }
-            .risk-gauge { width: 150px; }
-            .submit-btn, .pdf-btn, .print-btn { width: 100%; margin-bottom: 0.5rem; }
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white font-sans" style="scroll-behavior: smooth;">
-    <header class="header-bg">
-        <h1 class="text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
-    </header>
-    <div class="content">
-        <div class="section">
-            <p class="text-lg font-medium text-gray-200 leading-relaxed">
-                This questionnaire uses the Time Critical ABCD Model to focus the crew, increase situational awareness, and improve performance in the pre-flight and flight environments. Use this questionnaire to Assess the crew, Balance resources, Communicate and then mitigate any assessed risk or decisions, Do the mission with the mitigations in place, and De-brief the mission once completed.<br><br>
-                <strong class="text-yellow-300">NOTE:</strong> The use of this questionnaire does not alleviate the requirement to perform deliberate ORM as called out in other instructions and SOPs.
-            </p>
-        </div>
+        // Define arrays globally
+        const humanFactors = [
+            { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
+            { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
+            { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
+            { id: 'q4', text: 'Recent personal stressors', severity: 1 },
+            { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
+            { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
+        ];
 
-        <div class="section">
-            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Flight Information</h2>
-            <div class="space-y-6 mb-6">
-                <div class="flex items-center space-x-4 mb-4">
-                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="acmc">AC/MC <span class="text-red-400">*</span></label>
-                    <input type="text" id="acmc" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
-                    <span id="acmcError" class="text-red-400 hidden">AC/MC is required.</span>
-                </div>
-                <div class="flex items-center space-x-4 mb-4">
-                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="additionalCrew">Any Additional Crew Members/Passengers</label>
-                    <input type="text" id="additionalCrew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
-                </div>
-                <div class="flex items-center space-x-4 mb-4">
-                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="crew">Crew <span class="text-red-400">*</span></label>
-                    <select id="crew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
-                        <option value="">Choose</option>
-                        <option value="LC1">LC1</option>
-                        <option value="LC2">LC2</option>
-                        <option value="LC3">LC3</option>
-                        <option value="LC4">LC4</option>
-                        <option value="LC5">LC5</option>
-                        <option value="LC6">LC6</option>
-                        <option value="LC7">LC7</option>
-                        <option value="LC8">LC8</option>
-                        <option value="Local">Local</option>
-                    </select>
-                    <span id="crewError" class="text-red-400 hidden">Crew is required.</span>
-                </div>
-                <div class="flex items-center space-x-4 mb-4">
-                    <label class="block text-lg font-medium text-gray-200 w-1/3" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
-                    <input type="text" id="takeoffTime" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required placeholder="e.g., 1434">
-                    <span id="takeoffError" class="text-red-400 hidden">Takeoff Time is required.</span>
-                </div>
-            </div>
-        </div>
+        const schedulingFactors = [
+            { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
+            { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
+            { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
+            { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
+            { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
+            { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
+            { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
+        ];
 
-        <div class="section">
-            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Human Factors</h2>
-            <div class="space-y-2 mb-4">
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q1"> 1. Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="3" id="q2"> 2. Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs WHILE being allotted required crew rest time)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q3"> 3. Circadian rhythm disruption (day ↔ night shift in past 48 hrs)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="1" id="q4"> 4. Recent personal stressors</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="1" id="q5"> 5. First mission after ≥30-day non-flying period</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any Crew Member not current</label><br>
-            </div>
-            <div class="mb-6">
-                <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            </div>
-        </div>
+        const missionFactors = [
+            { id: 'q14', text: 'Op Area evolution', severity: 1 },
+            { id: 'q15', text: 'Air Refueling', severity: 2 },
+            { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
+            { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
+            { id: 'q18', text: 'R4305 Op Area', severity: 2 },
+            { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
+            { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
+            { id: 'q21', text: 'Known degraded system(s) requiring crew workaround', severity: 2 },
+            { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
+        ];
 
-        <div class="section">
-            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Scheduling & Tempo Factors</h2>
-            <div class="space-y-2 mb-4">
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q7"> 7. Crew rest <12 hours</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q8"> 8. Long sortie (>12 hour planned crew day)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q9"> 9. Planned crew day includes duty between the hours of 2200-0600</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="3" id="q10"> 10. Projected duty day ≥15 hrs (approaching 18-hour max)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q11"> 11. Crew scheduled to cross ≥2 time zones in 48-hr period, increasing risk of circadian disruption and fatigue</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q12"> 12. Significant mission change after crew report time requiring re-brief or operational adjustment</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following night mission</label><br>
-            </div>
-            <div class="mb-6">
-                <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            </div>
-        </div>
+        const environmentalFactors = [
+            { id: 'q23', text: 'Flying at night', severity: 2 },
+            { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+            { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
+            { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+            { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
+        ];
 
-        <div class="section">
-            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Mission Factors</h2>
-            <div class="space-y-2 mb-4">
-                <label><input type="checkbox" class="mr-2" data-severity="1" id="q14"> 14. Op Area evolution</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q15"> 15. Air Refueling</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="3" id="q16"> 16. Pilot Training Event (engine pulls)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q17"> 17. Closed Tower / Uncontrolled Field Ops</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q18"> 18. R4305 Op Area</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q19"> 19. Unfamiliar Airfield Ops</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="1" id="q20"> 20. Delayed Takeoff (mx, weather, etc...)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q21"> 21. Known degraded system(s) requiring crew workaround (e.g., comm, nav, radar, ICS)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Crew augmentation not available despite extended/multi-segment profile</label><br>
-            </div>
-            <div class="mb-6">
-                <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="text-2xl font-semibold text-gray-100 mb-4">Environmental Factors</h2>
-            <div class="space-y-2 mb-4">
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q23"> 23. Flying at night</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q24"> 24. Departure weather <1500 ft ceiling and/or <3 sm visibility</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="3" id="q25"> 25. Enroute weather concerns (thunderstorms, icing, turbulence)</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q26"> 26. Destination weather <1500 ft ceiling and/or <3 sm visibility</label><br>
-                <label><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird/wildlife activity at departure/destination field</label><br>
-            </div>
-            <div class="mb-6">
-                <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
-            </div>
-        </div>
-
-        <div class="section">
-            <label class="block text-lg font-medium text-gray-200">Has the AC/MC reviewed all risk factors and mitigations? <span class="text-red-400">*</span></label>
-            <div class="flex items-center space-x-4 mt-2">
-                <label><input type="radio" name="acmcReview" id="acmcReviewYes" value="yes" class="mr-2"> Yes</label>
-                <label><input type="radio" name="acmcReview" id="acmcReviewNo" value="no" class="mr-2"> No</label>
-            </div>
-            <span id="acmcReviewError" class="text-red-400 hidden">AC/MC review is required.</span>
-        </div>
-
-        <div class="flex space-x-4 mb-6 mt-4">
-            <button id="submitData" class="submit-btn bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Submit</button>
-            <button id="printForm" class="print-btn bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Print Form</button>
-        </div>
-        <div id="statusMessage" class="status-message"></div>
-        <div id="riskAssessment" class="mt-6 p-4 bg-gray-700 rounded-lg hidden">
-            <h2 class="text-lg font-semibold text-gray-100">Risk Assessment</h2>
-            <div class="risk-gauge">
-                <div id="gaugeFill" class="gauge-fill"></div>
-            </div>
-            <p class="mt-2"><strong>Total Risk Score:</strong> <span id="totalScore" class="text-gray-100 font-medium">0</span></p>
-            <p><strong>Risk Rank:</strong> <span id="riskRank" class="text-gray-100 font-medium">None</span></p>
-            <p id="riskNote" class="mt-2 text-red-400"></p>
-        </div>
-    </div>
-    <div class="footer">
-        <p class="mb-2">Any issues or recommendations can be directed to LT Brian 'DoDo' Byrd</p>
-        <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact</a>
-    </div>
-    <div id="printable" class="printable"></div>
-
-    <script>
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM fully loaded and script running');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -314,9 +57,17 @@
             const printButton = document.getElementById('printForm');
 
             if (!submitButton || !printButton) {
-                console.error('Submit or Print button not found:', { submitButton, printButton });
-                return;
+                console.error('Submit or Print button not found. Checking by class...');
+                const submitButtons = document.getElementsByClassName('submit-btn');
+                const printButtons = document.getElementsByClassName('print-btn');
+                if (submitButtons.length > 0) submitButton = submitButtons[0];
+                if (printButtons.length > 0) printButton = printButtons[0];
+                if (!submitButton || !printButton) {
+                    console.error('Buttons still not found:', { submitButton, printButton });
+                    return;
+                }
             }
+            console.log('Buttons found:', { submitButton, printButton });
 
             submitButton.addEventListener('click', () => {
                 console.log('Submit button clicked');
@@ -506,8 +257,9 @@
                     riskNote = 'No action required.';
                 }
 
+                console.log('Populating printable content');
                 const printable = document.getElementById('printable');
-                printable.innerHTML = `
+                const content = `
                     <h1 style="text-align: center; font-size: 24px; margin-bottom: 1rem;">Operational Risk Management Form - VQ-4 Shadows</h1>
                     <h2 style="font-size: 18px; margin-bottom: 0.5rem;">Flight Information</h2>
                     <p>AC/MC: ${acmc}</p>
@@ -551,51 +303,18 @@
                     <p>Risk Rank: ${riskRank}</p>
                     <p>Note: ${riskNote}</p>
                 `;
+                printable.innerHTML = content;
+                console.log('Printable content set:', printable.innerHTML);
 
-                window.print();
-                document.getElementById('statusMessage').classList.remove('error', 'hidden');
-                document.getElementById('statusMessage').classList.add('success');
-                document.getElementById('statusMessage').textContent = 'Form ready to print or save as PDF!';
+                // Delay print to ensure content is rendered
+                setTimeout(() => {
+                    console.log('Triggering print');
+                    window.print();
+                    document.getElementById('statusMessage').classList.remove('error', 'hidden');
+                    document.getElementById('statusMessage').classList.add('success');
+                    document.getElementById('statusMessage').textContent = 'Form ready to print or save as PDF!';
+                }, 100);
             });
-
-            const humanFactors = [
-                { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
-                { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
-                { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
-                { id: 'q4', text: 'Recent personal stressors', severity: 1 },
-                { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
-                { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
-            ];
-
-            const schedulingFactors = [
-                { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
-                { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
-                { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
-                { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
-                { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
-                { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
-                { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
-            ];
-
-            const missionFactors = [
-                { id: 'q14', text: 'Op Area evolution', severity: 1 },
-                { id: 'q15', text: 'Air Refueling', severity: 2 },
-                { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
-                { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
-                { id: 'q18', text: 'R4305 Op Area', severity: 2 },
-                { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
-                { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
-                { id: 'q21', text: 'Known degraded system(s) requiring crew workaround', severity: 2 },
-                { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
-            ];
-
-            const environmentalFactors = [
-                { id: 'q23', text: 'Flying at night', severity: 2 },
-                { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
-                { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
-            ];
         });
     </script>
 </body>
