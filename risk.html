@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             background-color: #4b5563;
@@ -105,17 +105,31 @@
         .footer .contact-button:hover {
             background-color: #93c5fd;
         }
-        @media (max-width: 640px) {
-            .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
-            .submit-btn, .pdf-btn { width: 100%; margin-bottom: 0.5rem; }
-            .status-message { font-size: 0.75rem; }
-            h2 { font-size: 1.5rem; }
-            .risk-gauge { width: 150px; }
-            .header-bg { height: 150px; }
-            .logo { padding-top: 30px; }
-            .footer {
-                padding: 5px 0;
-            }
+        /* Print-specific styles */
+        @media print {
+            body { background-color: #ffffff; color: #000000; }
+            .content { box-shadow: none; max-width: 100%; padding: 0; }
+            .header-bg, .footer, button, .status-message, .risk-assessment { display: none; }
+            .input-field, textarea { border: 1px solid #000000; background-color: #ffffff; color: #000000; }
+            h2 { font-size: 1.5rem; margin: 0.5rem 0; }
+        }
+        /* PDF-specific styles (temporarily visible for debug) */
+        .pdf-content {
+            display: none; /* Will be cloned, so keep hidden initially */
+            background-color: #ffffff;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .pdf-content h2 {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+            font-weight: bold;
+        }
+        .pdf-content p {
+            margin: 0.25rem 0;
         }
     </style>
 </head>
@@ -259,6 +273,61 @@
         <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact LT Byrd</a>
     </div>
 
+    <div id="pdf-content" class="pdf-content">
+        <h2>Flight Information</h2>
+        <p id="pdf-acmc"></p>
+        <p id="pdf-crew"></p>
+        <p id="pdf-takeoffTime"></p>
+        <p id="pdf-submissionDate"></p>
+
+        <h2>Human Factors</h2>
+        <p id="pdf-q1"></p>
+        <p id="pdf-q2"></p>
+        <p id="pdf-q3"></p>
+        <p id="pdf-q4"></p>
+        <p id="pdf-q5"></p>
+        <p id="pdf-q6"></p>
+        <p id="pdf-humanMitigations"></p>
+
+        <h2>Scheduling & Tempo Factors</h2>
+        <p id="pdf-q7"></p>
+        <p id="pdf-q8"></p>
+        <p id="pdf-q9"></p>
+        <p id="pdf-q10"></p>
+        <p id="pdf-q11"></p>
+        <p id="pdf-q12"></p>
+        <p id="pdf-q13"></p>
+        <p id="pdf-schedulingMitigations"></p>
+
+        <h2>Mission Factors</h2>
+        <p id="pdf-q14"></p>
+        <p id="pdf-q15"></p>
+        <p id="pdf-q16"></p>
+        <p id="pdf-q17"></p>
+        <p id="pdf-q18"></p>
+        <p id="pdf-q19"></p>
+        <p id="pdf-q20"></p>
+        <p id="pdf-q21"></p>
+        <p id="pdf-q22"></p>
+        <p id="pdf-missionMitigations"></p>
+
+        <h2>Environmental Factors</h2>
+        <p id="pdf-q23"></p>
+        <p id="pdf-q24"></p>
+        <p id="pdf-q25"></p>
+        <p id="pdf-q26"></p>
+        <p id="pdf-q27"></p>
+        <p id="pdf-environmentalMitigations"></p>
+
+        <h2>AC/MC Review</h2>
+        <p id="pdf-acmcReview"></p>
+
+        <h2>Risk Assessment</h2>
+        <p id="pdf-totalScore"></p>
+        <p id="pdf-riskRank"></p>
+        <p id="pdf-riskNote"></p>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM fully loaded and script running');
@@ -269,9 +338,10 @@
             const gaugeFill = document.getElementById('gaugeFill');
             const submitButton = document.getElementById('submitData');
             const generatePdfButton = document.getElementById('generatePdf');
+            const pdfContent = document.getElementById('pdf-content');
 
-            if (!submitButton || !generatePdfButton) {
-                console.error('Submit or Generate PDF button not found:', { submitButton, generatePdfButton });
+            if (!submitButton || !generatePdfButton || !pdfContent) {
+                console.error('Required elements not found:', { submitButton, generatePdfButton, pdfContent });
                 return;
             }
 
@@ -363,7 +433,7 @@
                     riskRank: riskRank,
                     riskNote: riskNote,
                     acmcReview: acmcReviewYes ? 'Yes' : 'No',
-                    submissionDate: new Date().toISOString()
+                    submissionDate: new Date().toLocaleString()
                 };
 
                 document.getElementById('statusMessage').classList.remove('error', 'hidden');
@@ -436,130 +506,73 @@
                     riskNote = 'No action required.';
                 }
 
-                const maxScore = 81;
-                const scorePercentage = (total / maxScore) * 100;
-                gaugeFill.style.width = `${scorePercentage}%`;
-                console.log('Risk Rank:', riskRank, 'Total:', total);
+                // Populate PDF content
+                console.log('Populating PDF content...');
+                document.getElementById('pdf-acmc').textContent = `AC/MC: ${acmc}`;
+                console.log(`Set pdf-acmc: ${acmc}`);
+                document.getElementById('pdf-crew').textContent = `Crew: ${crew}`;
+                document.getElementById('pdf-takeoffTime').textContent = `Takeoff Time: ${takeoffTime}`;
+                document.getElementById('pdf-submissionDate').textContent = `Submission Date: ${new Date().toLocaleString()}`;
+                document.getElementById('pdf-humanMitigations').textContent = `Mitigations: ${document.getElementById('humanMitigations').value.trim() || 'N/A'}`;
+                document.getElementById('pdf-schedulingMitigations').textContent = `Mitigations: ${document.getElementById('schedulingMitigations').value.trim() || 'N/A'}`;
+                document.getElementById('pdf-missionMitigations').textContent = `Mitigations: ${document.getElementById('missionMitigations').value.trim() || 'N/A'}`;
+                document.getElementById('pdf-environmentalMitigations').textContent = `Mitigations: ${document.getElementById('environmentalMitigations').value.trim() || 'N/A'}`;
+                document.getElementById('pdf-acmcReview').textContent = `AC/MC Review: ${acmcReviewYes ? 'Yes' : 'No'}`;
+                document.getElementById('pdf-totalScore').textContent = `Total Risk Score: ${total}`;
+                document.getElementById('pdf-riskRank').textContent = `Risk Rank: ${riskRank}`;
+                document.getElementById('pdf-riskNote').textContent = `Note: ${riskNote}`;
 
-                // Generate PDF
-                const { jsPDF } = window.jspdf;
-                if (!jsPDF) {
-                    console.error('jsPDF not loaded');
-                    return;
-                }
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'in',
-                    format: 'a4'
-                });
-                console.log('jsPDF instance created');
-
-                // Set text color to black
-                doc.setTextColor(0, 0, 0); // Black text
-                // Test minimal content
-                doc.text('Test PDF Content', 1, 1); // Simple test text
-                console.log('Test text added at 1, 1');
-
-                // Full content with background
-                doc.setFontSize(9);
-                const pageWidth = 8.27;
-                const leftColumnWidth = 5.5;
-                const rightColumnWidth = 2.77;
-                const margin = 0.3;
-
-                // Header
-                doc.setFillColor(30, 58, 138);
-                doc.rect(0, 0, pageWidth, 0.8, 'F');
-                doc.setTextColor(255, 255, 255); // White text for header
-                doc.text('Operational Risk Management Form - VQ-4 Shadows', pageWidth / 2, 0.4, { align: 'center' });
-                console.log('Header drawn');
-                doc.setTextColor(0, 0, 0); // Back to black for content
-
-                // Form Data (Left Column) with background
-                let yOffset = 1.0;
-                doc.setFillColor(240, 240, 240); // Light gray background
-                doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
-                doc.text('Flight Information', margin + 0.1, yOffset);
-                yOffset += 0.2;
-                doc.text(`AC/MC: ${acmc}`, margin + 0.1, yOffset);
-                console.log(`Text added: AC/MC: ${acmc} at y=${yOffset}`);
-                yOffset += 0.2;
-                doc.text(`Crew: ${crew}`, margin + 0.1, yOffset);
-                yOffset += 0.2;
-                doc.text(`Takeoff Time: ${takeoffTime}`, margin + 0.1, yOffset);
-                yOffset += 0.2;
-                doc.text(`Submission Date: ${new Date().toLocaleString()}`, margin + 0.1, yOffset);
-                yOffset += 0.3;
-
-                const sections = [
-                    { title: 'Human Factors', factors: [
-                        { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
-                        { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
-                        { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
-                        { id: 'q4', text: 'Recent personal stressors', severity: 1 },
-                        { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
-                        { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
-                    ], mit: 'humanMitigations' },
-                    { title: 'Scheduling & Tempo Factors', factors: [
-                        { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
-                        { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
-                        { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
-                        { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
-                        { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
-                        { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
-                        { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
-                    ], mit: 'schedulingMitigations' },
-                    { title: 'Mission Factors', factors: [
-                        { id: 'q14', text: 'Op Area evolution', severity: 1 },
-                        { id: 'q15', text: 'Air Refueling', severity: 2 },
-                        { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
-                        { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
-                        { id: 'q18', text: 'R4305 Op Area', severity: 2 },
-                        { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
-                        { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
-                        { id: 'q21', text: 'Known degraded system(s) requiring crew workaround', severity: 2 },
-                        { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
-                    ], mit: 'missionMitigations' },
-                    { title: 'Environmental Factors', factors: [
-                        { id: 'q23', text: 'Flying at night', severity: 2 },
-                        { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                        { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
-                        { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
-                        { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
-                    ], mit: 'environmentalMitigations' }
+                const factors = [
+                    { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days' },
+                    { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)' },
+                    { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)' },
+                    { id: 'q4', text: 'Recent personal stressors' },
+                    { id: 'q5', text: 'First mission after ≥30-day non-flying period' },
+                    { id: 'q6', text: 'Any Crew Member not current' },
+                    { id: 'q7', text: 'Crew rest <12 hours' },
+                    { id: 'q8', text: 'Long sortie (>12 hour planned crew day)' },
+                    { id: 'q9', text: 'Planned crew day includes duty between 2200-0600' },
+                    { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)' },
+                    { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period' },
+                    { id: 'q12', text: 'Significant mission change after crew report time' },
+                    { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission' },
+                    { id: 'q14', text: 'Op Area evolution' },
+                    { id: 'q15', text: 'Air Refueling' },
+                    { id: 'q16', text: 'Pilot Training Event (engine pulls)' },
+                    { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops' },
+                    { id: 'q18', text: 'R4305 Op Area' },
+                    { id: 'q19', text: 'Unfamiliar Airfield Ops' },
+                    { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)' },
+                    { id: 'q21', text: 'Known degraded system(s) requiring crew workaround' },
+                    { id: 'q22', text: 'Crew augmentation not available' },
+                    { id: 'q23', text: 'Flying at night' },
+                    { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility' },
+                    { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)' },
+                    { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility' },
+                    { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field' }
                 ];
 
-                sections.forEach(section => {
-                    doc.setFillColor(240, 240, 240); // Light gray background
-                    doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
-                    doc.text(section.title, margin + 0.1, yOffset);
-                    yOffset += 0.2;
-                    section.factors.forEach(factor => {
-                        const checked = document.getElementById(factor.id).checked ? '[x]' : '[ ]';
-                        const text = `${checked} ${factor.text} (Severity: ${factor.severity})`;
-                        doc.text(text, margin + 0.1, yOffset);
-                        console.log(`Added text: ${text} at y=${yOffset}`);
-                        yOffset += 0.2;
-                    });
-                    doc.text(`Mitigations: ${document.getElementById(section.mit).value.trim() || 'N/A'}`, margin + 0.1, yOffset);
-                    yOffset += 0.2;
+                factors.forEach(factor => {
+                    const checkbox = document.getElementById(factor.id);
+                    const element = document.getElementById(`pdf-${factor.id}`);
+                    if (element) {
+                        element.textContent = `${checkbox.checked ? '[x]' : '[ ]'} ${factor.text}`;
+                        console.log(`Populated ${factor.id}: ${element.textContent}`);
+                    }
                 });
-                doc.text(`AC/MC Review: ${acmcReviewYes ? 'Yes' : 'No'}`, margin + 0.1, yOffset);
-                yOffset += 0.2;
 
-                // Risk Assessment
-                doc.setFillColor(240, 240, 240);
-                doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
-                doc.text('Risk Assessment', margin + 0.1, yOffset);
-                yOffset += 0.2;
-                doc.text(`Total Risk Score: ${total}`, margin + 0.1, yOffset);
-                yOffset += 0.2;
-                doc.text(`Risk Rank: ${riskRank}`, margin + 0.1, yOffset);
-                yOffset += 0.2;
-                doc.text(`Note: ${riskNote}`, margin + 0.1, yOffset);
+                // Debug: Temporarily make visible to check content
+                pdfContent.style.display = 'block';
+                console.log('PDF content visibility set to block for debug, content:', pdfContent.innerHTML);
 
-                console.log('PDF generation completed, saving...');
-                doc.save('ORM_Form_Submission.pdf');
+                // Generate PDF
+                html2pdf().from(pdfContent).save('ORM_Form_Submission.pdf').then(() => {
+                    console.log('PDF generation completed');
+                    // Hide again after generation
+                    pdfContent.style.display = 'none';
+                }).catch(error => {
+                    console.error('PDF generation error:', error);
+                });
             });
         });
     </script>
