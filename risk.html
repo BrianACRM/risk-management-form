@@ -113,13 +113,15 @@
             .input-field, textarea { border: 1px solid #000000; background-color: #ffffff; color: #000000; }
             h2 { font-size: 1.5rem; margin: 0.5rem 0; }
         }
-        /* PDF-specific styles (hidden div) */
+        /* PDF-specific styles (temporarily visible for debug) */
         .pdf-content {
-            display: none;
+            display: none; /* Will be cloned, so keep hidden initially */
             background-color: #ffffff;
             color: #000000;
             font-family: Arial, sans-serif;
             padding: 20px;
+            width: 100%;
+            max-width: 800px;
         }
         .pdf-content h2 {
             font-size: 1.5rem;
@@ -336,9 +338,10 @@
             const gaugeFill = document.getElementById('gaugeFill');
             const submitButton = document.getElementById('submitData');
             const generatePdfButton = document.getElementById('generatePdf');
+            const pdfContent = document.getElementById('pdf-content');
 
-            if (!submitButton || !generatePdfButton) {
-                console.error('Submit or Generate PDF button not found:', { submitButton, generatePdfButton });
+            if (!submitButton || !generatePdfButton || !pdfContent) {
+                console.error('Required elements not found:', { submitButton, generatePdfButton, pdfContent });
                 return;
             }
 
@@ -504,7 +507,9 @@
                 }
 
                 // Populate PDF content
+                console.log('Populating PDF content...');
                 document.getElementById('pdf-acmc').textContent = `AC/MC: ${acmc}`;
+                console.log(`Set pdf-acmc: ${acmc}`);
                 document.getElementById('pdf-crew').textContent = `Crew: ${crew}`;
                 document.getElementById('pdf-takeoffTime').textContent = `Takeoff Time: ${takeoffTime}`;
                 document.getElementById('pdf-submissionDate').textContent = `Submission Date: ${new Date().toLocaleString()}`;
@@ -552,13 +557,22 @@
                     const element = document.getElementById(`pdf-${factor.id}`);
                     if (element) {
                         element.textContent = `${checkbox.checked ? '[x]' : '[ ]'} ${factor.text}`;
+                        console.log(`Populated ${factor.id}: ${element.textContent}`);
                     }
                 });
 
+                // Debug: Temporarily make visible to check content
+                pdfContent.style.display = 'block';
+                console.log('PDF content visibility set to block for debug, content:', pdfContent.innerHTML);
+
                 // Generate PDF
-                const element = document.getElementById('pdf-content');
-                html2pdf().from(element).save('ORM_Form_Submission.pdf');
-                console.log('PDF generation completed');
+                html2pdf().from(pdfContent).save('ORM_Form_Submission.pdf').then(() => {
+                    console.log('PDF generation completed');
+                    // Hide again after generation
+                    pdfContent.style.display = 'none';
+                }).catch(error => {
+                    console.error('PDF generation error:', error);
+                });
             });
         });
     </script>
