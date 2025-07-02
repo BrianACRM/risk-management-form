@@ -272,6 +272,7 @@
 
             if (!submitButton || !generatePdfButton) {
                 console.error('Submit or Generate PDF button not found:', { submitButton, generatePdfButton });
+                return;
             }
 
             submitButton.addEventListener('click', () => {
@@ -420,8 +421,11 @@
                 checkboxes.forEach(checkbox => {
                     if (checkbox.checked) {
                         total += parseInt(checkbox.getAttribute('data-severity') || 0);
+                    } else {
+                        console.log(`Unchecked: ${checkbox.id}, severity: ${checkbox.getAttribute('data-severity')}`);
                     }
                 });
+                console.log('Total calculated:', total);
                 let riskRank = '';
                 let riskNote = '';
                 if (total >= 21) {
@@ -438,14 +442,20 @@
                 const maxScore = 81;
                 const scorePercentage = (total / maxScore) * 100;
                 gaugeFill.style.width = `${scorePercentage}%`;
+                console.log('Risk Rank:', riskRank, 'Total:', total);
 
                 // Generate PDF
                 const { jsPDF } = window.jspdf;
+                if (!jsPDF) {
+                    console.error('jsPDF not loaded');
+                    return;
+                }
                 const doc = new jsPDF({
                     orientation: 'portrait',
                     unit: 'in',
                     format: 'a4'
                 });
+                console.log('jsPDF instance created');
                 doc.setFontSize(9);
                 const pageWidth = 8.27;
                 const leftColumnWidth = 5.5;
@@ -457,6 +467,7 @@
                 doc.rect(0, 0, pageWidth, 0.8, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.text('Operational Risk Management Form - VQ-4 Shadows', pageWidth / 2, 0.4, { align: 'center' });
+                console.log('Header drawn');
                 doc.setTextColor(255, 255, 255);
                 doc.setFillColor(75, 85, 99);
 
@@ -466,6 +477,7 @@
                 doc.text('Flight Information', margin + 0.1, yOffset - 0.05);
                 yOffset += 0.1;
                 doc.text(`AC/MC: ${acmc}`, margin + 0.1, yOffset);
+                console.log(`Text added: AC/MC: ${acmc}`);
                 yOffset += 0.2;
                 doc.text(`Crew: ${crew}`, margin + 0.1, yOffset);
                 yOffset += 0.2;
@@ -519,6 +531,7 @@
                     section.factors.forEach(factor => {
                         const checked = document.getElementById(factor.id).checked;
                         doc.text(`${factor.text} (Severity: ${factor.severity}, Checked: ${checked ? 'Yes' : 'No'})`, margin + 0.1, yOffset);
+                        console.log(`Added text: ${factor.text} at y=${yOffset}`);
                         yOffset += 0.15;
                     });
                     doc.text(`Mitigations: ${document.getElementById(section.mit).value.trim() || 'N/A'}`, margin + 0.1, yOffset);
@@ -552,6 +565,7 @@
                 matrixY += 0.2;
                 doc.text('Adjust unchecked factors (1-3) and recalculate.', matrixX + 0.1, matrixY);
 
+                console.log('PDF generation completed, saving...');
                 doc.save('ORM_Form_Submission.pdf');
             });
         });
