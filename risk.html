@@ -530,25 +530,25 @@
                 // Flight Information
                 let yOffset = 1.0;
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 1.0, 'F'); // Increased height for padding
                 doc.setFontSize(12);
-                doc.text('Flight Information', 0.6, yOffset);
+                doc.text('Flight Information', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 doc.text(`AC/MC: ${acmc}`, 0.6, yOffset);
                 yOffset += 0.2;
                 doc.text(`Crew: ${crew}`, 0.6, yOffset);
                 yOffset += 0.2;
-                doc.text(`Takeoff Time: ${takeoffTime}`, 0.6, yOffset); // Removed forced 'Z'
+                doc.text(`Takeoff Time: ${takeoffTime}`, 0.6, yOffset);
                 yOffset += 0.2;
                 doc.text(`Submission Date: ${new Date().toLocaleString()}`, 0.6, yOffset);
                 yOffset += 0.3;
 
                 // Human Factors
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 2.5, 'F'); // Adjusted height for multi-line
                 doc.setFontSize(12);
-                doc.text('Human Factors', 0.6, yOffset);
+                doc.text('Human Factors', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 const humanFactors = [
@@ -564,14 +564,18 @@
                     doc.text(`${checked} ${factor.text} (Severity: ${factor.severity})`, 0.6, yOffset);
                     yOffset += 0.2;
                 });
-                doc.text(`Mitigations: ${document.getElementById('humanMitigations').value.trim() || 'N/A'}`, 0.6, yOffset);
-                yOffset += 0.2;
+                const humanMitigations = document.getElementById('humanMitigations').value.trim().split('\n');
+                doc.text('Mitigations:', 0.6, yOffset);
+                humanMitigations.forEach((line, index) => {
+                    doc.text(line || 'N/A', 0.8, yOffset + 0.2 * (index + 1));
+                });
+                yOffset += 0.2 * (humanMitigations.length + 1);
 
                 // Scheduling & Tempo Factors
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 3.0, 'F'); // Adjusted height for multi-line
                 doc.setFontSize(12);
-                doc.text('Scheduling & Tempo Factors', 0.6, yOffset);
+                doc.text('Scheduling & Tempo Factors', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 const schedulingFactors = [
@@ -588,14 +592,18 @@
                     doc.text(`${checked} ${factor.text} (Severity: ${factor.severity})`, 0.6, yOffset);
                     yOffset += 0.2;
                 });
-                doc.text(`Mitigations: ${document.getElementById('schedulingMitigations').value.trim() || 'N/A'}`, 0.6, yOffset);
-                yOffset += 0.2;
+                const schedulingMitigations = document.getElementById('schedulingMitigations').value.trim().split('\n');
+                doc.text('Mitigations:', 0.6, yOffset);
+                schedulingMitigations.forEach((line, index) => {
+                    doc.text(line || 'N/A', 0.8, yOffset + 0.2 * (index + 1));
+                });
+                yOffset += 0.2 * (schedulingMitigations.length + 1);
 
                 // Mission Factors
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 3.5, 'F'); // Adjusted height for multi-line
                 doc.setFontSize(12);
-                doc.text('Mission Factors', 0.6, yOffset);
+                doc.text('Mission Factors', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 const missionFactors = [
@@ -614,14 +622,18 @@
                     doc.text(`${checked} ${factor.text} (Severity: ${factor.severity})`, 0.6, yOffset);
                     yOffset += 0.2;
                 });
-                doc.text(`Mitigations: ${document.getElementById('missionMitigations').value.trim() || 'N/A'}`, 0.6, yOffset);
-                yOffset += 0.2;
+                const missionMitigations = document.getElementById('missionMitigations').value.trim().split('\n');
+                doc.text('Mitigations:', 0.6, yOffset);
+                missionMitigations.forEach((line, index) => {
+                    doc.text(line || 'N/A', 0.8, yOffset + 0.2 * (index + 1));
+                });
+                yOffset += 0.2 * (missionMitigations.length + 1);
 
                 // Environmental Factors
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 2.5, 'F'); // Adjusted height for multi-line
                 doc.setFontSize(12);
-                doc.text('Environmental Factors', 0.6, yOffset);
+                doc.text('Environmental Factors', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 const environmentalFactors = [
@@ -636,14 +648,18 @@
                     doc.text(`${checked} ${factor.text} (Severity: ${factor.severity})`, 0.6, yOffset);
                     yOffset += 0.2;
                 });
-                doc.text(`Mitigations: ${document.getElementById('environmentalMitigations').value.trim() || 'N/A'}`, 0.6, yOffset);
-                yOffset += 0.2;
+                const environmentalMitigations = document.getElementById('environmentalMitigations').value.trim().split('\n');
+                doc.text('Mitigations:', 0.6, yOffset);
+                environmentalMitigations.forEach((line, index) => {
+                    doc.text(line || 'N/A', 0.8, yOffset + 0.2 * (index + 1));
+                });
+                yOffset += 0.2 * (environmentalMitigations.length + 1);
 
                 // ACMC Review
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 0.8, 'F'); // Adjusted height
                 doc.setFontSize(12);
-                doc.text('ACMC Review', 0.6, yOffset);
+                doc.text('ACMC Review', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 doc.text(`Review: ${acmcReviewYes ? 'Yes' : 'No'}`, 0.6, yOffset);
@@ -651,9 +667,9 @@
 
                 // Risk Assessment
                 doc.setFillColor(240, 240, 240);
-                doc.rect(0.5, yOffset - 0.2, 7.27, 0.2, 'F');
+                doc.rect(0.5, yOffset - 0.2, 7.27, 1.0, 'F'); // Adjusted height
                 doc.setFontSize(12);
-                doc.text('Risk Assessment', 0.6, yOffset);
+                doc.text('Risk Assessment', 0.6, yOffset + 0.1);
                 yOffset += 0.2;
                 doc.setFontSize(10);
                 doc.text(`Total Risk Score: ${total}`, 0.6, yOffset);
