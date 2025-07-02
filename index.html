@@ -15,14 +15,20 @@
             overflow-x: hidden;
         }
         .header-bg {
-            background-color: #1e3a8a;
+            background: linear-gradient(135deg, #1e3a8a, #4b5563);
             padding: 20px;
             text-align: center;
             position: relative;
+            min-height: 150px;
         }
         .logo {
-            max-width: 300px;
+            width: 100%;
+            max-width: 800px;
             height: auto;
+            object-fit: contain;
+            border: 2px solid #93c5fd; /* Centered border with blue accent */
+            padding: 5px;
+            border-radius: 5px;
         }
         .boxes {
             display: flex;
@@ -80,12 +86,18 @@
                 width: 80%;
                 max-width: 300px;
             }
+            .header-bg {
+                min-height: 100px;
+            }
+            .logo {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header-bg">
-        <img src="https://via.placeholder.com/300x100?text=VQ-4+Logo" alt="VQ-4 Logo" class="logo">
+        <img src="https://scontent-dfw5-1.xx.fbcdn.net/v/t39.30808-6/474584099_1021247700030529_7719994838169841359_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=EvyCodklsqIQ7kNvwG6Y3Pn&_nc_oc=AdmYohcjVAb99yYaLANFyoihsl50dwUppugeFpgRKJkB3ywLnCHJKROEfbxv39_a__Q&_nc_zt=23&_nc_ht=scontent-dfw5-1.xx&_nc_gid=bS3ZvUasMD0jaTJhAMH1MA&oh=00_AfPahKRnNzkVHkQlAonamRBYvLnm2el3r4oyJqkuxbO3xQ&oe=686B45FA" alt="VQ-4 Banner" class="logo">
     </header>
     <div class="boxes">
         <a href="https://risk-management-form.pages.dev/" class="box" target="_blank">
