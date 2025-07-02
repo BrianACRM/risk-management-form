@@ -245,7 +245,7 @@
                 <label><input type="radio" name="acmcReview" id="acmcReviewYes" value="yes" class="mr-2"> Yes</label>
                 <label><input type="radio" name="acmcReview" id="acmcReviewNo" value="no" class="mr-2"> No</label>
             </div>
-            <span id="acmcReviewError" class="text-red-400 hidden">AC/MC review is required.</span>
+            <span id="acmcReviewError" class="text-red-400 hidden">AC/MC review must be 'Yes' to submit.</span>
         </div>
 
         <div class="flex space-x-4 mb-6 mt-4">
@@ -319,6 +319,8 @@
             const riskNoteElement = document.getElementById('riskNote');
             const gaugeFill = document.getElementById('gaugeFill');
             const submitButton = document.getElementById('submitData');
+            const acmcReviewYes = document.getElementById('acmcReviewYes');
+            const acmcReviewNo = document.getElementById('acmcReviewNo');
 
             if (!submitButton) {
                 console.error('Submit button not found. Checking by class...');
@@ -339,8 +341,6 @@
                 const acmc = document.getElementById('acmc').value.trim();
                 const crew = document.getElementById('crew').value;
                 const takeoffTime = document.getElementById('takeoffTime').value.trim();
-                const acmcReviewYes = document.getElementById('acmcReviewYes').checked;
-                const acmcReviewNo = document.getElementById('acmcReviewNo').checked;
                 let isValid = true;
 
                 if (!acmc) {
@@ -361,7 +361,7 @@
                 } else {
                     document.getElementById('takeoffError').classList.add('hidden');
                 }
-                if (!acmcReviewYes && !acmcReviewNo) {
+                if (!acmcReviewYes.checked) {
                     document.getElementById('acmcReviewError').classList.remove('hidden');
                     isValid = false;
                 } else {
@@ -371,7 +371,7 @@
                 if (!isValid) {
                     document.getElementById('statusMessage').classList.remove('success', 'hidden');
                     document.getElementById('statusMessage').classList.add('error');
-                    document.getElementById('statusMessage').textContent = 'Please fill in all required fields and select AC/MC review.';
+                    document.getElementById('statusMessage').textContent = 'Please correct the errors above.';
                     return;
                 }
 
@@ -422,7 +422,7 @@
                     totalScore: total,
                     riskRank: riskRank,
                     riskNote: riskNote,
-                    acmcReview: acmcReviewYes ? 'Yes' : acmcReviewNo ? 'No' : 'Not specified',
+                    acmcReview: acmcReviewYes.checked ? 'Yes' : 'No',
                     submissionDate: new Date().toLocaleString()
                 };
 
@@ -448,20 +448,24 @@
                 .then(result => {
                     console.log('Fetch result:', result);
                     if (result.ok || (typeof result === 'string' && result.toLowerCase().includes('success'))) {
-                        document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
-                        totalScoreElement.textContent = total;
-                        riskRankElement.textContent = riskRank;
-                        riskNoteElement.textContent = riskNote;
-                        riskAssessment.classList.remove('hidden');
+                        setTimeout(() => {
+                            document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
+                            totalScoreElement.textContent = total;
+                            riskRankElement.textContent = riskRank;
+                            riskNoteElement.textContent = riskNote;
+                            riskAssessment.classList.remove('hidden');
+                        }, 100); // Delay to ensure DOM update
                     } else {
                         throw new Error('Unexpected response: ' + result);
                     }
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
-                    document.getElementById('statusMessage').classList.remove('success', 'hidden');
-                    document.getElementById('statusMessage').classList.add('error');
-                    document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
+                    setTimeout(() => {
+                        document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
+                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                        document.getElementById('statusMessage').classList.add('error');
+                    }, 100); // Delay to ensure DOM update
                 });
             });
         });
