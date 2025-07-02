@@ -261,6 +261,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded and script running');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             const totalScoreElement = document.getElementById('totalScore');
             const riskRankElement = document.getElementById('riskRank');
@@ -269,7 +270,12 @@
             const submitButton = document.getElementById('submitData');
             const generatePdfButton = document.getElementById('generatePdf');
 
+            if (!submitButton || !generatePdfButton) {
+                console.error('Submit or Generate PDF button not found:', { submitButton, generatePdfButton });
+            }
+
             submitButton.addEventListener('click', () => {
+                console.log('Submit button clicked');
                 const acmc = document.getElementById('acmc').value.trim();
                 const crew = document.getElementById('crew').value;
                 const takeoffTime = document.getElementById('takeoffTime').value.trim();
@@ -396,6 +402,7 @@
             });
 
             generatePdfButton.addEventListener('click', () => {
+                console.log('Generate PDF button clicked');
                 const acmc = document.getElementById('acmc').value.trim();
                 const crew = document.getElementById('crew').value;
                 const takeoffTime = document.getElementById('takeoffTime').value.trim();
@@ -432,7 +439,8 @@
                 const scorePercentage = (total / maxScore) * 100;
                 gaugeFill.style.width = `${scorePercentage}%`;
 
-                // Generate PDF without submission
+                // Generate PDF
+                const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({
                     orientation: 'portrait',
                     unit: 'in',
