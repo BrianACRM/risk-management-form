@@ -46,7 +46,6 @@
             width: 100%;
         }
         .box {
-            background-color: #2d3748;
             width: 300px;
             height: 200px;
             margin: 20px;
@@ -59,18 +58,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
         .box:hover {
             transform: scale(1.05) rotateX(10deg) rotateY(10deg);
-            background-color: #93c5fd;
             box-shadow: 0 6px 20px rgba(147, 197, 253, 0.5);
         }
         .box:active {
             transform: scale(0.95);
-        }
-        .box p {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: bold;
         }
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -85,23 +84,6 @@
             background: rgba(255, 255, 253, 0.1);
             animation: pulse 1.5s infinite;
             border-radius: 10px;
-        }
-        .images {
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-            flex-wrap: wrap;
-            max-width: 1000px;
-            width: 100%;
-        }
-        .image-box {
-            margin: 10px;
-            max-width: 300px;
-        }
-        .image-box img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
         }
         @media (max-width: 960px) {
             .boxes {
@@ -118,10 +100,6 @@
             .logo {
                 max-width: 100%;
             }
-            .images {
-                flex-direction: column;
-                align-items: center;
-            }
         }
     </style>
 </head>
@@ -130,20 +108,15 @@
         <img src="https://scontent-dfw5-1.xx.fbcdn.net/v/t39.30808-6/474584099_1021247700030529_7719994838169841359_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=EvyCodklsqIQ7kNvwG6Y3Pn&_nc_oc=AdmYohcjVAb99yYaLANFyoihsl50dwUppugeFpgRKJkB3ywLnCHJKROEfbxv39_a__Q&_nc_zt=23&_nc_ht=scontent-dfw5-1.xx&_nc_gid=bS3ZvUasMD0jaTJhAMH1MA&oh=00_AfPahKRnNzkVHkQlAonamRBYvLnm2el3r4oyJqkuxbO3xQ&oe=686B45FA" alt="VQ-4 Banner" class="logo">
     </header>
     <div class="boxes">
-        <a href="https://safeshadows.org/risk" class="box" target="_blank">
-            <p>ORM Submissions</p>
+        <a href="https://safeshadows.org/risk" class="box">
+            <img src="/images/orm-sheet.jpg" alt="ORM Submissions">
         </a>
-        <a href="https://saferep.safety.af.mil/" class="box" target="_blank">
-            <p>ASAP Submissions</p>
+        <a href="https://saferep.safety.af.mil/" class="box">
+            <img src="/images/saferep-asap.jpg" alt="ASAP Submissions">
         </a>
-        <a href="#" class="box" target="_blank">
-            <p>Anymouse Submissions</p>
+        <a href="#" class="box">
+            <img src="/images/anymouse.jpg" alt="Anymouse Submissions">
         </a>
-    </div>
-    <div class="images">
-        <div class="image-box"><img src="/images/orm-sheet.jpg" alt="ORM Sheet"></div>
-        <div class="image-box"><img src="/images/saferep-asap.jpg" alt="Saferep/ASAP"></div>
-        <div class="image-box"><img src="/images/anymouse.jpg" alt="Anymouse"></div>
     </div>
 </body>
 </html>
