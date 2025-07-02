@@ -40,6 +40,17 @@
             justify-content: center;
             min-height: 100vh;
         }
+        .header-bg {
+            background: linear-gradient(135deg, #1e3a8a, #4b5563);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            min-height: 120px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .content {
             max-width: 56rem;
             width: 100%;
@@ -79,6 +90,10 @@
                 max-width: 56rem !important;
                 width: 100% !important;
                 margin: 0 auto !important;
+                background-color: #4b5563 !important; /* Fallback bg */
+                padding: 32px !important; /* p-8 */
+                border-radius: 1rem !important; /* rounded-xl */
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; /* shadow-2xl */
             }
         }
         .input-field:focus {
@@ -138,6 +153,11 @@
             background-color: #93c5fd;
         }
         @media (max-width: 640px) {
+            .header-bg {
+                padding: 5px;
+                min-height: 100px;
+            }
+            .content { p-4; } /* Reduce padding on mobile */
             .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; width: 100%; max-width: 100%; }
             .submit-btn, .pdf-btn { width: 100%; margin-bottom: 0.5rem; }
             .status-message { font-size: 0.75rem; }
@@ -147,7 +167,9 @@
     </style>
 </head>
 <body class="bg-gray-900 text-white font-sans" style="scroll-behavior: smooth;">
-    <h1 class="text-4xl font-extrabold text-center p-6">Operational Risk Management Form - VQ-4 Shadows</h1>
+    <header class="header-bg">
+        <h1 class="text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
+    </header>
     <div class="content">
         <div class="bg-gray-700 p-6 rounded-lg mb-6 mt-6 shadow-inner">
             <p class="text-lg font-medium text-gray-200 leading-relaxed">
