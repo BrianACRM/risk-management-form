@@ -464,20 +464,21 @@
                     document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
                 });
             });
-        } catch (error) {
-            console.error('Script execution failed:', error);
-        }
+        });
+    } catch (error) {
+        console.error('Script execution failed:', error);
+    }
 
-        // Fallback to ensure script runs
-        window.onload = () => {
-            console.log('Window onload fallback triggered');
-            const submitButton = document.getElementById('submitData');
-            if (submitButton) {
-                submitButton.addEventListener('click', () => {
-                    console.log('Submit fallback clicked');
-                });
-            }
-        };
-    </script>
+    // Fallback to ensure script runs
+    window.onload = () => {
+        console.log('Window onload fallback triggered');
+        const submitButton = document.getElementById('submitData');
+        if (submitButton) {
+            submitButton.addEventListener('click', () => {
+                console.log('Submit fallback clicked');
+            });
+        }
+    };
+</script>
 </body>
 </html>
