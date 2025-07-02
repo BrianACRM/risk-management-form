@@ -426,6 +426,7 @@
                     submissionDate: new Date().toLocaleString()
                 };
 
+                console.log('Submitting form data:', formData);
                 document.getElementById('statusMessage').classList.remove('error', 'hidden');
                 document.getElementById('statusMessage').classList.add('success');
                 document.getElementById('statusMessage').textContent = 'Submitting data via Formspree...';
@@ -437,6 +438,7 @@
                     redirect: 'manual'
                 })
                 .then(response => {
+                    console.log('Fetch response received:', response);
                     if (response.type === 'opaqueredirect' || response.status === 200) {
                         return { ok: true, text: 'Success' };
                     }
@@ -444,6 +446,7 @@
                     return response.text();
                 })
                 .then(result => {
+                    console.log('Fetch result:', result);
                     if (result.ok || (typeof result === 'string' && result.toLowerCase().includes('success'))) {
                         document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
                         totalScoreElement.textContent = total;
