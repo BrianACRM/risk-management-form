@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Fallback for html2pdf if CDN fails -->
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
     <style>
         body {
             background-color: #4b5563;
@@ -113,9 +114,9 @@
             .input-field, textarea { border: 1px solid #000000; background-color: #ffffff; color: #000000; }
             h2 { font-size: 1.5rem; margin: 0.5rem 0; }
         }
-        /* PDF-specific styles (temporarily visible for debug) */
+        /* PDF-specific styles */
         .pdf-content {
-            display: none; /* Will be cloned, so keep hidden initially */
+            display: none;
             background-color: #ffffff;
             color: #000000;
             font-family: Arial, sans-serif;
@@ -561,18 +562,23 @@
                     }
                 });
 
-                // Debug: Temporarily make visible to check content
-                pdfContent.style.display = 'block';
-                console.log('PDF content visibility set to block for debug, content:', pdfContent.innerHTML);
-
-                // Generate PDF
-                html2pdf().from(pdfContent).save('ORM_Form_Submission.pdf').then(() => {
-                    console.log('PDF generation completed');
-                    // Hide again after generation
-                    pdfContent.style.display = 'none';
-                }).catch(error => {
-                    console.error('PDF generation error:', error);
-                });
+                // Test with minimal content
+                console.log('Attempting PDF generation with html2pdf...');
+                try {
+                    const element = document.getElementById('pdf-content');
+                    if (!element) {
+                        console.error('PDF content element not found');
+                        return;
+                    }
+                    console.log('PDF content HTML:', element.innerHTML);
+                    html2pdf().from(element).save('ORM_Form_Submission.pdf').then(() => {
+                        console.log('PDF generation completed');
+                    }).catch(error => {
+                        console.error('PDF generation error:', error);
+                    });
+                } catch (error) {
+                    console.error('Exception during PDF generation:', error);
+                }
             });
         });
     </script>
