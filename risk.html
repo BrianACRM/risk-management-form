@@ -48,6 +48,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM fully loaded and script running');
+            console.log('Document body:', document.body.innerHTML); // Debug DOM structure
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             const totalScoreElement = document.getElementById('totalScore');
             const riskRankElement = document.getElementById('riskRank');
@@ -63,7 +64,11 @@
                 if (submitButtons.length > 0) submitButton = submitButtons[0];
                 if (printButtons.length > 0) printButton = printButtons[0];
                 if (!submitButton || !printButton) {
-                    console.error('Buttons still not found:', { submitButton, printButton });
+                    console.error('Buttons still not found. Available elements:', {
+                        submitButton: submitButton,
+                        printButton: printButton,
+                        allButtons: document.getElementsByTagName('button')
+                    });
                     return;
                 }
             }
@@ -317,5 +322,6 @@
             });
         });
     </script>
+    <div id="printable" class="printable"></div>
 </body>
 </html>
