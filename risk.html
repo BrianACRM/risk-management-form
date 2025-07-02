@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Risk Management Form - VQ-4 Shadows</title>
-    <!-- Primary Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com" id="tailwind-script"></script>
-    <!-- Fallback with local option -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         setTimeout(() => {
             if (!window.tailwindcss) {
@@ -17,113 +15,86 @@
                 fallbackScript.onerror = () => {
                     console.error('Tailwind fallback failed to load, using inline fallback...');
                     const inlineScript = document.createElement('script');
-                    inlineScript.textContent = `/* Inline Tailwind CSS (minified base) */ window.tailwindcss = true;`;
+                    inlineScript.textContent = `window.tailwindcss = true;`;
                     document.head.appendChild(inlineScript);
                     console.log('Inline Tailwind fallback applied');
                 };
                 document.head.appendChild(fallbackScript);
             }
-        }, 2000); // Wait 2 seconds
+        }, 2000);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
-            background-color: #4b5563;
+            background: linear-gradient(135deg, #2d3748, #4b5563);
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
         .header-bg {
-            background: linear-gradient(135deg, #1e3a8a, #4b5563);
-            padding: 20px;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            padding: 1.5rem;
             text-align: center;
-            position: relative;
-            min-height: 120px;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .content {
-            max-width: 56rem;
-            width: 100%;
-            mx-auto;
-            bg-gray-800;
-            p-8;
-            rounded-md; /* Reduced rounding for squared look */
-            shadow-2xl;
-            mt-6;
-            flex-grow: 1;
-            text-align: left;
-            border: 2px solid #4b5563; /* Add border for definition */
+            max-width: 48rem;
+            width: 90%;
+            margin: 2rem auto;
+            background: rgba(75, 85, 99, 0.9);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .section-box {
-            background-color: #4b5563;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid #93c5fd; /* Light border for section separation */
-            border-radius: 0; /* Squared off */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        .content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+        }
+        .section {
+            background: #374151;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+            border-radius: 0.5rem;
+            animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .input-field, textarea {
             width: 100%;
-            max-width: 24rem;
+            max-width: 100%;
             padding: 0.75rem;
-            border: 1px solid #4b5563;
-            border-radius: 0.25rem; /* Slight rounding for inputs */
+            border: 2px solid #4b5563;
+            border-radius: 0.375rem;
             background-color: #4b5563;
             color: #ffffff;
-            box-sizing: border-box;
-            display: block;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        /* Fallback CSS if Tailwind fails */
-        @supports not (display: grid) {
-            .input-field, textarea {
-                max-width: 384px !important;
-                padding: 12px !important;
-                border: 1px solid #4b5563 !important;
-                border-radius: 4px !important;
-                background-color: #4b5563 !important;
-                color: #ffffff !important;
-                margin: 0 auto !important;
-                display: block !important;
-            }
-            .content {
-                max-width: 56rem !important;
-                width: 100% !important;
-                margin: 0 auto !important;
-                background-color: #4b5563 !important;
-                padding: 32px !important;
-                border-radius: 8px !important;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-                border: 2px solid #4b5563 !important;
-            }
-            .section-box {
-                background-color: #4b5563 !important;
-                padding: 16px !important;
-                margin-bottom: 16px !important;
-                border: 1px solid #93c5fd !important;
-                border-radius: 0 !important;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-            }
-        }
-        .input-field:focus {
-            border-color: #93c5fd;
-            box-shadow: 0 0 8px rgba(147, 197, 253, 0.6);
-            transition: all 0.3s ease;
+        .input-field:focus, textarea:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+            outline: none;
         }
         .status-message {
             display: none;
             margin-top: 1rem;
             padding: 0.75rem;
-            border-radius: 0.5rem;
+            border-radius: 0.375rem;
             font-size: 0.875rem;
             transition: opacity 0.3s ease;
         }
@@ -145,43 +116,32 @@
             transition: width 0.5s ease;
         }
         .footer {
-            background-color: #2d3748;
+            background-color: #1e293b;
             width: 100%;
             text-align: center;
-            padding: 10px 0;
+            padding: 1.5rem 0; /* Increased padding for spacing */
             margin-top: auto;
-        }
-        .footer p {
-            margin: 0;
-            font-size: 0.9rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
         }
         .footer .contact-button {
-            background-color: #1e3a8a;
+            background-color: #3b82f6;
             color: #ffffff;
-            padding: 5px 15px;
-            margin-top: 5px;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
             text-decoration: none;
-            display: inline-block;
+            transition: background-color 0.3s ease;
         }
         .footer .contact-button:hover {
-            background-color: #93c5fd;
+            background-color: #60a5fa;
         }
         @media (max-width: 640px) {
-            .header-bg {
-                padding: 5px;
-                min-height: 100px;
-            }
-            .content { p-4; }
-            .section-box { padding: 0.5rem; }
-            .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; width: 100%; max-width: 100%; }
-            .submit-btn, .pdf-btn { width: 100%; margin-bottom: 0.5rem; }
-            .status-message { font-size: 0.75rem; }
-            h2 { font-size: 1.5rem; }
+            .header-bg { padding: 1rem; min-height: 80px; }
+            .content { margin: 1rem auto; padding: 1rem; width: 95%; }
+            .section { padding: 1rem; margin-bottom: 1rem; }
+            .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
+            h2 { font-size: 1.25rem; }
             .risk-gauge { width: 150px; }
+            .submit-btn, .pdf-btn { width: 100%; margin-bottom: 0.5rem; }
         }
     </style>
 </head>
@@ -190,15 +150,14 @@
         <h1 class="text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
     </header>
     <div class="content">
-        <div class="section-box bg-gray-700 p-6 rounded-lg mb-6 mt-6 shadow-inner">
+        <div class="section">
             <p class="text-lg font-medium text-gray-200 leading-relaxed">
                 This questionnaire uses the Time Critical ABCD Model to focus the crew, increase situational awareness, and improve performance in the pre-flight and flight environments. Use this questionnaire to Assess the crew, Balance resources, Communicate and then mitigate any assessed risk or decisions, Do the mission with the mitigations in place, and De-brief the mission once completed.<br><br>
                 <strong class="text-yellow-300">NOTE:</strong> The use of this questionnaire does not alleviate the requirement to perform deliberate ORM as called out in other instructions and SOPs.
             </p>
         </div>
 
-        <!-- Flight Information -->
-        <div class="section-box">
+        <div class="section">
             <h2 class="text-2xl font-semibold text-gray-100 mb-4">Flight Information</h2>
             <div class="space-y-6 mb-6">
                 <div class="flex items-center space-x-4 mb-4">
@@ -234,8 +193,7 @@
             </div>
         </div>
 
-        <!-- Human Factors -->
-        <div class="section-box">
+        <div class="section">
             <h2 class="text-2xl font-semibold text-gray-100 mb-4">Human Factors</h2>
             <div class="space-y-2 mb-4">
                 <label><input type="checkbox" class="mr-2" data-severity="2" id="q1"> 1. Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days</label><br>
@@ -250,8 +208,7 @@
             </div>
         </div>
 
-        <!-- Scheduling & Tempo Factors -->
-        <div class="section-box">
+        <div class="section">
             <h2 class="text-2xl font-semibold text-gray-100 mb-4">Scheduling & Tempo Factors</h2>
             <div class="space-y-2 mb-4">
                 <label><input type="checkbox" class="mr-2" data-severity="2" id="q7"> 7. Crew rest <12 hours</label><br>
@@ -267,8 +224,7 @@
             </div>
         </div>
 
-        <!-- Mission Factors -->
-        <div class="section-box">
+        <div class="section">
             <h2 class="text-2xl font-semibold text-gray-100 mb-4">Mission Factors</h2>
             <div class="space-y-2 mb-4">
                 <label><input type="checkbox" class="mr-2" data-severity="1" id="q14"> 14. Op Area evolution</label><br>
@@ -286,8 +242,7 @@
             </div>
         </div>
 
-        <!-- Environmental Factors -->
-        <div class="section-box">
+        <div class="section">
             <h2 class="text-2xl font-semibold text-gray-100 mb-4">Environmental Factors</h2>
             <div class="space-y-2 mb-4">
                 <label><input type="checkbox" class="mr-2" data-severity="2" id="q23"> 23. Flying at night</label><br>
@@ -301,19 +256,18 @@
             </div>
         </div>
 
-        <!-- AC/MC Review Question -->
-        <div class="section-box mb-6">
+        <div class="section">
             <label class="block text-lg font-medium text-gray-200">Has the AC/MC reviewed all risk factors and mitigations? <span class="text-red-400">*</span></label>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 mt-2">
                 <label><input type="radio" name="acmcReview" id="acmcReviewYes" value="yes" class="mr-2"> Yes</label>
                 <label><input type="radio" name="acmcReview" id="acmcReviewNo" value="no" class="mr-2"> No</label>
             </div>
             <span id="acmcReviewError" class="text-red-400 hidden">AC/MC review (Yes) is required to submit.</span>
         </div>
 
-        <div class="flex space-x-4 mb-6">
-            <button id="submitData" class="submit-btn bg-blue-600 text-white p-3 rounded-lg">Submit</button>
-            <button id="generatePdf" class="pdf-btn bg-green-600 text-white p-3 rounded-lg">Generate PDF</button>
+        <div class="flex space-x-4 mb-6 mt-4">
+            <button id="submitData" class="submit-btn bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Submit</button>
+            <button id="generatePdf" class="pdf-btn bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Generate PDF</button>
         </div>
         <div id="statusMessage" class="status-message"></div>
         <div id="riskAssessment" class="mt-6 p-4 bg-gray-700 rounded-lg hidden">
@@ -327,9 +281,9 @@
         </div>
     </div>
     <div class="footer">
-        <p>Any issues or recommendations can be directed to LT Brian Byrd</p>
-        <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact LT Byrd</a>
-    </div>
+    <p class="mb-2">Any issues or recommendations can be directed to LT Brian 'DoDo' Byrd</p>
+    <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact</a>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -527,29 +481,25 @@
                 console.log('jsPDF instance created');
 
                 // Set text color to black
-                doc.setTextColor(0, 0, 0); // Black text
-                // Test minimal content
-                doc.text('Test PDF Content', 1, 1); // Simple test text
+                doc.setTextColor(0, 0, 0);
+                doc.text('Test PDF Content', 1, 1);
                 console.log('Test text added at 1, 1');
 
-                // Full content with background
                 doc.setFontSize(9);
                 const pageWidth = 8.27;
                 const leftColumnWidth = 5.5;
                 const rightColumnWidth = 2.77;
                 const margin = 0.3;
 
-                // Header
                 doc.setFillColor(30, 58, 138);
                 doc.rect(0, 0, pageWidth, 0.8, 'F');
-                doc.setTextColor(255, 255, 255); // White text for header
+                doc.setTextColor(255, 255, 255);
                 doc.text('Operational Risk Management Form - VQ-4 Shadows', pageWidth / 2, 0.4, { align: 'center' });
                 console.log('Header drawn');
-                doc.setTextColor(0, 0, 0); // Back to black for content
+                doc.setTextColor(0, 0, 0);
 
-                // Form Data (Left Column) with background
                 let yOffset = 1.0;
-                doc.setFillColor(240, 240, 240); // Light gray background
+                doc.setFillColor(240, 240, 240);
                 doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
                 doc.text('Flight Information', margin + 0.1, yOffset);
                 yOffset += 0.2;
@@ -602,7 +552,7 @@
                 ];
 
                 sections.forEach(section => {
-                    doc.setFillColor(240, 240, 240); // Light gray background
+                    doc.setFillColor(240, 240, 240);
                     doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
                     doc.text(section.title, margin + 0.1, yOffset);
                     yOffset += 0.2;
@@ -619,7 +569,6 @@
                 doc.text(`AC/MC Review: ${acmcReviewYes ? 'Yes' : 'No'}`, margin + 0.1, yOffset);
                 yOffset += 0.2;
 
-                // Risk Assessment
                 doc.setFillColor(240, 240, 240);
                 doc.rect(margin, yOffset - 0.2, leftColumnWidth, 0.2, 'F');
                 doc.text('Risk Assessment', margin + 0.1, yOffset);
