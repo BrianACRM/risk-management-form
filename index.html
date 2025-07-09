@@ -30,14 +30,14 @@
             align-items: center;
         }
         .logo {
-            width: 100%;
-            max-width: 800px;
-            max-height: 250px; /* Increased from 200px to make it a bit bigger */
+            max-width: 800px; /* Keeps the max width but lets the image dictate the size */
+            max-height: 250px; /* Keeps the bigger height */
             height: auto;
             object-fit: contain;
-            border: 2px solid #93c5fd; /* Keeps the white line */
+            border: 2px solid #93c5fd; /* Border now hugs the image */
             border-radius: 5px;
-            /* Removed padding: 5px to make the border hug the image */
+            display: block;
+            margin: 0 auto;
         }
         .boxes {
             display: flex;
