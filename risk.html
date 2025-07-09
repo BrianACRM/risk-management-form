@@ -16,6 +16,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
         .header-bg {
             background: linear-gradient(90deg, #1e3a8a, #3b82f6);
@@ -23,6 +24,11 @@
             text-align: center;
             width: 100%;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .content {
             max-width: 48rem;
@@ -32,40 +38,108 @@
             padding: 2rem;
             border-radius: 0.75rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
         }
         .section {
             background: #374151;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             border-left: 4px solid #3b82f6;
-            border-radius: 0.375rem;
+            border-radius: 0.5rem;
+            animation: slideUp 0.5s ease-out;
         }
-        .input-field, textarea, select {
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .input-field, textarea {
             width: 100%;
+            max-width: 100%;
             padding: 0.75rem;
             border: 2px solid #4b5563;
             border-radius: 0.375rem;
             background-color: #4b5563;
             color: #ffffff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .input-field:focus, textarea:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+            outline: none;
         }
         .status-message {
+            display: none;
             margin-top: 1rem;
             padding: 0.75rem;
             border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: opacity 0.3s ease;
         }
         .success { background-color: #d1fae5; color: #065f46; }
         .error { background-color: #fee2e2; color: #991b1b; }
+        .error-container {
+            display: none;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border-radius: 0.375rem;
+        }
+        .risk-gauge {
+            width: 200px;
+            height: 20px;
+            background: #4b5563;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            transition: all 0.5s ease;
+        }
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #facc15, #ef4444);
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        .footer {
+            background-color: #1e293b;
+            width: 100%;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: auto;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .footer .contact-button {
+            background-color: #3b82f6;
+            color: #ffffff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        .footer .contact-button:hover {
+            background-color: #60a5fa;
+        }
         @media (max-width: 640px) {
+            .header-bg { padding: 1rem; min-height: 80px; }
             .content { margin: 1rem auto; padding: 1rem; width: 95%; }
-            .input-field, textarea, select { font-size: 0.875rem; }
+            .section { padding: 1rem; margin-bottom: 1rem; }
+            .input-field, textarea { font-size: 0.875rem; padding: 0.5rem; }
+            h2 { font-size: 1.25rem; }
+            .risk-gauge { width: 150px; }
+            .submit-btn { width: 100%; margin-bottom: 0.5rem; }
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white font-sans" style="scroll-behavior: smooth;">
     <header class="header-bg">
-        <h1>Operational Risk Management Form - VQ-4 Shadows</h1>
+        <h1 class="text-4xl font-extrabold text-white">Operational Risk Management Form - VQ-4 Shadows</h1>
     </header>
-
     <div class="content">
         <div class="section">
             <p class="text-lg font-medium text-gray-200 leading-relaxed">
@@ -79,15 +153,15 @@
             <div class="space-y-6 mb-6">
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="acmc">AC/MC <span class="text-red-400">*</span></label>
-                    <input type="text" id="acmc" class="input-field" required>
+                    <input type="text" id="acmc" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
                 </div>
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="additionalCrew">Any Additional Crew Members/Passengers</label>
-                    <input type="text" id="additionalCrew" class="input-field">
+                    <input type="text" id="additionalCrew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500">
                 </div>
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="crew">Crew <span class="text-red-400">*</span></label>
-                    <select id="crew" class="input-field" required>
+                    <select id="crew" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required>
                         <option value="">Choose</option>
                         <option value="LC1">LC1</option>
                         <option value="LC2">LC2</option>
@@ -102,7 +176,7 @@
                 </div>
                 <div class="flex items-center space-x-4 mb-4">
                     <label class="block text-lg font-medium text-gray-200 w-1/3" for="takeoffTime">Scheduled Takeoff Time - Zulu <span class="text-red-400">*</span></label>
-                    <input type="text" id="takeoffTime" class="input-field" required placeholder="e.g., 1434">
+                    <input type="text" id="takeoffTime" class="w-2/3 p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" required placeholder="e.g., 1434">
                 </div>
             </div>
         </div>
@@ -118,7 +192,7 @@
                 <label><input type="checkbox" class="mr-2" data-severity="2" id="q6"> 6. Any crew member not current on required qualifications.</label><br>
             </div>
             <div class="mb-6">
-                <textarea id="humanMitigations" class="input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+                <textarea id="humanMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
             </div>
         </div>
 
@@ -134,7 +208,7 @@
                 <label><input type="checkbox" class="mr-2" data-severity="2" id="q13"> 13. Crew scheduled without adequate recovery following a night mission.</label><br>
             </div>
             <div class="mb-6">
-                <textarea id="schedulingMitigations" class="input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+                <textarea id="schedulingMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
             </div>
         </div>
 
@@ -152,7 +226,7 @@
                 <label><input type="checkbox" class="mr-2" data-severity="3" id="q22"> 22. Lack of crew augmentation despite an extended or multi-segment mission profile.</label><br>
             </div>
             <div class="mb-6">
-                <textarea id="missionMitigations" class="input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+                <textarea id="missionMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
             </div>
         </div>
 
@@ -166,7 +240,7 @@
                 <label><input type="checkbox" class="mr-2" data-severity="2" id="q27"> 27. Elevated bird or wildlife activity at the departure or destination field.</label><br>
             </div>
             <div class="mb-6">
-                <textarea id="environmentalMitigations" class="input-field" rows="3" placeholder="Briefly describe mitigations..."></textarea>
+                <textarea id="environmentalMitigations" class="w-full p-3 border rounded-lg input-field bg-gray-600 text-white border-gray-500" rows="3" placeholder="Briefly describe mitigations..."></textarea>
             </div>
         </div>
 
@@ -178,24 +252,227 @@
             </div>
         </div>
 
+        <div id="errorContainer" class="error-container"></div>
         <div class="flex space-x-4 mb-6 mt-4">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Submit</button>
+            <button id="submitData" class="submit-btn bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition duration-300 ease-in-out">Submit</button>
         </div>
-        <div class="status-message"></div>
-        <div>
+        <div id="statusMessage" class="status-message"></div>
+        <div id="riskAssessment" class="mt-6 p-4 bg-gray-700 rounded-lg hidden">
             <h2 class="text-lg font-semibold text-gray-100">Risk Assessment</h2>
             <div class="risk-gauge">
-                <div class="gauge-fill"></div>
+                <div id="gaugeFill" class="gauge-fill"></div>
             </div>
-            <p class="mt-2"><strong>Total Risk Score:</strong> <span class="text-gray-100 font-medium">0</span></p>
-            <p><strong>Risk Rank:</strong> <span class="text-gray-100 font-medium">None</span></p>
-            <p class="mt-2 text-red-400"></p>
+            <p class="mt-2"><strong>Total Risk Score:</strong> <span id="totalScore" class="text-gray-100 font-medium">0</span></p>
+            <p><strong>Risk Rank:</strong> <span id="riskRank" class="text-gray-100 font-medium">None</span></p>
+            <p id="riskNote" class="mt-2 text-red-400"></p>
         </div>
     </div>
-
     <div class="footer">
-        <p>Any issues or recommendations can be directed to LT Brian 'DoDo' Byrd</p>
+        <p class="mb-2">Any issues or recommendations can be directed to LT Brian 'DoDo' Byrd</p>
         <a href="mailto:brian.a.byrd7.mil@us.navy.mil" class="contact-button">Contact</a>
     </div>
+    <!-- Version: 2025-07-02 -->
+</body>
+
+<script>
+    try {
+        console.log('Script starting');
+        // Define arrays globally
+        const humanFactors = [
+            { id: 'q1', text: 'Cumulative fatigue from ≥4 duty days (≥12 hrs/day) in past 5 days', severity: 2 },
+            { id: 'q2', text: 'Cumulative sleep debt (2+ nights w/ <6 hrs sleep in past 72 hrs)', severity: 3 },
+            { id: 'q3', text: 'Circadian rhythm disruption (day ↔ night shift in past 48 hrs)', severity: 2 },
+            { id: 'q4', text: 'Recent personal stressors', severity: 1 },
+            { id: 'q5', text: 'First mission after ≥30-day non-flying period', severity: 1 },
+            { id: 'q6', text: 'Any Crew Member not current', severity: 2 }
+        ];
+
+        const schedulingFactors = [
+            { id: 'q7', text: 'Crew rest <12 hours', severity: 2 },
+            { id: 'q8', text: 'Long sortie (>12 hour planned crew day)', severity: 2 },
+            { id: 'q9', text: 'Planned crew day includes duty between 2200-0600', severity: 2 },
+            { id: 'q10', text: 'Projected duty day ≥15 hrs (approaching 18-hour max)', severity: 3 },
+            { id: 'q11', text: 'Crew scheduled to cross ≥2 time zones in 48-hr period', severity: 2 },
+            { id: 'q12', text: 'Significant mission change after crew report time', severity: 2 },
+            { id: 'q13', text: 'Crew scheduled without adequate recovery following night mission', severity: 2 }
+        ];
+
+        const missionFactors = [
+            { id: 'q14', text: 'Op Area evolution', severity: 1 },
+            { id: 'q15', text: 'Air Refueling', severity: 2 },
+            { id: 'q16', text: 'Pilot Training Event (engine pulls)', severity: 3 },
+            { id: 'q17', text: 'Closed Tower / Uncontrolled Field Ops', severity: 2 },
+            { id: 'q18', text: 'R4305 Op Area', severity: 2 },
+            { id: 'q19', text: 'Unfamiliar Airfield Ops', severity: 2 },
+            { id: 'q20', text: 'Delayed Takeoff (mx, weather, etc...)', severity: 1 },
+            { id: 'q21', text: 'Known degraded system(s) requiring crew workaround', severity: 2 },
+            { id: 'q22', text: 'Crew augmentation not available', severity: 3 }
+        ];
+
+        const environmentalFactors = [
+            { id: 'q23', text: 'Flying at night', severity: 2 },
+            { id: 'q24', text: 'Departure weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+            { id: 'q25', text: 'Enroute weather concerns (thunderstorms, icing, turbulence)', severity: 3 },
+            { id: 'q26', text: 'Destination weather <1500 ft ceiling and/or <3 sm visibility', severity: 2 },
+            { id: 'q27', text: 'Elevated bird/wildlife activity at departure/destination field', severity: 2 }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded and script running');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const totalScoreElement = document.getElementById('totalScore');
+            const riskRankElement = document.getElementById('riskRank');
+            const riskNoteElement = document.getElementById('riskNote');
+            const gaugeFill = document.getElementById('gaugeFill');
+            const submitButton = document.getElementById('submitData');
+            const acmcReviewYes = document.getElementById('acmcReviewYes');
+            const acmcReviewNo = document.getElementById('acmcReviewNo');
+            const errorContainer = document.getElementById('errorContainer');
+
+            if (!submitButton) {
+                console.error('Submit button not found. Checking by class...');
+                const submitButtons = document.getElementsByClassName('submit-btn');
+                if (submitButtons.length > 0) submitButton = submitButtons[0];
+                if (!submitButton) {
+                    console.error('Submit button still not found. Available elements:', {
+                        submitButton: submitButton,
+                        allButtons: document.getElementsByTagName('button')
+                    });
+                    return;
+                }
+            }
+            console.log('Submit button found:', { submitButton });
+
+            submitButton.addEventListener('click', () => {
+                console.log('Submit button clicked');
+                const acmc = document.getElementById('acmc').value.trim();
+                const crew = document.getElementById('crew').value;
+                const takeoffTime = document.getElementById('takeoffTime').value.trim();
+                const errors = [];
+
+                if (!acmc) errors.push('AC/MC is required.');
+                if (!crew) errors.push('Crew is required.');
+                if (!takeoffTime) errors.push('Takeoff Time is required.');
+                if (!acmcReviewYes.checked) {
+                    errors.push('Please brief the AC/MC and select \'Yes\' to submit.');
+                }
+
+                if (errors.length > 0) {
+                    errorContainer.style.display = 'block';
+                    errorContainer.innerHTML = errors.join('<br>');
+                    return;
+                } else {
+                    errorContainer.style.display = 'none';
+                }
+
+                let total = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        total += parseInt(checkbox.getAttribute('data-severity') || 0);
+                    }
+                });
+                let riskRank = '';
+                let riskNote = '';
+                if (total >= 21) {
+                    riskRank = 'High';
+                    riskNote = 'Call OPS Ofor approval or change mission to bring risk down.';
+                } else if (total >= 11) {
+                    riskRank = 'Moderate';
+                    riskNote = 'Call the CDO to brief mitigation.';
+                } else {
+                    riskRank = 'Low';
+                    riskNote = 'No action required.';
+                }
+
+                const maxScore = 81;
+                const scorePercentage = (total / maxScore) * 100;
+                gaugeFill.style.width = `${scorePercentage}%`;
+
+                const formData = {
+                    acmc: acmc,
+                    additionalCrew: document.getElementById('additionalCrew').value || '',
+                    crew: crew,
+                    takeoffTime: takeoffTime,
+                    humanFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q1' && cb.id <= 'q6' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    humanMitigations: document.getElementById('humanMitigations').value.trim() || 'N/A',
+                    schedulingFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q7' && cb.id <= 'q13' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    schedulingMitigations: document.getElementById('schedulingMitigations').value.trim() || 'N/A',
+                    missionFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q14' && cb.id <= 'q22' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    missionMitigations: document.getElementById('missionMitigations').value.trim() || 'N/A',
+                    environmentalFactors: Array.from(checkboxes)
+                        .filter(cb => cb.id >= 'q23' && cb.id <= 'q27' && cb.checked)
+                        .map(cb => cb.nextSibling.textContent.trim()).join(', ') || 'None',
+                    environmentalMitigations: document.getElementById('environmentalMitigations').value.trim() || 'N/A',
+                    totalScore: total,
+                    riskRank: riskRank,
+                    riskNote: riskNote,
+                    acmcReview: acmcReviewYes.checked ? 'Yes' : 'No',
+                    submissionDate: new Date().toLocaleString()
+                };
+
+                console.log('Submitting form data:', formData);
+                document.getElementById('statusMessage').classList.remove('error', 'hidden');
+                document.getElementById('statusMessage').classList.add('success');
+                document.getElementById('statusMessage').textContent = 'Submitting data via Formspree...';
+
+                fetch('https://formspree.io/f/xnnvlwap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: Object.entries(formData).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&'),
+                    redirect: 'manual'
+                })
+                .then(response => {
+                    console.log('Fetch response received:', response);
+                    if (response.type === 'opaqueredirect' || response.status === 200) {
+                        return { ok: true, text: 'Success' };
+                    }
+                    if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+                    return response.text();
+                })
+                .then(result => {
+                    console.log('Fetch result:', result);
+                    if (result.ok || (typeof result === 'string' && result.toLowerCase().includes('success'))) {
+                        setTimeout(() => {
+                            document.getElementById('statusMessage').textContent = 'Data submitted successfully!';
+                            totalScoreElement.textContent = total;
+                            riskRankElement.textContent = riskRank;
+                            riskNoteElement.textContent = riskNote;
+                            riskAssessment.classList.remove('hidden');
+                        }, 100);
+                    } else {
+                        throw new Error('Unexpected response: ' + result);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    setTimeout(() => {
+                        document.getElementById('statusMessage').textContent = 'Error submitting data: ' + error.message;
+                        document.getElementById('statusMessage').classList.remove('success', 'hidden');
+                        document.getElementById('statusMessage').classList.add('error');
+                    }, 100);
+                });
+            });
+        });
+    } catch (error) {
+        console.error('Script execution failed:', error);
+    }
+
+    // Fallback to ensure script runs
+    window.onload = () => {
+        console.log('Window onload fallback triggered');
+        const submitButton = document.getElementById('submitData');
+        if (submitButton) {
+            submitButton.addEventListener('click', () => {
+                console.log('Submit fallback clicked');
+            });
+        }
+    };
+</script>
 </body>
 </html>
