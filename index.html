@@ -32,12 +32,12 @@
         .logo {
             width: 100%;
             max-width: 800px;
-            max-height: 200px; /* Added to cap the height */
+            max-height: 250px; /* Increased from 200px to make it a bit bigger */
             height: auto;
             object-fit: contain;
-            border: 2px solid #93c5fd;
-            padding: 5px;
+            border: 2px solid #93c5fd; /* Keeps the white line */
             border-radius: 5px;
+            /* Removed padding: 5px to make the border hug the image */
         }
         .boxes {
             display: flex;
@@ -198,7 +198,7 @@
 </head>
 <body>
     <header class="header-bg">
-        <img src="images/banner.jpg" alt="VQ-4 Banner" class="logo" style="max-width: 100%; height: auto; display: block; margin: 0 auto; max-height: 200px;">
+        <img src="images/banner.jpg" alt="VQ-4 Banner" class="logo" style="max-width: 100%; height: auto; display: block; margin: 0 auto; max-height: 250px;">
     </header>
 
     <div class="boxes">
