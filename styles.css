@@ -35,6 +35,19 @@ p {
     margin-bottom: 20px;
 }
 
+.risk-assessment {
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    display: none;
+}
+
+.risk-assessment p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
 label {
     display: block;
     font-weight: bold;
@@ -109,18 +122,6 @@ button {
 
 button:hover {
     background-color: #2980b9;
-}
-
-.risk-assessment {
-    background-color: #ecf0f1;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.risk-assessment p {
-    font-size: 1.2em;
-    margin: 10px 0;
 }
 
 #submission-status {
