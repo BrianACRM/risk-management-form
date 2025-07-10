@@ -16,7 +16,7 @@
         <strong>Note:</strong> This questionnaire does not replace the requirement to conduct deliberate ORM as outlined in other instructions and SOPs.
     </p>
 
-    <form id="orm-form" action="https://formspree.io/f/xxxxxxxx" method="POST">
+    <form id="orm-form" action="https://formspree.io/f/xnnvlwap" method="POST">
         <div class="section">
             <h2>Flight Information</h2>
             <label for="ac_mc">AC/MC <span class="required">*</span></label>
@@ -40,7 +40,7 @@
             </select>
 
             <label for="takeoff_time">Scheduled Takeoff Time - Zulu <span class="required">*</span></label>
-            <input type="datetime-local" id="takeoff_time" name="takeoff_time" required>
+            <input type="text" id="takeoff_time" name="takeoff_time" required>
         </div>
 
         <div class="section">
@@ -52,11 +52,11 @@
                 <label for="human_factor_2">2. Cumulative sleep debt from two or more nights with less than six hours of sleep within the past 72 hours, despite allocated crew rest time.</label>
                 <input type="checkbox" id="human_factor_3" name="risk_factors[]" value="3" data-severity="3">
                 <label for="human_factor_3">3. Circadian rhythm disruption due to a day-to-night shift change within the past 48 hours.</label>
-                <input type="checkbox" id="human_factor_4" name="risk_factors[]" value="4" data-severity="3">
+                <input type="checkbox" id="human_factor_4" name="risk_factors[]" value="4" data-severity="2">
                 <label for="human_factor_4">4. Recent personal stressors affecting performance.</label>
                 <input type="checkbox" id="human_factor_5" name="risk_factors[]" value="5" data-severity="2">
                 <label for="human_factor_5">5. First mission following a non-flying period of 30 or more days.</label>
-                <input type="checkbox" id="human_factor_6" name="risk_factors[]" value="6" data-severity="3">
+                <input type="checkbox" id="human_factor_6" name="risk_factors[]" value="6" data-severity="1">
                 <label for="human_factor_6">6. Any crew member not current on required qualifications.</label>
             </div>
         </div>
@@ -66,15 +66,15 @@
             <div class="checkbox-group">
                 <input type="checkbox" id="scheduling_factor_7" name="risk_factors[]" value="7" data-severity="2">
                 <label for="scheduling_factor_7">7. Crew rest period of less than 12 hours.</label>
-                <input type="checkbox" id="scheduling_factor_8" name="risk_factors[]" value="8" data-severity="2">
+                <input type="checkbox" id="scheduling_factor_8" name="risk_factors[]" value="8" data-severity="1">
                 <label for="scheduling_factor_8">8. Long sortie exceeding 12 hours of planned crew duty.</label>
                 <input type="checkbox" id="scheduling_factor_9" name="risk_factors[]" value="9" data-severity="2">
                 <label for="scheduling_factor_9">9. Planned crew duty scheduled between 2200 and 0600 hours.</label>
                 <input type="checkbox" id="scheduling_factor_10" name="risk_factors[]" value="10" data-severity="2">
                 <label for="scheduling_factor_10">10. Projected duty day of 15 or more hours, approaching the 18-hour maximum.</label>
-                <input type="checkbox" id="scheduling_factor_11" name="risk_factors[]" value="11" data-severity="2">
+                <input type="checkbox" id="scheduling_factor_11" name="risk_factors[]" value="11" data-severity="1">
                 <label for="scheduling_factor_11">11. Crew scheduled to cross two or more time zones within a 48-hour period, increasing the risk of circadian disruption and fatigue.</label>
-                <input type="checkbox" id="scheduling_factor_12" name="risk_factors[]" value="12" data-severity="2">
+                <input type="checkbox" id="scheduling_factor_12" name="risk_factors[]" value="12" data-severity="1">
                 <label for="scheduling_factor_12">12. Significant mission change after crew report time, requiring re-briefing or operational adjustments.</label>
                 <input type="checkbox" id="scheduling_factor_13" name="risk_factors[]" value="13" data-severity="2">
                 <label for="scheduling_factor_13">13. Crew scheduled without adequate recovery following a night mission.</label>
@@ -88,11 +88,11 @@
                 <label for="mission_factor_14">14. Evolution of the operational area.</label>
                 <input type="checkbox" id="mission_factor_15" name="risk_factors[]" value="15" data-severity="1">
                 <label for="mission_factor_15">15. Requirement for air refueling.</label>
-                <input type="checkbox" id="mission_factor_16" name="risk_factors[]" value="16" data-severity="1">
+                <input type="checkbox" id="mission_factor_16" name="risk_factors[]" value="16" data-severity="2">
                 <label for="mission_factor_16">16. Pilot training event involving engine pulls.</label>
                 <input type="checkbox" id="mission_factor_17" name="risk_factors[]" value="17" data-severity="1">
                 <label for="mission_factor_17">17. Operations at a closed tower or uncontrolled field.</label>
-                <input type="checkbox" id="mission_factor_18" name="risk_factors[]" value="18" data-severity="1">
+                <input type="checkbox" id="mission_factor_18" name="risk_factors[]" value="18" data-severity="2">
                 <label for="mission_factor_18">18. Operations in the R4305 operational area.</label>
                 <input type="checkbox" id="mission_factor_19" name="risk_factors[]" value="19" data-severity="1">
                 <label for="mission_factor_19">19. Operations at unfamiliar airfields.</label>
@@ -114,9 +114,9 @@
                 <label for="env_factor_24">24. Departure weather with a ceiling below 1,500 feet and/or visibility less than 3 statute miles.</label>
                 <input type="checkbox" id="env_factor_25" name="risk_factors[]" value="25" data-severity="1">
                 <label for="env_factor_25">25. Enroute weather concerns including thunderstorms, icing, or turbulence.</label>
-                <input type="checkbox" id="env_factor_26" name="risk_factors[]" value="26" data-severity="1">
+                <input type="checkbox" id="env_factor_26" name="risk_factors[]" value="26" data-severity="2">
                 <label for="env_factor_26">26. Destination weather with a ceiling below 1,500 feet and/or visibility less than 3 statute miles.</label>
-                <input type="checkbox" id="env_factor_27" name="risk_factors[]" value="27" data-severity="1">
+                <input type="checkbox" id="env_factor_27" name="risk_factors[]" value="27" data-severity="2">
                 <label for="env_factor_27">27. Elevated bird or wildlife activity at the departure or destination field.</label>
             </div>
         </div>
