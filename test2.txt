@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operational Risk Management Form - VQ-4 Shadows</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        label {
+            display: inline-block;
+            margin: 5px 0;
+        }
+        input[type="text"], select, input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 5px;
+            align-items: center;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .risk-assessment {
+            font-weight: bold;
+        }
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Operational Risk Management Form - VQ-4 Shadows</h1>
+
+    <p>
+        This questionnaire utilizes the Time Critical ABCD Model to focus the crew, enhance situational awareness, and improve performance in pre-flight and flight environments. Use this tool to assess the crew, balance resources, communicate and mitigate identified risks or decisions, execute the mission with mitigations in place, and debrief the mission upon completion.
+    </p>
+    <p>
+        <strong>Note:</strong> This questionnaire does not replace the requirement to conduct deliberate ORM as outlined in other instructions and SOPs.
+    </p>
+
+    <form id="orm-form" action="/submit" method="POST">
+        <div class="section">
+            <h2>Flight Information</h2>
+            <label for="ac_mc">AC/MC <span style="color: red;">*</span></label>
+            <input type="text" id="ac_mc" name="ac_mc" required>
+
+            <label for="additional_crew">Any Additional Crew Members/Passengers</label>
+            <input type="text" id="additional_crew" name="additional_crew">
+
+            <label for="crew">Crew <span style="color: red;">*</span></label>
+            <select id="crew" name="crew" required>
+                <option value="">Choose</option>
+                <option value="LC1">LC1</option>
+                <option value="LC2">LC2</option>
+                <option value="LC3">LC3</option>
+                <option value="LC4">LC4</option>
+                <option value="LC5">LC5</option>
+                <option value="LC6">LC6</option>
+                <option value="LC7">LC7</option>
+                <option value="LC8">LC8</option>
+                <option value="Local">Local</option>
+            </select>
+
+            <label for="takeoff_time">Scheduled Takeoff Time - Zulu <span style="color: red;">*</span></label>
+            <input type="datetime-local" id="takeoff_time" name="takeoff_time" required>
+        </div>
+
+        <div class="section">
+            <h2>Human Factors</h2>
+            <div class="checkbox-group">
+                <input type="checkbox" id="human_factor_1" name="risk_factors" value="1">
+                <label for="human_factor_1">1. Cumulative fatigue from four or more duty days of 12 or more hours each within the past five days.</label>
+                <input type="checkbox" id="human_factor_2" name="risk_factors" value="2">
+                <label for="human_factor_2">2. Cumulative sleep debt from two or more nights with less than six hours of sleep within the past 72 hours, despite allocated crew rest time.</label>
+                <input type="checkbox" id="human_factor_3" name="risk_factors" value="3">
+                <label for="human_factor_3">3. Circadian rhythm disruption due to a day-to-night shift change within the past 48 hours.</label>
+                <input type="checkbox" id="human_factor_4" name="risk_factors" value="4">
+                <label for="human_factor_4">4. Recent personal stressors affecting performance.</label>
+                <input type="checkbox" id="human_factor_5" name="risk_factors" value="5">
+                <label for="human_factor_5">5. First mission following a non-flying period of 30 or more days.</label>
+                <input type="checkbox" id="human_factor_6" name="risk_factors" value="6">
+                <label for="human_factor_6">6. Any crew member not current on required qualifications.</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Scheduling & Tempo Factors</h2>
+            <div class="checkbox-group">
+                <input type="checkbox" id="scheduling_factor_7" name="risk_factors" value="7">
+                <label for="scheduling_factor_7">7. Crew rest period of less than 12 hours.</label>
+                <input type="checkbox" id="scheduling_factor_8" name="risk_factors" value="8">
+                <label for="scheduling_factor_8">8. Long sortie exceeding 12 hours of planned crew duty.</label>
+                <input type="checkbox" id="scheduling_factor_9" name="risk_factors" value="9">
+                <label for="scheduling_factor_9">9. Planned crew duty scheduled between 2200 and 0600 hours.</label>
+                <input type="checkbox" id="scheduling_factor_10" name="risk_factors" value="10">
+                <label for="scheduling_factor_10">10. Projected duty day of 15 or more hours, approaching the 18-hour maximum.</label>
+                <input type="checkbox" id="scheduling_factor_11" name="risk_factors" value="11">
+                <label for="scheduling_factor_11">11. Crew scheduled to cross two or more time zones within a 48-hour period, increasing the risk of circadian disruption and fatigue.</label>
+                <input type="checkbox" id="scheduling_factor_12" name="risk_factors" value="12">
+                <label for="scheduling_factor_12">12. Significant mission change after crew report time, requiring re-briefing or operational adjustments.</label>
+                <input type="checkbox" id="scheduling_factor_13" name="risk_factors" value="13">
+                <label for="scheduling_factor_13">13. Crew scheduled without adequate recovery following a night mission.</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Mission Factors</h2>
+            <div class="checkbox-group">
+                <input type="checkbox" id="mission_factor_14" name="risk_factors" value="14">
+                <label for="mission_factor_14">14. Evolution of the operational area.</label>
+                <input type="checkbox" id="mission_factor_15" name="risk_factors" value="15">
+                <label for="mission_factor_15">15. Requirement for air refueling.</label>
+                <input type="checkbox" id="mission_factor_16" name="risk_factors" value="16">
+                <label for="mission_factor_16">16. Pilot training event involving engine pulls.</label>
+                <input type="checkbox" id="mission_factor_17" name="risk_factors" value="17">
+                <label for="mission_factor_17">17. Operations at a closed tower or uncontrolled field.</label>
+                <input type="checkbox" id="mission_factor_18" name="risk_factors" value="18">
+                <label for="mission_factor_18">18. Operations in the R4305 operational area.</label>
+                <input type="checkbox" id="mission_factor_19" name="risk_factors" value="19">
+                <label for="mission_factor_19">19. Operations at unfamiliar airfields.</label>
+                <input type="checkbox" id="mission_factor_20" name="risk_factors" value="20">
+                <label for="mission_factor_20">20. Delayed takeoff due to maintenance, weather, or other factors.</label>
+                <input type="checkbox" id="mission_factor_21" name="risk_factors" value="21">
+                <label for="mission_factor_21">21. Known degraded systems requiring crew workarounds (e.g., communication, navigation, radar, ICS).</label>
+                <input type="checkbox" id="mission_factor_22" name="risk_factors" value="22">
+                <label for="mission_factor_22">22. Lack of crew augmentation despite an extended or multi-segment mission profile.</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Environmental Factors</h2>
+            <div class="checkbox-group">
+                <input type="checkbox" id="env_factor_23" name="risk_factors" value="23">
+                <label for="env_factor_23">23. Flying operations conducted at night.</label>
+                <input type="checkbox" id="env_factor_24" name="risk_factors" value="24">
+                <label for="env_factor_24">24. Departure weather with a ceiling below 1,500 feet and/or visibility less than 3 statute miles.</label>
+                <input type="checkbox" id="env_factor_25" name="risk_factors" value="25">
+                <label for="env_factor_25">25. Enroute weather concerns including thunderstorms, icing, or turbulence.</label>
+                <input type="checkbox" id="env_factor_26" name="risk_factors" value="26">
+                <label for="env_factor_26">26. Destination weather with a ceiling below 1,500 feet and/or visibility less than 3 statute miles.</label>
+                <input type="checkbox" id="env_factor_27" name="risk_factors" value="27">
+                <label for="env_factor_27">27. Elevated bird or wildlife activity at the departure or destination field.</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <fieldset>
+                <legend>Has the AC/MC reviewed all risk factors and mitigations? <span style="color: red;">*</span></legend>
+                <input type="radio" id="ac_mc_yes" name="ac_mc_review" value="Yes" required>
+                <label for="ac_mc_yes">Yes</label>
+                <input type="radio" id="ac_mc_no" name="ac_mc_review" value="No">
+                <label for="ac_mc_no">No</label>
+            </fieldset>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="section risk-assessment">
+        <h2>Risk Assessment</h2>
+        <p id="risk_score">Total Risk Score: 0</p>
+        <p id="risk_rank">Risk Rank: Low</p>
+    </div>
+
+    <p>Any issues or recommendations can be directed to LT Brian 'DoDo' Byrd</p>
+    <p><a href="mailto:contact@example.com">Contact</a></p>
+
+    <script>
+        function calculateRisk() {
+            const checkboxes = document.querySelectorAll('input[name="risk_factors"]:checked');
+            const score = checkboxes.length;
+            document.getElementById('risk_score').textContent = `Total Risk Score: ${score}`;
+            document.getElementById('risk_rank').textContent = `Risk Rank: ${score > 10 ? 'High' : score > 5 ? 'Medium' : 'Low'}`;
+        }
+
+        document.querySelectorAll('input[name="risk_factors"]').forEach(cb => {
+            cb.addEventListener('change', calculateRisk);
+        });
+
+        // Initial calculation
+        calculateRisk();
+    </script>
+</body>
+</html>
