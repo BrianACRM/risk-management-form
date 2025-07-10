@@ -139,7 +139,7 @@
         <p id="submission-status"></p>
     </form>
 
-    <div class="section risk-assessment">
+    <div class="section risk-assessment" id="risk-assessment">
         <h2>Risk Assessment</h2>
         <p id="risk_score">Total Risk Score: 0</p>
         <p id="risk_rank">Risk Rank: Low</p>
@@ -176,15 +176,13 @@
             document.getElementById('risk_note_input').value = riskNote;
         }
 
-        document.querySelectorAll('input[name="risk_factors[]"]').forEach(cb => {
-            cb.addEventListener('change', calculateRisk);
-        });
-
         // Handle form submission with Formspree AJAX
         const form = document.getElementById('orm-form');
         const status = document.getElementById('submission-status');
+        const riskAssessment = document.getElementById('risk-assessment');
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+            calculateRisk();
             status.textContent = 'Submitting...';
             fetch(form.action, {
                 method: 'POST',
@@ -194,6 +192,7 @@
             .then(response => {
                 if (response.ok) {
                     status.textContent = 'Submission successful!';
+                    riskAssessment.style.display = 'block';
                     form.reset();
                     calculateRisk();
                 } else {
@@ -204,9 +203,6 @@
                 status.textContent = 'Submission failed. Please check your connection.';
             });
         });
-
-        // Initial calculation
-        calculateRisk();
     </script>
 </body>
 </html>
