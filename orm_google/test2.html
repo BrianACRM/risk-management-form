@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Operational Risk Management Form - VQ-4 Shadows</h1>
-    <p class="revision">Version 1.0.0, July 9, 2025, 10:29 PM CDT</p>
+    <p class="revision">Version 1.0.0, July 9, 2025, 10:40 PM CDT</p>
 
     <p>
         This questionnaire utilizes the Time Critical ABCD Model to focus the crew, enhance situational awareness, and improve performance in pre-flight and flight environments. Use this tool to assess the crew, balance resources, communicate and mitigate identified risks or decisions, execute the mission with mitigations in place, and debrief the mission upon completion.
@@ -184,7 +184,7 @@
             document.getElementById('risk_note_input').value = riskNote;
         }
 
-        // Handle form submission
+        // Handle form submission with debug logging
         const form = document.getElementById('orm-form');
         const status = document.getElementById('submission-status');
         const riskAssessment = document.getElementById('risk-assessment');
@@ -194,6 +194,7 @@
             e.preventDefault();
             calculateRisk();
             status.textContent = 'Submitting...';
+            console.log('Form submitted with data:', new FormData(form));
 
             // Show risk assessment and reset form after a short delay to allow submission
             setTimeout(() => {
@@ -208,12 +209,14 @@
         iframe.addEventListener('load', function() {
             if (status.textContent === 'Submitting...') {
                 status.textContent = 'Submission successful!';
+                console.log('Iframe loaded, checking response');
             }
         });
 
         // Handle iframe errors
         iframe.addEventListener('error', function() {
             status.textContent = 'Submission failed. Please try again or contact support.';
+            console.log('Iframe error occurred');
         });
     </script>
 </body>
